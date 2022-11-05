@@ -1,0 +1,23 @@
+name: flutter_flow_chart
+description: A new Flutter project.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # https://pub.dev/packages/uuid
+  uuid: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter:
+

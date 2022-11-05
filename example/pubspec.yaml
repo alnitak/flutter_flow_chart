@@ -1,0 +1,35 @@
+name: example
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_flow_chart:
+    path: ../
+
+  cupertino_icons: ^1.0.2
+
+  # https://pub.dev/packages/star_menu
+  star_menu: ^3.0.1
+
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.0.11
+
+  # https://pub.dev/packages/flutter_colorpicker
+  flutter_colorpicker: ^1.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
