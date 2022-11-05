@@ -93,6 +93,8 @@ The *FlowElement* defines the element kind with its position, size, colors and s
 
 ## Add an element to Dashboard
 ```dart
+Dashboard dashboard = Dashboard();
+
 ///////////////////////////////////
 /// Define 2 elements
 FlowElement element1 = FlowElement(
