@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(30.0),
 
         // child: Container(color: Colors.amber),
-        
+
         child: Container(
           constraints: const BoxConstraints.expand(),
           child: FlowChart(
@@ -65,8 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   'long pressed');
             },
             onElementPressed: (context, position, element) {
-              debugPrint(
-                  'Element with "${element.text}" text pressed');
+              debugPrint('Element with "${element.text}" text pressed');
               _displayElementMenu(context, position, element);
             },
             onHandlerPressed: (context, position, handler, element) {
@@ -80,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ),
-      
       ),
     );
   }

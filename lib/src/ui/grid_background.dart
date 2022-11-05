@@ -13,7 +13,7 @@ class GridBackgroundParams {
 
   /// grid background color
   final Color backgroundColor;
-  
+
   /// grid lines color
   final Color gridColor;
 

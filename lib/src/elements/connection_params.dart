@@ -21,11 +21,13 @@ class ConnectionParams {
   factory ConnectionParams.fromMap(Map<String, dynamic> map) {
     return ConnectionParams(
       destElementId: map['destElementId'] as String,
-      arrowParams: ArrowParams.fromMap(map['arrowParams'] as Map<String,dynamic>),
+      arrowParams:
+          ArrowParams.fromMap(map['arrowParams'] as Map<String, dynamic>),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ConnectionParams.fromJson(String source) => ConnectionParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ConnectionParams.fromJson(String source) =>
+      ConnectionParams.fromMap(json.decode(source) as Map<String, dynamic>);
 }

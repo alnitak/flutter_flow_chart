@@ -52,6 +52,7 @@ class ElementSettingsMenu extends StatelessWidget {
         ],
         const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
+
       /// Thickness
       ValueListenableBuilder<double>(
           valueListenable: sliderThickness,
@@ -88,16 +89,17 @@ class ElementSettingsMenu extends StatelessWidget {
                 width: 350,
                 height: 500,
                 child: HueRingPicker(
-                    onColorChanged: element.setBorderColor,
-                    pickerColor: element.borderColor,
-                    portraitOnly: true,
-                  ),
+                  onColorChanged: element.setBorderColor,
+                  pickerColor: element.borderColor,
+                  portraitOnly: true,
+                ),
               ),
             ),
           )
         ],
         const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
+
       /// Elevation
       ValueListenableBuilder<double>(
           valueListenable: sliderElevation,

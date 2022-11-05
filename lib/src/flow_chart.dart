@@ -16,7 +16,8 @@ class FlowChart extends StatefulWidget {
   final Function(BuildContext context, Offset position)? onDashboardLongtTapped;
 
   /// callback for element pressed
-  final Function(BuildContext context, Offset position, FlowElement element)? onElementPressed;
+  final Function(BuildContext context, Offset position, FlowElement element)?
+      onElementPressed;
 
   /// callback for element long pressed
   final Function(BuildContext context, Offset position, FlowElement element)?
@@ -118,34 +119,34 @@ class _FlowChartState extends State<FlowChart> {
           ),
           // Draw elements
           for (int i = 0; i < widget.dashboard.elements.length; i++)
-              ElementWidget(
-                key: UniqueKey(),
-                dashboard: widget.dashboard,
-                element: widget.dashboard.elements.elementAt(i),
-                onElementPressed: widget.onElementPressed == null
-                    ? null
-                    : (context, position) => widget.onElementPressed!(
-                          context,
-                          position,
-                          widget.dashboard.elements.elementAt(i),
-                        ),
-                onElementLongPressed: widget.onElementLongPressed == null
-                    ? null
-                    : (context, position) => widget.onElementLongPressed!(
-                          context,
-                          position,
-                          widget.dashboard.elements.elementAt(i),
-                        ),
-                onHandlerPressed: widget.onHandlerPressed == null
-                    ? null
-                    : (context, position, handler, element) => widget
-                        .onHandlerPressed!(context, position, handler, element),
-                onHandlerLongPressed: widget.onHandlerLongPressed == null
-                    ? null
-                    : (context, position, handler, element) =>
-                        widget.onHandlerLongPressed!(
-                            context, position, handler, element),
-              ),
+            ElementWidget(
+              key: UniqueKey(),
+              dashboard: widget.dashboard,
+              element: widget.dashboard.elements.elementAt(i),
+              onElementPressed: widget.onElementPressed == null
+                  ? null
+                  : (context, position) => widget.onElementPressed!(
+                        context,
+                        position,
+                        widget.dashboard.elements.elementAt(i),
+                      ),
+              onElementLongPressed: widget.onElementLongPressed == null
+                  ? null
+                  : (context, position) => widget.onElementLongPressed!(
+                        context,
+                        position,
+                        widget.dashboard.elements.elementAt(i),
+                      ),
+              onHandlerPressed: widget.onHandlerPressed == null
+                  ? null
+                  : (context, position, handler, element) => widget
+                      .onHandlerPressed!(context, position, handler, element),
+              onHandlerLongPressed: widget.onHandlerLongPressed == null
+                  ? null
+                  : (context, position, handler, element) =>
+                      widget.onHandlerLongPressed!(
+                          context, position, handler, element),
+            ),
           // Draw arrows
           for (int i = 0; i < widget.dashboard.elements.length; i++)
             for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)

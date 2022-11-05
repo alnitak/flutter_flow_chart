@@ -95,7 +95,7 @@ class _ElementWidgetState extends State<ElementWidget> {
         ),
       );
     }
-    
+
     element = Padding(
       padding: EdgeInsets.all(widget.element.handlerSize / 2),
       child: element,

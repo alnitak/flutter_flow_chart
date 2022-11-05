@@ -35,37 +35,37 @@ class FlowElement extends ChangeNotifier {
 
   /// Text color
   Color textColor;
-  
+
   /// Text size
   double textSize;
-  
+
   /// Makes text bold if true
   bool textIsBold;
-  
+
   /// Element shape
   ElementKind kind;
-  
+
   /// Connection handlers
   List<Handler> handlers;
-  
+
   /// The size of element handlers
   double handlerSize;
-  
+
   /// Background color of the element
   Color backgroundColor;
-  
+
   /// Border color of the element
   Color borderColor;
-  
+
   /// Border thickness of the element
   double borderThickness;
-  
+
   /// Shadow elevation
   double elevation;
-  
+
   /// List of connections of this element
   List<ConnectionParams> next;
-  
+
   /// Element text
   bool isResizing;
 
@@ -98,7 +98,7 @@ class FlowElement extends ChangeNotifier {
     return 'kind: $kind  text: $text';
   }
 
-  /// When setting to true, a handler will disply at the element bottom right 
+  /// When setting to true, a handler will disply at the element bottom right
   /// to let the user to resize it. When finish it will disappear.
   setIsResizing(bool resizing) {
     isResizing = resizing;
