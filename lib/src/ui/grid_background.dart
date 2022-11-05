@@ -57,7 +57,6 @@ class _GridBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint();
-    Path p = Path();
 
     // Background
     paint.color = params.backgroundColor;

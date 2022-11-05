@@ -77,14 +77,14 @@ class _ElementHandler extends StatelessWidget {
   )? onHandlerLongPressed;
 
   const _ElementHandler({
-    super.key,
+    Key? key,
     required this.element,
     required this.handler,
     required this.dashboard,
     required this.handlerSize,
     required this.onHandlerPressed,
     required this.onHandlerLongPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

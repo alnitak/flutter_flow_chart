@@ -53,7 +53,6 @@ class _DiamondPainter extends CustomPainter {
     path.lineTo(size.width / 2, size.height);
     path.lineTo(0, size.height / 2);
     path.close();
-    print(element.elevation);
     if (element.elevation > 0.01) {
       canvas.drawShadow(
         path.shift(Offset(element.elevation, element.elevation)),
