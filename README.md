@@ -4,6 +4,8 @@ A package that let you draw a flow chart diagram with different kind of customiz
 
 ![Image](https://github.com/alnitak/flutter_flow_chart/blob/main/images/flowchart.gif)
 
+See online example [here](https://alnitak.github.io/)
+
 ## Features
 
 * *diamond, rectangle, oval, storage, parallelogram* elements
