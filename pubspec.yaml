@@ -1,6 +1,6 @@
 name: flutter_flow_chart
 description: draw a flow chart diagram with different kind of customizable elements. Dashboards can be saved for later use.
-version: 1.0.0
+version: 1.0.0+1
 homepage: https://github.com/alnitak/flutter_flow_chart
 
 environment:
