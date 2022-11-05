@@ -60,14 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
             onDashboardLongtTapped: ((context, position) {
               debugPrint('Dashboard long tapped $position');
             }),
-            onElementLongPressed: (context, element) {
+            onElementLongPressed: (context, position, element) {
               debugPrint('Element with "${element.text}" text '
                   'long pressed');
             },
-            onElementPressed: (context, element) {
+            onElementPressed: (context, position, element) {
               debugPrint(
                   'Element with "${element.text}" text pressed');
-              _displayElementMenu(context, element);
+              _displayElementMenu(context, position, element);
             },
             onHandlerPressed: (context, position, handler, element) {
               debugPrint('handler pressed: position $position '
@@ -129,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Display a drop down menu when tapping on an element
   _displayElementMenu(
     BuildContext context,
+    Offset position,
     FlowElement element,
   ) {
     StarMenuOverlay.displayStarMenu(
@@ -143,12 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
             space: 10,
           ),
           onHoverScale: 1.1,
-          useTouchAsCenter: true,
-          centerOffset: element.position +
-              Offset(
-                element.size.width / 2,
-                element.size.height,
-              ),
+          centerOffset: position - const Offset(50, 0),
           backgroundParams: const BackgroundParams(
             backgroundColor: Colors.transparent,
           ),

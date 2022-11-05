@@ -13,8 +13,8 @@ import 'resize_widget.dart';
 class ElementWidget extends StatefulWidget {
   final Dashboard dashboard;
   final FlowElement element;
-  final Function(BuildContext)? onElementPressed;
-  final Function(BuildContext)? onElementLongPressed;
+  final Function(BuildContext context, Offset position)? onElementPressed;
+  final Function(BuildContext context, Offset position)? onElementLongPressed;
   final Function(
     BuildContext context,
     Offset position,
@@ -101,18 +101,20 @@ class _ElementWidgetState extends State<ElementWidget> {
       child: element,
     );
 
+    Offset tapLocation = Offset.zero;
     return Transform.translate(
       offset: widget.element.position,
       transformHitTests: true,
       child: GestureDetector(
+        onTapDown: (details) => tapLocation = details.globalPosition,
         onTap: () {
           if (widget.onElementPressed != null) {
-            widget.onElementPressed!(context);
+            widget.onElementPressed!(context, tapLocation);
           }
         },
         onLongPress: () {
           if (widget.onElementLongPressed != null) {
-            widget.onElementLongPressed!(context);
+            widget.onElementLongPressed!(context, tapLocation);
           }
         },
         child: Listener(

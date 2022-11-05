@@ -16,10 +16,10 @@ class FlowChart extends StatefulWidget {
   final Function(BuildContext context, Offset position)? onDashboardLongtTapped;
 
   /// callback for element pressed
-  final Function(BuildContext context, FlowElement element)? onElementPressed;
+  final Function(BuildContext context, Offset position, FlowElement element)? onElementPressed;
 
   /// callback for element long pressed
-  final Function(BuildContext context, FlowElement element)?
+  final Function(BuildContext context, Offset position, FlowElement element)?
       onElementLongPressed;
 
   /// callback for handler pressed
@@ -124,14 +124,16 @@ class _FlowChartState extends State<FlowChart> {
                 element: widget.dashboard.elements.elementAt(i),
                 onElementPressed: widget.onElementPressed == null
                     ? null
-                    : (context) => widget.onElementPressed!(
+                    : (context, position) => widget.onElementPressed!(
                           context,
+                          position,
                           widget.dashboard.elements.elementAt(i),
                         ),
                 onElementLongPressed: widget.onElementLongPressed == null
                     ? null
-                    : (context) => widget.onElementLongPressed!(
+                    : (context, position) => widget.onElementLongPressed!(
                           context,
+                          position,
                           widget.dashboard.elements.elementAt(i),
                         ),
                 onHandlerPressed: widget.onHandlerPressed == null
