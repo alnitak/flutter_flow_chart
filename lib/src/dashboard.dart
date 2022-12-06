@@ -185,7 +185,7 @@ class Dashboard extends ChangeNotifier {
   factory Dashboard.fromMap(Map<String, dynamic> map) {
     Dashboard d = Dashboard();
     d.elements = List<FlowElement>.from(
-      (map['elements'] as List<int>).map<FlowElement>(
+      (map['elements'] as List<dynamic>).map<FlowElement>(
         (x) => FlowElement.fromMap(x as Map<String, dynamic>),
       ),
     );
