@@ -134,6 +134,12 @@ class Dashboard extends ChangeNotifier {
     return found;
   }
 
+  moveDashboardElements(Offset position) {
+    for (var i = 0; i < elements.length; ++i) {
+      elements[i].position -= (position - dashboardPosition) / 2;
+    }
+  }
+
   /// needed to know the diagram widget position to compute
   /// offsets for drag and drop elements
   setDashboardPosition(Offset position) {
