@@ -78,13 +78,16 @@ class _FlowChartState extends State<FlowChart> {
   Widget build(BuildContext context) {
     /// get dashboard position after first frame is drawn
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final object = (context.findRenderObject() as RenderBox);
-      final translation = object.getTransformTo(null).getTranslation();
-      final Size size = object.semanticBounds.size;
-      Offset position = Offset(translation.x, translation.y);
+if (mounted) {
+  final object = (context.findRenderObject() as RenderBox);
+  final translation = object.getTransformTo(null).getTranslation();
+  final Size size = object.semanticBounds.size;
+  Offset position = Offset(translation.x, translation.y);
 
-      widget.dashboard.setDashboardSize(size);
-      widget.dashboard.setDashboardPosition(position);
+  widget.dashboard.setDashboardSize(size);
+  widget.dashboard.setDashboardPosition(position);
+}
+
     });
 
     GlobalKey gridKey = GlobalKey();
