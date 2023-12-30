@@ -54,7 +54,7 @@ class TextMenu extends StatelessWidget {
             text: 'Color',
             icon: CircleWidget(backgroundColor: element.textColor),
           ).addStarMenu(
-            [
+            items: [
               SizedBox(
                 width: 300,
                 child: FittedBox(
@@ -70,7 +70,7 @@ class TextMenu extends StatelessWidget {
                 ),
               )
             ],
-            const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
+            params:const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
           ),
           const SizedBox(width: 30),
 

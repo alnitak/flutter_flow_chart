@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'elements/flow_element.dart';
 import 'ui/element_widget.dart';
 import 'ui/grid_background.dart';
@@ -43,7 +42,7 @@ class FlowChart extends StatefulWidget {
   final Dashboard dashboard;
 
   const FlowChart({
-    Key? key,
+    super.key,
     this.onElementPressed,
     this.onElementLongPressed,
     this.onDashboardTapped,
@@ -51,7 +50,7 @@ class FlowChart extends StatefulWidget {
     this.onHandlerPressed,
     this.onHandlerLongPressed,
     required this.dashboard,
-  }) : super(key: key);
+  });
 
   @override
   State<FlowChart> createState() => _FlowChartState();

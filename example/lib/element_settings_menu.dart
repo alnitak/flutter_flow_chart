@@ -34,7 +34,7 @@ class ElementSettingsMenu extends StatelessWidget {
         text: 'Background color',
         icon: CircleWidget(backgroundColor: element.backgroundColor),
       ).addStarMenu(
-        [
+        items: [
           SizedBox(
             width: 300,
             child: FittedBox(
@@ -50,7 +50,7 @@ class ElementSettingsMenu extends StatelessWidget {
             ),
           )
         ],
-        const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
+        params: const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
 
       /// Thickness
@@ -81,7 +81,7 @@ class ElementSettingsMenu extends StatelessWidget {
         text: 'Border color',
         icon: CircleWidget(backgroundColor: element.borderColor),
       ).addStarMenu(
-        [
+        items: [
           SizedBox(
             width: 250,
             child: FittedBox(
@@ -97,7 +97,7 @@ class ElementSettingsMenu extends StatelessWidget {
             ),
           )
         ],
-        const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
+        params: const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
 
       /// Elevation

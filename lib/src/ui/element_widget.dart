@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/src/objects/oval_widget.dart';
-
 import '../../flutter_flow_chart.dart';
 import '../objects/parallelogram_widget.dart';
 import 'element_handlers.dart';
@@ -29,14 +28,14 @@ class ElementWidget extends StatefulWidget {
   )? onHandlerLongPressed;
 
   const ElementWidget({
-    Key? key,
+    super.key,
     required this.dashboard,
     required this.element,
     this.onElementPressed,
     this.onElementLongPressed,
     this.onHandlerPressed,
     this.onHandlerLongPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<ElementWidget> createState() => _ElementWidgetState();
