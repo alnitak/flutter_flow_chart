@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:star_menu/star_menu.dart';
-
 import 'element_settings_menu.dart';
 import 'text_menu.dart';
 
@@ -57,14 +55,30 @@ class _MyHomePageState extends State<MyHomePage> {
               debugPrint('Dashboard tapped $position');
               _displayDashboardMenu(context, position);
             }),
+            onDashboardSecondaryTapped: (context, position) {
+              debugPrint('Dashboard right clicked $position');
+              _displayDashboardMenu(context, position);
+            },
             onDashboardLongtTapped: ((context, position) {
               debugPrint('Dashboard long tapped $position');
+            }),
+            onDashboardSecondaryLongTapped: ((context, position) {
+              debugPrint(
+                  'Dashboard long tapped with mouse right click $position');
             }),
             onElementLongPressed: (context, position, element) {
               debugPrint('Element with "${element.text}" text '
                   'long pressed');
             },
+            onElementSecondaryLongTapped: (context, position, element) {
+              debugPrint('Element with "${element.text}" text '
+                  'long tapped with mouse right click');
+            },
             onElementPressed: (context, position, element) {
+              debugPrint('Element with "${element.text}" text pressed');
+              _displayElementMenu(context, position, element);
+            },
+            onElementSecondaryTapped: (context, position, element) {
               debugPrint('Element with "${element.text}" text pressed');
               _displayElementMenu(context, position, element);
             },

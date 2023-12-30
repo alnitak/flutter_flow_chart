@@ -13,7 +13,11 @@ class ElementWidget extends StatefulWidget {
   final Dashboard dashboard;
   final FlowElement element;
   final Function(BuildContext context, Offset position)? onElementPressed;
+  final Function(BuildContext context, Offset position)?
+      onElementSecondaryTapped;
   final Function(BuildContext context, Offset position)? onElementLongPressed;
+  final Function(BuildContext context, Offset position)?
+      onElementSecondaryLongTapped;
   final Function(
     BuildContext context,
     Offset position,
@@ -32,7 +36,9 @@ class ElementWidget extends StatefulWidget {
     required this.dashboard,
     required this.element,
     this.onElementPressed,
+    this.onElementSecondaryTapped,
     this.onElementLongPressed,
+    this.onElementSecondaryLongTapped,
     this.onHandlerPressed,
     this.onHandlerLongPressed,
   });
@@ -101,19 +107,32 @@ class _ElementWidgetState extends State<ElementWidget> {
     );
 
     Offset tapLocation = Offset.zero;
+    Offset secondaryTapDownPos = Offset.zero;
     return Transform.translate(
       offset: widget.element.position,
       transformHitTests: true,
       child: GestureDetector(
         onTapDown: (details) => tapLocation = details.globalPosition,
+        onSecondaryTapDown: (details) =>
+            secondaryTapDownPos = details.globalPosition,
         onTap: () {
           if (widget.onElementPressed != null) {
             widget.onElementPressed!(context, tapLocation);
           }
         },
+        onSecondaryTap: () {
+          if (widget.onElementSecondaryTapped != null) {
+            widget.onElementSecondaryTapped!(context, secondaryTapDownPos);
+          }
+        },
         onLongPress: () {
           if (widget.onElementLongPressed != null) {
             widget.onElementLongPressed!(context, tapLocation);
+          }
+        },
+        onSecondaryLongPress: () {
+          if (widget.onElementSecondaryLongTapped != null) {
+            widget.onElementSecondaryLongTapped!(context, secondaryTapDownPos);
           }
         },
         child: Listener(
