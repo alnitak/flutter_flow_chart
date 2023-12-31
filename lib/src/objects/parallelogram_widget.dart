@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../elements/flow_element.dart';
 import 'element_text_widget.dart';
 
@@ -8,9 +7,9 @@ class ParallelogramWidget extends StatelessWidget {
   final FlowElement element;
 
   const ParallelogramWidget({
-    Key? key,
+    super.key,
     required this.element,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

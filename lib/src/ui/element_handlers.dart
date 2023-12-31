@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../dashboard.dart';
 import '../elements/flow_element.dart';
 import 'draw_arrow.dart';
@@ -25,14 +24,14 @@ class ElementHandlers extends StatelessWidget {
   )? onHandlerLongPressed;
 
   const ElementHandlers({
-    Key? key,
+    super.key,
     required this.dashboard,
     required this.element,
     required this.handlerSize,
     required this.child,
     required this.onHandlerPressed,
     required this.onHandlerLongPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +76,13 @@ class _ElementHandler extends StatelessWidget {
   )? onHandlerLongPressed;
 
   const _ElementHandler({
-    Key? key,
     required this.element,
     required this.handler,
     required this.dashboard,
     required this.handlerSize,
     required this.onHandlerPressed,
     required this.onHandlerLongPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
