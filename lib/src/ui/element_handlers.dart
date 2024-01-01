@@ -22,6 +22,18 @@ class ElementHandlers extends StatelessWidget {
     Handler handler,
     FlowElement element,
   )? onHandlerLongPressed;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryTapped;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
 
   const ElementHandlers({
     super.key,
@@ -30,7 +42,9 @@ class ElementHandlers extends StatelessWidget {
     required this.handlerSize,
     required this.child,
     required this.onHandlerPressed,
+    required this.onHandlerSecondaryTapped,
     required this.onHandlerLongPressed,
+    required this.onHandlerSecondaryLongTapped,
   });
 
   @override
@@ -49,7 +63,9 @@ class ElementHandlers extends StatelessWidget {
               dashboard: dashboard,
               handlerSize: handlerSize,
               onHandlerPressed: onHandlerPressed,
+              onHandlerSecondaryTapped: onHandlerSecondaryTapped,
               onHandlerLongPressed: onHandlerLongPressed,
+              onHandlerSecondaryLongTapped: onHandlerSecondaryLongTapped,
             ),
         ],
       ),
@@ -73,7 +89,19 @@ class _ElementHandler extends StatelessWidget {
     Offset position,
     Handler handler,
     FlowElement element,
+  )? onHandlerSecondaryTapped;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
   )? onHandlerLongPressed;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
 
   const _ElementHandler({
     required this.element,
@@ -81,7 +109,9 @@ class _ElementHandler extends StatelessWidget {
     required this.dashboard,
     required this.handlerSize,
     required this.onHandlerPressed,
+    required this.onHandlerSecondaryTapped,
     required this.onHandlerLongPressed,
+    required this.onHandlerSecondaryLongTapped,
   });
 
   @override
@@ -105,6 +135,7 @@ class _ElementHandler extends StatelessWidget {
     }
 
     Offset tapDown = Offset.zero;
+    Offset secondaryTapDown = Offset.zero;
     return Align(
       alignment: alignment,
       child: DragTarget<Map>(
@@ -141,14 +172,28 @@ class _ElementHandler extends StatelessWidget {
             child: GestureDetector(
               onTapDown: (details) => tapDown =
                   details.globalPosition - dashboard.dashboardPosition,
+              onSecondaryTapDown: (details) => secondaryTapDown =
+                  details.globalPosition - dashboard.dashboardPosition,
               onTap: () {
                 if (onHandlerPressed != null) {
                   onHandlerPressed!(context, tapDown, handler, element);
                 }
               },
+              onSecondaryTap: () {
+                if (onHandlerSecondaryTapped != null) {
+                  onHandlerSecondaryTapped!(
+                      context, secondaryTapDown, handler, element);
+                }
+              },
               onLongPress: () {
                 if (onHandlerLongPressed != null) {
                   onHandlerLongPressed!(context, tapDown, handler, element);
+                }
+              },
+              onSecondaryLongPress: () {
+                if (onHandlerSecondaryLongTapped != null) {
+                  onHandlerSecondaryLongTapped!(
+                      context, secondaryTapDown, handler, element);
                 }
               },
               child: HandlerWidget(

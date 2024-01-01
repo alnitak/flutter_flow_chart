@@ -48,6 +48,22 @@ class FlowChart extends StatefulWidget {
     FlowElement element,
   )? onHandlerPressed;
 
+  /// callback for handler right click event
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryTapped;
+
+  /// callback for handler right click long press event
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
+
   /// callback for handler long pressed
   final Function(
     BuildContext context,
@@ -70,7 +86,9 @@ class FlowChart extends StatefulWidget {
     this.onDashboardLongtTapped,
     this.onDashboardSecondaryLongTapped,
     this.onHandlerPressed,
+    this.onHandlerSecondaryTapped,
     this.onHandlerLongPressed,
+    this.onHandlerSecondaryLongTapped,
     required this.dashboard,
   });
 
@@ -203,11 +221,22 @@ class _FlowChartState extends State<FlowChart> {
                   ? null
                   : (context, position, handler, element) => widget
                       .onHandlerPressed!(context, position, handler, element),
+              onHandlerSecondaryTapped: widget.onHandlerSecondaryTapped == null
+                  ? null
+                  : (context, position, handler, element) =>
+                      widget.onHandlerSecondaryTapped!(
+                          context, position, handler, element),
               onHandlerLongPressed: widget.onHandlerLongPressed == null
                   ? null
                   : (context, position, handler, element) =>
                       widget.onHandlerLongPressed!(
                           context, position, handler, element),
+              onHandlerSecondaryLongTapped:
+                  widget.onHandlerSecondaryLongTapped == null
+                      ? null
+                      : (context, position, handler, element) =>
+                          widget.onHandlerSecondaryLongTapped!(
+                              context, position, handler, element),
             ),
           // Draw arrows
           for (int i = 0; i < widget.dashboard.elements.length; i++)

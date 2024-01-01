@@ -29,7 +29,19 @@ class ElementWidget extends StatefulWidget {
     Offset position,
     Handler handler,
     FlowElement element,
+  )? onHandlerSecondaryTapped;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
   )? onHandlerLongPressed;
+  final Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
 
   const ElementWidget({
     super.key,
@@ -40,7 +52,9 @@ class ElementWidget extends StatefulWidget {
     this.onElementLongPressed,
     this.onElementSecondaryLongTapped,
     this.onHandlerPressed,
+    this.onHandlerSecondaryTapped,
     this.onHandlerLongPressed,
+    this.onHandlerSecondaryLongTapped,
   });
 
   @override
@@ -152,7 +166,9 @@ class _ElementWidgetState extends State<ElementWidget> {
               element: widget.element,
               handlerSize: widget.element.handlerSize,
               onHandlerPressed: widget.onHandlerPressed,
+              onHandlerSecondaryTapped: widget.onHandlerSecondaryTapped,
               onHandlerLongPressed: widget.onHandlerLongPressed,
+              onHandlerSecondaryLongTapped: widget.onHandlerSecondaryLongTapped,
               child: element,
             ),
             onDragUpdate: (details) {
