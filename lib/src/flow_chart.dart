@@ -72,6 +72,34 @@ class FlowChart extends StatefulWidget {
     FlowElement element,
   )? onHandlerLongPressed;
 
+  /// callback for line tapped
+  final void Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineTapped;
+
+  /// callback for line long pressed
+  final void Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineLongPressed;
+
+  /// callback for line right click event
+  final void Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineSecondaryTapped;
+
+  /// callback for line right click long press event
+  final void Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineSecondaryLongTapped;
+
   /// main dashboard to use
   final Dashboard dashboard;
 
@@ -89,6 +117,10 @@ class FlowChart extends StatefulWidget {
     this.onHandlerSecondaryTapped,
     this.onHandlerLongPressed,
     this.onHandlerSecondaryLongTapped,
+    this.onLineTapped,
+    this.onLineLongPressed,
+    this.onLineSecondaryTapped,
+    this.onLineSecondaryLongTapped,
     required this.dashboard,
   });
 
@@ -142,10 +174,10 @@ class _FlowChartState extends State<FlowChart> {
           Positioned.fill(
             child: GestureDetector(
               onTapDown: (details) {
-                tapDownPos = details.localPosition;
+                tapDownPos = details.globalPosition;
               },
               onSecondaryTapDown: (details) {
-                secondaryTapDownPos = details.localPosition;
+                secondaryTapDownPos = details.globalPosition;
               },
               onTap: widget.onDashboardTapped == null
                   ? null
@@ -248,6 +280,10 @@ class _FlowChartState extends State<FlowChart> {
                     .findElementIndexById(
                         widget.dashboard.elements[i].next[n].destElementId)],
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
+                onTap: widget.onLineTapped,
+                onLongPress: widget.onLineLongPressed,
+                onSecondaryTap: widget.onLineSecondaryTapped,
+                onSecondaryLongPress: widget.onLineSecondaryLongTapped,
               ),
           // user drawing when connecting elements
           const DrawingArrowWidget(),

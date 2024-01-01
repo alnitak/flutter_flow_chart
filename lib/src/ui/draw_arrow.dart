@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
-
 import '../../flutter_flow_chart.dart';
 
 /// Arrow parameters used by [DrawArrow] widget
@@ -105,12 +103,36 @@ class DrawArrow extends StatefulWidget {
   final ArrowParams arrowParams;
   final FlowElement srcElement;
   final FlowElement destElement;
+  final Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onTap;
+  final Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLongPress;
+  final Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onSecondaryTap;
+  final Function(
+    BuildContext context,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onSecondaryLongPress;
 
   const DrawArrow({
     super.key,
     this.arrowParams = const ArrowParams(),
     required this.srcElement,
     required this.destElement,
+    this.onTap,
+    this.onLongPress,
+    this.onSecondaryTap,
+    this.onSecondaryLongPress,
   });
 
   @override
@@ -159,12 +181,51 @@ class _DrawArrowState extends State<DrawArrow> {
               ((widget.arrowParams.endArrowPosition.y + 1) / 2)),
     );
 
-    return RepaintBoundary(
-      child: CustomPaint(
-        painter: ArrowPainter(
-          params: widget.arrowParams,
-          from: from,
-          to: to,
+    return GestureDetector(
+      onTap: () {
+        if (widget.onTap != null) {
+          widget.onTap!(
+            context,
+            widget.srcElement,
+            widget.destElement,
+          );
+        }
+      },
+      onLongPress: () {
+        if (widget.onLongPress != null) {
+          widget.onLongPress!(
+            context,
+            widget.srcElement,
+            widget.destElement,
+          );
+        }
+      },
+      onSecondaryTap: () {
+        if (widget.onSecondaryTap != null) {
+          widget.onSecondaryTap!(
+            context,
+            widget.srcElement,
+            widget.destElement,
+          );
+        }
+      },
+      onSecondaryLongPress: () {
+        if (widget.onSecondaryLongPress != null) {
+          widget.onSecondaryLongPress!(
+            context,
+            widget.srcElement,
+            widget.destElement,
+          );
+        }
+      },
+      child: RepaintBoundary(
+        child: CustomPaint(
+          painter: ArrowPainter(
+            params: widget.arrowParams,
+            from: from,
+            to: to,
+          ),
+          child: Container(),
         ),
       ),
     );
@@ -177,6 +238,7 @@ class ArrowPainter extends CustomPainter {
   final ArrowParams params;
   final Offset from;
   final Offset to;
+  final Path path = Path();
 
   ArrowPainter({
     required this.params,
@@ -187,7 +249,6 @@ class ArrowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint();
-    Path path = Path();
 
     double distance = 0;
 
@@ -251,4 +312,28 @@ class ArrowPainter extends CustomPainter {
   @override
   bool shouldRepaint(ArrowPainter oldDelegate) =>
       !(from == oldDelegate.from && to == oldDelegate.to);
+
+  @override
+  bool? hitTest(Offset position) {
+    const int numPixelsPerPart = 1;
+    const int pointerAreaSize = 5;
+    for (PathMetric part in path.computeMetrics()) {
+      for (int i = 0; i < part.length / numPixelsPerPart; i++) {
+        Path subPath = part.extractPath(
+          (i * numPixelsPerPart).toDouble(),
+          ((i + 1) * numPixelsPerPart).toDouble(),
+        );
+        if (subPath.getBounds().overlaps(
+              Rect.fromCircle(
+                center: position,
+                radius: pointerAreaSize.toDouble(),
+              ),
+            )) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 }
