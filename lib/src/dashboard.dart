@@ -18,17 +18,29 @@ class Dashboard extends ChangeNotifier {
   Size dashboardSize;
   Offset handlerFeedbackOffset;
   GridBackgroundParams gridBackgroundParams;
+  double zoom;
 
   Dashboard()
       : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
         handlerFeedbackOffset = const Offset(-40, -40),
-        gridBackgroundParams = const GridBackgroundParams();
+        gridBackgroundParams = const GridBackgroundParams(),
+        zoom = 1;
 
   /// set grid background parameters
   setGridBackgroundParams(GridBackgroundParams params) {
     gridBackgroundParams = params;
+    notifyListeners();
+  }
+
+  void zoomIn() {
+    zoom += 0.1;
+    notifyListeners();
+  }
+
+  void zoomOut() {
+    zoom -= 0.1;
     notifyListeners();
   }
 
