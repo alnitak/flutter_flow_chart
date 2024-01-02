@@ -85,6 +85,13 @@ class Dashboard extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// remove the connection from [srcElement] to [destElement]
+  removeConnectionByElements(FlowElement srcElement, FlowElement destElement) {
+    srcElement.next.removeWhere(
+        (handlerParam) => handlerParam.destElementId == destElement.id);
+    notifyListeners();
+  }
+
   /// remove all the connection from the [element]
   removeElementConnections(FlowElement element) {
     element.next.clear();
