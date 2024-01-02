@@ -75,6 +75,7 @@ class FlowChart extends StatefulWidget {
   /// callback for line tapped
   final void Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onLineTapped;
@@ -82,6 +83,7 @@ class FlowChart extends StatefulWidget {
   /// callback for line long pressed
   final void Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onLineLongPressed;
@@ -89,6 +91,7 @@ class FlowChart extends StatefulWidget {
   /// callback for line right click event
   final void Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onLineSecondaryTapped;
@@ -96,6 +99,7 @@ class FlowChart extends StatefulWidget {
   /// callback for line right click long press event
   final void Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onLineSecondaryLongTapped;

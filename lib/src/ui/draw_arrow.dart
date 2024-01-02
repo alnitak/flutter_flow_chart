@@ -105,21 +105,25 @@ class DrawArrow extends StatefulWidget {
   final FlowElement destElement;
   final Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onTap;
   final Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onLongPress;
   final Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onSecondaryTap;
   final Function(
     BuildContext context,
+    Offset clickPosition,
     FlowElement srcElement,
     FlowElement destElement,
   )? onSecondaryLongPress;
@@ -181,11 +185,17 @@ class _DrawArrowState extends State<DrawArrow> {
               ((widget.arrowParams.endArrowPosition.y + 1) / 2)),
     );
 
+    Offset tapPosition = Offset.zero;
+    Offset secondaryTapPosition = Offset.zero;
     return GestureDetector(
+      onTapDown: (details) => tapPosition = details.localPosition,
+      onSecondaryTapDown: (details) =>
+          secondaryTapPosition = details.localPosition,
       onTap: () {
         if (widget.onTap != null) {
           widget.onTap!(
             context,
+            tapPosition,
             widget.srcElement,
             widget.destElement,
           );
@@ -195,6 +205,7 @@ class _DrawArrowState extends State<DrawArrow> {
         if (widget.onLongPress != null) {
           widget.onLongPress!(
             context,
+            tapPosition,
             widget.srcElement,
             widget.destElement,
           );
@@ -204,6 +215,7 @@ class _DrawArrowState extends State<DrawArrow> {
         if (widget.onSecondaryTap != null) {
           widget.onSecondaryTap!(
             context,
+            secondaryTapPosition,
             widget.srcElement,
             widget.destElement,
           );
@@ -213,6 +225,7 @@ class _DrawArrowState extends State<DrawArrow> {
         if (widget.onSecondaryLongPress != null) {
           widget.onSecondaryLongPress!(
             context,
+            secondaryTapPosition,
             widget.srcElement,
             widget.destElement,
           );
