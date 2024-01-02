@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
-
 import 'elements/connection_params.dart';
 import 'ui/draw_arrow.dart';
 import 'elements/flow_element.dart';
@@ -22,7 +20,7 @@ class Dashboard extends ChangeNotifier {
       : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
-        handlerFeedbackOffset = const Offset(-40, -40),
+        handlerFeedbackOffset = const Offset(0, 0),
         gridBackgroundParams = GridBackgroundParams();
 
   /// set grid background parameters
