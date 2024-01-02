@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,29 +17,17 @@ class Dashboard extends ChangeNotifier {
   Size dashboardSize;
   Offset handlerFeedbackOffset;
   GridBackgroundParams gridBackgroundParams;
-  double zoom;
 
   Dashboard()
       : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
         handlerFeedbackOffset = const Offset(-40, -40),
-        gridBackgroundParams = const GridBackgroundParams(),
-        zoom = 1;
+        gridBackgroundParams = GridBackgroundParams();
 
   /// set grid background parameters
   setGridBackgroundParams(GridBackgroundParams params) {
     gridBackgroundParams = params;
-    notifyListeners();
-  }
-
-  void zoomIn() {
-    zoom += 0.1;
-    notifyListeners();
-  }
-
-  void zoomOut() {
-    zoom -= 0.1;
     notifyListeners();
   }
 
