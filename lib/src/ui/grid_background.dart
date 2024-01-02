@@ -95,8 +95,8 @@ class _GridBackgroundPainter extends CustomPainter {
     paint.style = PaintingStyle.stroke;
 
     // Calculate the starting points for x and y
-    double startX = dx % params.gridSquare;
-    double startY = dy % params.gridSquare;
+    double startX = dx % (params.gridSquare * params.secondarySquareStep);
+    double startY = dy % (params.gridSquare * params.secondarySquareStep);
 
     // Calculate the number of lines to draw outside the visible area
     int extraLines = 2;
