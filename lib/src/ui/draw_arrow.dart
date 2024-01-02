@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../flutter_flow_chart.dart';
 
@@ -328,25 +327,6 @@ class ArrowPainter extends CustomPainter {
 
   @override
   bool? hitTest(Offset position) {
-    const int numPixelsPerPart = 1;
-    const int pointerAreaSize = 5;
-    for (PathMetric part in path.computeMetrics()) {
-      for (int i = 0; i < part.length / numPixelsPerPart; i++) {
-        Path subPath = part.extractPath(
-          (i * numPixelsPerPart).toDouble(),
-          ((i + 1) * numPixelsPerPart).toDouble(),
-        );
-        if (subPath.getBounds().overlaps(
-              Rect.fromCircle(
-                center: position,
-                radius: pointerAreaSize.toDouble(),
-              ),
-            )) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return path.contains(position);
   }
 }
