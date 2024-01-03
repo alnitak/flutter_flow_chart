@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Defines grid parameters
@@ -17,41 +18,66 @@ class GridBackgroundParams {
   /// grid lines color
   final Color gridColor;
 
-  const GridBackgroundParams({
+  /// stream controller to notify changes when moving the grid
+  final StreamController _updateController = StreamController.broadcast();
+
+  /// offset to move the grid
+  Offset _offset = Offset.zero;
+
+  GridBackgroundParams({
     this.gridSquare = 20.0,
     this.gridThickness = 0.7,
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
     this.gridColor = Colors.black12,
   });
+
+  set offset(Offset delta) {
+    _offset += delta;
+    _updateController.add(null);
+  }
+
+  Stream get stream => _updateController.stream;
+
+  Offset get offset => _offset;
 }
 
 /// Uses a CustomPainter to draw a grid with the given parameters
 class GridBackground extends StatelessWidget {
   final GridBackgroundParams params;
 
-  const GridBackground({
+  GridBackground({
     super.key,
-    this.params = const GridBackgroundParams(),
-  });
+    GridBackgroundParams? params,
+  }) : params = params ?? GridBackgroundParams();
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: CustomPaint(
-        painter: _GridBackgroundPainter(
-          params: params,
-        ),
-      ),
-    );
+    return StreamBuilder(
+        stream: params.stream,
+        builder: (context, snapshot) {
+          return RepaintBoundary(
+            child: CustomPaint(
+              painter: _GridBackgroundPainter(
+                params: params,
+                dx: params.offset.dx,
+                dy: params.offset.dy,
+              ),
+            ),
+          );
+        });
   }
 }
 
 class _GridBackgroundPainter extends CustomPainter {
   final GridBackgroundParams params;
+  final double dx;
+  final double dy;
 
   _GridBackgroundPainter({
     required this.params,
+    required this.dx,
+    required this.dy,
   });
 
   @override
@@ -68,33 +94,41 @@ class _GridBackgroundPainter extends CustomPainter {
     paint.color = params.gridColor;
     paint.style = PaintingStyle.stroke;
 
-    double x = params.gridSquare;
-    int n = 1;
-    while (x < size.width) {
-      if (n % params.secondarySquareStep == 0) {
-        paint.strokeWidth = params.gridThickness * 2.0;
-      } else {
-        paint.strokeWidth = params.gridThickness;
-      }
+    // Calculate the starting points for x and y
+    double startX = dx % (params.gridSquare * params.secondarySquareStep);
+    double startY = dy % (params.gridSquare * params.secondarySquareStep);
+
+    // Calculate the number of lines to draw outside the visible area
+    int extraLines = 2;
+
+    // Draw vertical lines
+    for (double x = startX - extraLines * params.gridSquare;
+        x < size.width + extraLines * params.gridSquare;
+        x += params.gridSquare) {
+      paint.strokeWidth = ((x - startX) / params.gridSquare).round() %
+                  params.secondarySquareStep ==
+              0
+          ? params.gridThickness * 2.0
+          : params.gridThickness;
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-      x += params.gridSquare;
-      n++;
     }
 
-    double y = params.gridSquare;
-    n = 1;
-    while (y < size.height) {
-      if (n % params.secondarySquareStep == 0) {
-        paint.strokeWidth = params.gridThickness * 2.0;
-      } else {
-        paint.strokeWidth = params.gridThickness;
-      }
+    // Draw horizontal lines
+    for (double y = startY - extraLines * params.gridSquare;
+        y < size.height + extraLines * params.gridSquare;
+        y += params.gridSquare) {
+      paint.strokeWidth = ((y - startY) / params.gridSquare).round() %
+                  params.secondarySquareStep ==
+              0
+          ? params.gridThickness * 2.0
+          : params.gridThickness;
       canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-      y += params.gridSquare;
-      n++;
     }
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(_GridBackgroundPainter oldDelegate) {
+    debugPrint('shouldRepaint ${oldDelegate.dx} $dx ${oldDelegate.dy} $dy');
+    return oldDelegate.dx != dx || oldDelegate.dy != dy;
+  }
 }
