@@ -57,6 +57,29 @@ class Dashboard extends ChangeNotifier {
     return elements.indexWhere((element) => element.id == id);
   }
 
+  /// find the element by its [id] for convenience
+  /// return null if not found
+  FlowElement? findElementById(String id) {
+    try {
+      return elements.firstWhere((element) => element.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// find the connection from [srcElement] to [destElement]
+  /// return null if not found
+  /// In case of multiple connections, first conneciton is returnd
+  ConnectionParams? findConnectionByElements(
+      FlowElement srcElement, FlowElement destElement) {
+    try {
+      return srcElement.next
+          .firstWhere((element) => element.destElementId == destElement.id);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// remove all elements
   removeAllElements() {
     elements.clear();
