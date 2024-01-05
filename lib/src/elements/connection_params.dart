@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '../ui/draw_arrow.dart';
 
 class ConnectionParams {

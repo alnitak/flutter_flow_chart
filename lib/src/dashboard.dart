@@ -230,6 +230,19 @@ class Dashboard extends ChangeNotifier {
     return encoder.convert(toMap());
   }
 
+  /// recenter the dashboard
+  void recenter() {
+    Offset center = Offset(dashboardSize.width / 2, dashboardSize.height / 2);
+    gridBackgroundParams.offset = center;
+    if (elements.isNotEmpty) {
+      Offset currentDeviation = elements.first.position - center;
+      for (FlowElement element in elements) {
+        element.position -= currentDeviation;
+      }
+    }
+    notifyListeners();
+  }
+
   /// save the dashboard into [completeFilePath]
   saveDashboard(String completeFilePath) {
     File f = File(completeFilePath);
@@ -253,5 +266,7 @@ class Dashboard extends ChangeNotifier {
       }
       notifyListeners();
     }
+
+    recenter();
   }
 }

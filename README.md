@@ -30,6 +30,7 @@ FlowChart(
     onElementPressed: (context, element) {},
     onHandlerPressed: (context, position, handler, element) {},
     onHandlerLongPressed: (context, position, handler, element) {},
+    on
 )
 ```
 
@@ -53,6 +54,7 @@ The **Dashboard** object contains all the methods described below used to intera
 |*removeElementById*|remove all the elements with the given id from the dashboard|
 |*removeElement*|remove the given element|
 |*addNextById*|make a connection from the given sourceElement to the elements with the given id|
+|*recenter*|Recenter the dashboard relative to the first element in the element array|
 |*saveDashboard*|save the dashboard into the given file path|
 |*loadDashboard*|clear the dashboard and load the new one|
 
