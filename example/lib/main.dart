@@ -94,6 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: dashboard.recenter,
+          child: const Icon(Icons.center_focus_strong)),
     );
   }
 

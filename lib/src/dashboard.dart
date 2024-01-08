@@ -57,6 +57,29 @@ class Dashboard extends ChangeNotifier {
     return elements.indexWhere((element) => element.id == id);
   }
 
+  /// find the element by its [id] for convenience
+  /// return null if not found
+  FlowElement? findElementById(String id) {
+    try {
+      return elements.firstWhere((element) => element.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// find the connection from [srcElement] to [destElement]
+  /// return null if not found
+  /// In case of multiple connections, first conneciton is returnd
+  ConnectionParams? findConnectionByElements(
+      FlowElement srcElement, FlowElement destElement) {
+    try {
+      return srcElement.next
+          .firstWhere((element) => element.destElementId == destElement.id);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// remove all elements
   removeAllElements() {
     elements.clear();
@@ -207,6 +230,19 @@ class Dashboard extends ChangeNotifier {
     return encoder.convert(toMap());
   }
 
+  /// recenter the dashboard
+  void recenter() {
+    Offset center = Offset(dashboardSize.width / 2, dashboardSize.height / 2);
+    gridBackgroundParams.offset = center;
+    if (elements.isNotEmpty) {
+      Offset currentDeviation = elements.first.position - center;
+      for (FlowElement element in elements) {
+        element.position -= currentDeviation;
+      }
+    }
+    notifyListeners();
+  }
+
   /// save the dashboard into [completeFilePath]
   saveDashboard(String completeFilePath) {
     File f = File(completeFilePath);
@@ -230,5 +266,7 @@ class Dashboard extends ChangeNotifier {
       }
       notifyListeners();
     }
+
+    recenter();
   }
 }
