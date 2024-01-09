@@ -1,3 +1,6 @@
+## 2.1.0+2
+* fixed online example link
+
 ## 2.1.0+1
 *  Implemented some getters to get the connection and element (thanks to Isira Herath)
 
