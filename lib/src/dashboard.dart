@@ -36,9 +36,10 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// set [isResizable] element property
-  setElementResizable(FlowElement element, bool resizable) {
+  setElementResizable(FlowElement element, bool resizable,
+      {bool notify = true}) {
     element.isResizing = resizable;
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// add a [FlowElement] to the dashboard
@@ -81,13 +82,14 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// remove all elements
-  removeAllElements() {
+  removeAllElements({bool notify = true}) {
     elements.clear();
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// remove the [handler] connection of [element]
-  removeElementConnection(FlowElement element, Handler handler) {
+  removeElementConnection(FlowElement element, Handler handler,
+      {bool notify = true}) {
     Alignment alignment;
     switch (handler) {
       case Handler.topCenter:
@@ -105,24 +107,25 @@ class Dashboard extends ChangeNotifier {
     }
     element.next.removeWhere((handlerParam) =>
         handlerParam.arrowParams.startArrowPosition == alignment);
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// remove the connection from [srcElement] to [destElement]
-  removeConnectionByElements(FlowElement srcElement, FlowElement destElement) {
+  removeConnectionByElements(FlowElement srcElement, FlowElement destElement,
+      {bool notify = true}) {
     srcElement.next.removeWhere(
         (handlerParam) => handlerParam.destElementId == destElement.id);
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// remove all the connection from the [element]
-  removeElementConnections(FlowElement element) {
+  removeElementConnections(FlowElement element, {bool notify = true}) {
     element.next.clear();
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// remove all the elements with [id] from the dashboard
-  removeElementById(String id) {
+  removeElementById(String id, {bool notify = true}) {
     // remove the element
     String elementId = '';
     elements.removeWhere((element) {
@@ -138,12 +141,12 @@ class Dashboard extends ChangeNotifier {
         return elementId.contains(handlerParams.destElementId);
       });
     }
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// remove element
   /// return true if it has been removed
-  bool removeElement(FlowElement element) {
+  bool removeElement(FlowElement element, {bool notify = true}) {
     // remove the element
     bool found = false;
     String elementId = element.id;
@@ -157,7 +160,7 @@ class Dashboard extends ChangeNotifier {
       e.next.removeWhere(
           (handlerParams) => handlerParams.destElementId == elementId);
     }
-    notifyListeners();
+    if (notify) notifyListeners();
     return found;
   }
 

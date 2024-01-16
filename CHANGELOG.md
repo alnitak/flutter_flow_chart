@@ -1,3 +1,6 @@
+## 2.1.2
+* added parameter to notify changes or not in dashboard
+
 ## 2.1.1
 * fixed online example link
 
