@@ -36,6 +36,9 @@ class FlowElement extends ChangeNotifier {
   /// Text color
   Color textColor;
 
+  /// Text font family
+  String? fontFamily;
+
   /// Text size
   double textSize;
 
@@ -74,6 +77,7 @@ class FlowElement extends ChangeNotifier {
     this.size = Size.zero,
     this.text = '',
     this.textColor = Colors.black,
+    this.fontFamily,
     this.textSize = 24,
     this.textIsBold = false,
     this.kind = ElementKind.rectangle,
@@ -119,6 +123,12 @@ class FlowElement extends ChangeNotifier {
   /// Set text color
   setTextColor(Color color) {
     textColor = color;
+    notifyListeners();
+  }
+
+  /// Set text font family
+  setFontFamily(String? fontFamily) {
+    this.fontFamily = fontFamily;
     notifyListeners();
   }
 
@@ -185,6 +195,7 @@ class FlowElement extends ChangeNotifier {
         size.hashCode ^
         text.hashCode ^
         textColor.hashCode ^
+        fontFamily.hashCode ^
         textSize.hashCode ^
         textIsBold.hashCode ^
         id.hashCode ^
@@ -206,6 +217,7 @@ class FlowElement extends ChangeNotifier {
       'size.height': size.height,
       'text': text,
       'textColor': textColor.value,
+      'fontFamily': fontFamily,
       'textSize': textSize,
       'textIsBold': textIsBold,
       'id': id,
@@ -229,6 +241,7 @@ class FlowElement extends ChangeNotifier {
       size: Size(map['size.width'] as double, map['size.height'] as double),
       text: map['text'] as String,
       textColor: Color(map['textColor'] as int),
+      fontFamily: map['fontFamily'] as String?,
       textSize: map['textSize'] as double,
       textIsBold: map['textIsBold'] as bool,
       kind: ElementKind.values[map['kind'] as int],
