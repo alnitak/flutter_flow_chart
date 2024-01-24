@@ -1,3 +1,9 @@
+## 2.1.2
+* added parameter to notify changes or not in dashboard
+
+## 2.1.1
+* fixed online example link
+
 ## 2.1.0+1
 *  Implemented some getters to get the connection and element (thanks to Isira Herath)
 
