@@ -21,6 +21,7 @@ class ElementTextWidget extends StatelessWidget {
           color: element.textColor,
           fontSize: element.textSize,
           fontWeight: element.textIsBold ? FontWeight.bold : FontWeight.normal,
+          fontFamily: element.fontFamily,
         ),
       ),
     );
