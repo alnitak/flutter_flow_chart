@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'connection_params.dart';
 
@@ -94,7 +94,7 @@ class FlowElement extends ChangeNotifier {
     this.elevation = 4,
     next,
   })  : next = next ?? [],
-        id = '',
+        id = const Uuid().v4(),
         isResizing = false;
 
   @override
