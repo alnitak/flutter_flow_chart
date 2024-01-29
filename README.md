@@ -68,6 +68,7 @@ The *FlowElement* defines the element kind with its position, size, colors and s
 |*size*|Size|The size of the *FlowElement*|
 |*text*|String|Element text|
 |*textColor*|Color|Text color|
+|*fontFamily*|String|Text font family|
 |*textSize*|double|Text size|
 |*textIsBold*|bool|Makes text bold if true|
 |*kind*|ElementKind|Element shape: enum {rectangle, diamond, storage, oval, parallelogram}|
