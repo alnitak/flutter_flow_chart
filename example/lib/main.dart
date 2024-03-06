@@ -295,6 +295,21 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 dashboard.addElement(FlowElement(
                     position: position - const Offset(50, 25),
+                    size: const Size(150, 100),
+                    text: '${dashboard.elements.length}',
+                    kind: ElementKind.hexagon,
+                    handlers: [
+                      Handler.bottomCenter,
+                      Handler.leftCenter,
+                      Handler.rightCenter,
+                      Handler.topCenter,
+                    ]));
+              }),
+          ActionChip(
+              label: const Text('Add storage'),
+              onPressed: () {
+                dashboard.addElement(FlowElement(
+                    position: position - const Offset(50, 25),
                     size: const Size(100, 150),
                     text: '${dashboard.elements.length}',
                     kind: ElementKind.storage,
