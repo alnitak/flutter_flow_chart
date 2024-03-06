@@ -233,111 +233,126 @@ class _MyHomePageState extends State<MyHomePage> {
         parentContext: context,
         items: [
           ActionChip(
-              label: const Text('Add diamond'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(40, 40),
-                    size: const Size(80, 80),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.diamond,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.topCenter,
-                      Handler.leftCenter,
-                      Handler.rightCenter,
-                    ]));
-              }),
+            label: const Text('Add diamond'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(40, 40),
+                  size: const Size(80, 80),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.diamond,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.topCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Add rect'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(50, 25),
-                    size: const Size(100, 50),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.rectangle,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.topCenter,
-                      Handler.leftCenter,
-                      Handler.rightCenter,
-                    ]));
-              }),
+            label: const Text('Add rect'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(50, 25),
+                  size: const Size(100, 50),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.rectangle,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.topCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Add oval'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(50, 25),
-                    size: const Size(100, 50),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.oval,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.topCenter,
-                      Handler.leftCenter,
-                      Handler.rightCenter,
-                    ]));
-              }),
+            label: const Text('Add oval'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(50, 25),
+                  size: const Size(100, 50),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.oval,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.topCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Add parallelogram'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(50, 25),
-                    size: const Size(100, 50),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.parallelogram,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.topCenter,
-                    ]));
-              }),
+            label: const Text('Add parallelogram'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(50, 25),
+                  size: const Size(100, 50),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.parallelogram,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.topCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Add storage'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(50, 25),
-                    size: const Size(150, 100),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.hexagon,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.leftCenter,
-                      Handler.rightCenter,
-                      Handler.topCenter,
-                    ]));
-              }),
+            label: const Text('Add hexagon'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(50, 25),
+                  size: const Size(150, 100),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.hexagon,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                    Handler.topCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Add storage'),
-              onPressed: () {
-                dashboard.addElement(FlowElement(
-                    position: position - const Offset(50, 25),
-                    size: const Size(100, 150),
-                    text: '${dashboard.elements.length}',
-                    kind: ElementKind.storage,
-                    handlers: [
-                      Handler.bottomCenter,
-                      Handler.leftCenter,
-                      Handler.rightCenter,
-                    ]));
-              }),
+            label: const Text('Add storage'),
+            onPressed: () {
+              dashboard.addElement(FlowElement(
+                  position: position - const Offset(50, 25),
+                  size: const Size(100, 150),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.storage,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ]));
+            },
+          ),
           ActionChip(
-              label: const Text('Remove all'),
-              onPressed: () {
-                dashboard.removeAllElements();
-              }),
+            label: const Text('Remove all'),
+            onPressed: () {
+              dashboard.removeAllElements();
+            },
+          ),
           ActionChip(
-              label: const Text('SAVE dashboard'),
-              onPressed: () async {
-                Directory appDocDir =
-                    await path.getApplicationDocumentsDirectory();
-                dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
-              }),
+            label: const Text('SAVE dashboard'),
+            onPressed: () async {
+              Directory appDocDir =
+                  await path.getApplicationDocumentsDirectory();
+              dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
+            },
+          ),
           ActionChip(
-              label: const Text('LOAD dashboard'),
-              onPressed: () async {
-                Directory appDocDir =
-                    await path.getApplicationDocumentsDirectory();
-                dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
-              }),
+            label: const Text('LOAD dashboard'),
+            onPressed: () async {
+              Directory appDocDir =
+                  await path.getApplicationDocumentsDirectory();
+              dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
+            },
+          ),
         ],
       ),
     );

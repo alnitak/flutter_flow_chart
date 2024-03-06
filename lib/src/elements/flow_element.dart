@@ -88,8 +88,7 @@ class FlowElement extends ChangeNotifier {
       Handler.rightCenter,
       Handler.leftCenter,
     ],
-    // handler size set to 30 for small screens
-    this.handlerSize = 30.0,
+    this.handlerSize = 15.0,
     this.backgroundColor = Colors.white,
     this.borderColor = Colors.blue,
     this.borderThickness = 3,

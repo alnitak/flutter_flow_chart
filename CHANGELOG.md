@@ -1,5 +1,6 @@
-## 2.1.***
+## 2.1.3
 * added fontFamily parameter to the flow_element (thanks to Isira Herath)
+* added hexagon element (thanks to ofbozkurt)
 
 ## 2.1.2
 * added parameter to notify changes or not in dashboard

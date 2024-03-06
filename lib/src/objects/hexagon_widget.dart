@@ -46,10 +46,10 @@ class _HexagonPainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
     paint.color = element.backgroundColor;
 
-    path.moveTo(0, size.height/2);
+    path.moveTo(0, size.height / 2);
     path.lineTo(size.width / 4, size.height);
     path.lineTo(size.width * 3 / 4, size.height);
-    path.lineTo(size.width, size.height/2);
+    path.lineTo(size.width, size.height / 2);
     path.lineTo(size.width * 3 / 4, 0);
     path.lineTo(size.width / 4, 0);
     path.close();
