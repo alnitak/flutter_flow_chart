@@ -10,6 +10,7 @@ enum ElementKind {
   storage,
   oval,
   parallelogram,
+  hexagon,
 }
 
 enum Handler {
