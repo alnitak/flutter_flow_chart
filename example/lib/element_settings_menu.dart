@@ -134,10 +134,10 @@ class IconMenu extends StatelessWidget {
   final String text;
 
   const IconMenu({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

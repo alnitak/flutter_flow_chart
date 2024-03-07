@@ -70,7 +70,8 @@ class TextMenu extends StatelessWidget {
                 ),
               )
             ],
-            params:const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
+            params:
+                const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
           ),
           const SizedBox(width: 30),
 
@@ -128,10 +129,10 @@ class IconMenu extends StatelessWidget {
   final String text;
 
   const IconMenu({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

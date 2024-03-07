@@ -139,10 +139,10 @@ class _ElementHandler extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: DragTarget<Map>(
-        onWillAcceptWithDetails: (data) {
+        onWillAcceptWithDetails: (details) {
           DrawingArrow.instance.setParams(DrawingArrow.instance.params
               .copyWith(endArrowPosition: alignment));
-          if (element == data.data['srcElement']) return false;
+          if (element == details.data['srcElement']) return false;
           return true;
         },
         onAcceptWithDetails: (details) {
