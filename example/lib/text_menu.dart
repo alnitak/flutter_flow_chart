@@ -70,7 +70,9 @@ class TextMenu extends StatelessWidget {
                 ),
               )
             ],
-            params:const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
+            params: const StarMenuParameters(
+              centerOffset: Offset(-1000, -1000),
+            ),
           ),
           const SizedBox(width: 30),
 
@@ -97,28 +99,29 @@ class TextMenu extends StatelessWidget {
 
       /// size
       ValueListenableBuilder<double>(
-          valueListenable: sliderSize,
-          builder: (_, value, __) {
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('size: '),
-                SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: Slider.adaptive(
-                    value: value,
-                    min: 6,
-                    max: 50,
-                    onChanged: (v) {
-                      sliderSize.value = v;
-                      element.setTextSize(value);
-                    },
-                  ),
+        valueListenable: sliderSize,
+        builder: (_, value, __) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('size: '),
+              SizedBox(
+                width: 200,
+                height: 50,
+                child: Slider.adaptive(
+                  value: value,
+                  min: 6,
+                  max: 50,
+                  onChanged: (v) {
+                    sliderSize.value = v;
+                    element.setTextSize(value);
+                  },
                 ),
-              ],
-            );
-          }),
+              ),
+            ],
+          );
+        },
+      ),
     ];
   }
 }
@@ -128,10 +131,10 @@ class IconMenu extends StatelessWidget {
   final String text;
 
   const IconMenu({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
