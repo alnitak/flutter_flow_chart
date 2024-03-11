@@ -50,15 +50,15 @@ class ArrowParams {
 
   factory ArrowParams.fromMap(Map<String, dynamic> map) {
     return ArrowParams(
-      thickness: map['thickness'] as double,
+      thickness: map['thickness'].toDouble(),
       color: Color(map['color'] as int),
       startArrowPosition: Alignment(
-        map['startArrowPositionX'] as double,
-        map['startArrowPositionY'] as double,
+        map['startArrowPositionX'].toDouble(),
+        map['startArrowPositionY'].toDouble(),
       ),
       endArrowPosition: Alignment(
-        map['endArrowPositionX'] as double,
-        map['endArrowPositionY'] as double,
+        map['endArrowPositionX'].toDouble(),
+        map['endArrowPositionY'].toDouble(),
       ),
     );
   }
