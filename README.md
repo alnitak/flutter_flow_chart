@@ -2,7 +2,7 @@
 
 A package that let you draw a flow chart diagram with different kind of customizable elements. Dashboards can be saved for later use.
 
-![Image](https://github.com/alnitak/flutter_flow_chart/blob/main/images/flowchart.gif)
+![Image](https://github.com/alnitak/flutter_flow_chart/raw/main/images/flowchart.gif)
 
 See online example [here](https://www.marcobavagnoli.com/flutter_flow_chart)
 

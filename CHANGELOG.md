@@ -1,3 +1,7 @@
+## 2.1.4
+* fix 'type 'int' is not a subtype of type double' error (by ofbozkurt)
+* assigned UUID upon adding creating a new instance of FlowElement (by Isira Herath)
+
 ## 2.1.3
 * added fontFamily parameter to the flow_element (thanks to Isira Herath)
 * added hexagon element (thanks to ofbozkurt)
