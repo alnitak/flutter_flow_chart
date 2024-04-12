@@ -1,26 +1,41 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/widgets.dart';
+import 'dart:convert';
 import 'package:uuid/uuid.dart';
-import 'elements/connection_params.dart';
-import 'ui/draw_arrow.dart';
-import 'elements/flow_element.dart';
-import 'ui/grid_background.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
+import 'package:flutter_flow_chart/src/ui/grid_background.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/elements/connection_params.dart';
 
 /// Class to store all the scene elements.
+/// This also acts as the controller to the flow_chart widget
 /// It notifies changes to [FlowChart]
 class Dashboard extends ChangeNotifier {
   List<FlowElement> elements;
   Offset dashboardPosition;
   Size dashboardSize;
-  Offset handlerFeedbackOffset;
-  GridBackgroundParams gridBackgroundParams;
 
-  Dashboard()
-      : elements = [],
+  /// [handlerFeedbackOffset] sets an offset for the handler when user is dragging it
+  /// This can be used to prevent the handler being covered by user's finger on touch screens
+  Offset handlerFeedbackOffset;
+
+  GridBackgroundParams gridBackgroundParams;
+  double _currentZoomFactor = 1;
+  bool blockDefaultZoomGestures;
+
+  /// minimum zoom factor allowed
+  /// default is 0.25
+  /// setting it to 1 will prevent zooming out
+  /// setting it to 0 will remove the limit
+  double minimumZoomFactor;
+
+  Dashboard({
+    this.handlerFeedbackOffset = const Offset(0, 0),
+    this.blockDefaultZoomGestures = false,
+    this.minimumZoomFactor = 0.25,
+  })  : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
-        handlerFeedbackOffset = const Offset(0, 0),
         gridBackgroundParams = GridBackgroundParams();
 
   /// set grid background parameters
@@ -47,6 +62,8 @@ class Dashboard extends ChangeNotifier {
     if (element.id.isEmpty) {
       element.id = const Uuid().v4();
     }
+    // element.scale = _currentZoomFactor;
+    element.setScale(1, _currentZoomFactor);
     elements.add(element);
     if (notify) {
       notifyListeners();
@@ -70,7 +87,7 @@ class Dashboard extends ChangeNotifier {
 
   /// find the connection from [srcElement] to [destElement]
   /// return null if not found
-  /// In case of multiple connections, first conneciton is returnd
+  /// In case of multiple connections, first connection is returned
   ConnectionParams? findConnectionByElements(
       FlowElement srcElement, FlowElement destElement) {
     try {
@@ -162,6 +179,39 @@ class Dashboard extends ChangeNotifier {
     }
     if (notify) notifyListeners();
     return found;
+  }
+
+  /// [factor] needs to be a non negative value
+  /// 1 is the default value
+  /// giving a value above 1 will zoom the dashboard by the given factor and vice versa
+  /// Negative values will be ignored
+  /// [zoomFactor] will not go below [minimumZoomFactor]
+  /// [epicenter] is the point where the zoom is centered
+  /// default is the center of the dashboard
+  void setZoomFactor(double factor, {Offset? epicenter}) {
+    if (factor < minimumZoomFactor || _currentZoomFactor == factor) {
+      return;
+    }
+
+    epicenter ??= Offset(dashboardSize.width / 2, dashboardSize.height / 2);
+
+    for (FlowElement element in elements) {
+      // reversing current zoom
+      element.position =
+          (element.position - epicenter) / _currentZoomFactor + epicenter;
+      // applying new zoom
+      element.position = (element.position - epicenter) * factor + epicenter;
+      // element.scale = factor;
+      element.setScale(_currentZoomFactor, factor);
+    }
+
+    _currentZoomFactor = factor;
+
+    notifyListeners();
+  }
+
+  double get zoomFactor {
+    return _currentZoomFactor;
   }
 
   /// needed to know the diagram widget position to compute

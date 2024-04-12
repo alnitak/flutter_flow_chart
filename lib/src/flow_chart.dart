@@ -1,11 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'elements/flow_element.dart';
-import 'ui/element_widget.dart';
-import 'ui/grid_background.dart';
-import 'dashboard.dart';
-import 'ui/draw_arrow.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_flow_chart/src/dashboard.dart';
+import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
+import 'package:flutter_flow_chart/src/ui/element_widget.dart';
+import 'package:flutter_flow_chart/src/ui/grid_background.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
 
 /// Main flow chart Widget.
 /// It displays the background grid, all the elements and connection lines
@@ -14,7 +14,7 @@ class FlowChart extends StatefulWidget {
   final Function(BuildContext context, Offset position)? onDashboardTapped;
 
   /// callback for long tap on dashboard
-  final Function(BuildContext context, Offset position)? onDashboardLongtTapped;
+  final Function(BuildContext context, Offset position)? onDashboardLongTapped;
 
   /// callback for mouse right click on dashboard
   final Function(BuildContext context, Offset postision)?
@@ -115,7 +115,7 @@ class FlowChart extends StatefulWidget {
     this.onElementSecondaryLongTapped,
     this.onDashboardTapped,
     this.onDashboardSecondaryTapped,
-    this.onDashboardLongtTapped,
+    this.onDashboardLongTapped,
     this.onDashboardSecondaryLongTapped,
     this.onHandlerPressed,
     this.onHandlerSecondaryTapped,
@@ -189,9 +189,9 @@ class _FlowChartState extends State<FlowChart> {
                         gridKey.currentContext!,
                         tapDownPos,
                       ),
-              onLongPress: widget.onDashboardLongtTapped == null
+              onLongPress: widget.onDashboardLongTapped == null
                   ? null
-                  : () => widget.onDashboardLongtTapped!(
+                  : () => widget.onDashboardLongTapped!(
                         gridKey.currentContext!,
                         tapDownPos,
                       ),
@@ -211,11 +211,21 @@ class _FlowChartState extends State<FlowChart> {
                   );
                 }
               },
-              onPanUpdate: (details) {
-                for (int i = 0; i < widget.dashboard.elements.length; i++) {
-                  widget.dashboard.elements[i].position += details.delta;
+              onScaleUpdate: (details) {
+                if (!widget.dashboard.blockDefaultZoomGestures &&
+                    details.scale != 1.0) {
+                  widget.dashboard.setZoomFactor(
+                    details.scale,
+                    epicenter: details.focalPoint,
+                  );
                 }
-                widget.dashboard.gridBackgroundParams.offset = details.delta;
+
+                for (int i = 0; i < widget.dashboard.elements.length; i++) {
+                  widget.dashboard.elements[i].position +=
+                      details.focalPointDelta;
+                }
+                widget.dashboard.gridBackgroundParams.offset =
+                    details.focalPointDelta;
                 setState(() {});
               },
               child: GridBackground(
