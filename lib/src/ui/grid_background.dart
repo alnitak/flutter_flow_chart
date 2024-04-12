@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 
 /// Defines grid parameters
 class GridBackgroundParams {
-  /// default square size
-  final double gridSquare;
-
   /// square
-  final GridSquare currentGridSquare;
+  final GridSquare gridSquare;
 
   /// thickness of lines
   final double gridThickness;
@@ -28,15 +25,15 @@ class GridBackgroundParams {
   Offset _offset = Offset.zero;
 
   GridBackgroundParams({
-    this.gridSquare = 20.0,
-    GridSquare? currentGridSquare,
+    double defaultGridSquareSize = 20.0,
+    GridSquare? gridSquare,
     this.gridThickness = 0.7,
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
     this.gridColor = Colors.black12,
-  }) : currentGridSquare = currentGridSquare ?? GridSquare(value: gridSquare) {
-    this.currentGridSquare.addListener(() {
-      _offset = this.currentGridSquare.getNewOrigin(offset);
+  }) : gridSquare = gridSquare ?? GridSquare(value: defaultGridSquareSize) {
+    this.gridSquare.addListener(() {
+      _offset = this.gridSquare.getNewOrigin(offset);
       _updateController.add(null);
     });
   }
@@ -147,37 +144,33 @@ class _GridBackgroundPainter extends CustomPainter {
     paint.style = PaintingStyle.stroke;
 
     // Calculate the starting points for x and y
-    double startX =
-        dx % (params.currentGridSquare.value * params.secondarySquareStep);
-    double startY =
-        dy % (params.currentGridSquare.value * params.secondarySquareStep);
+    double startX = dx % (params.gridSquare.value * params.secondarySquareStep);
+    double startY = dy % (params.gridSquare.value * params.secondarySquareStep);
 
     // Calculate the number of lines to draw outside the visible area
     int extraLines = 2;
 
     // Draw vertical lines
-    for (double x = startX - extraLines * params.currentGridSquare.value;
-        x < size.width + extraLines * params.currentGridSquare.value;
-        x += params.currentGridSquare.value) {
-      paint.strokeWidth =
-          ((x - startX) / params.currentGridSquare.value).round() %
-                      params.secondarySquareStep ==
-                  0
-              ? params.gridThickness * 2.0
-              : params.gridThickness;
+    for (double x = startX - extraLines * params.gridSquare.value;
+        x < size.width + extraLines * params.gridSquare.value;
+        x += params.gridSquare.value) {
+      paint.strokeWidth = ((x - startX) / params.gridSquare.value).round() %
+                  params.secondarySquareStep ==
+              0
+          ? params.gridThickness * 2.0
+          : params.gridThickness;
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
 
     // Draw horizontal lines
-    for (double y = startY - extraLines * params.currentGridSquare.value;
-        y < size.height + extraLines * params.currentGridSquare.value;
-        y += params.currentGridSquare.value) {
-      paint.strokeWidth =
-          ((y - startY) / params.currentGridSquare.value).round() %
-                      params.secondarySquareStep ==
-                  0
-              ? params.gridThickness * 2.0
-              : params.gridThickness;
+    for (double y = startY - extraLines * params.gridSquare.value;
+        y < size.height + extraLines * params.gridSquare.value;
+        y += params.gridSquare.value) {
+      paint.strokeWidth = ((y - startY) / params.gridSquare.value).round() %
+                  params.secondarySquareStep ==
+              0
+          ? params.gridThickness * 2.0
+          : params.gridThickness;
       canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
     }
   }

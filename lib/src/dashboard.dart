@@ -63,7 +63,7 @@ class Dashboard extends ChangeNotifier {
       element.id = const Uuid().v4();
     }
     // element.scale = _currentZoomFactor;
-    element.setScale(1, gridBackgroundParams.currentGridSquare.scale);
+    element.setScale(1, gridBackgroundParams.gridSquare.scale);
     elements.add(element);
     if (notify) {
       notifyListeners();
@@ -190,7 +190,7 @@ class Dashboard extends ChangeNotifier {
   /// default is the center of the dashboard
   void setZoomFactor(double factor, {Offset? epicenter}) {
     if (factor < minimumZoomFactor ||
-        gridBackgroundParams.currentGridSquare.scale == factor) {
+        gridBackgroundParams.gridSquare.scale == factor) {
       return;
     }
 
@@ -199,22 +199,22 @@ class Dashboard extends ChangeNotifier {
     for (FlowElement element in elements) {
       // reversing current zoom
       element.position = (element.position - epicenter) /
-              gridBackgroundParams.currentGridSquare.scale +
+              gridBackgroundParams.gridSquare.scale +
           epicenter;
       // applying new zoom
       element.position = (element.position - epicenter) * factor + epicenter;
       // element.scale = factor;
-      element.setScale(gridBackgroundParams.currentGridSquare.scale, factor);
+      element.setScale(gridBackgroundParams.gridSquare.scale, factor);
     }
 
-    gridBackgroundParams.currentGridSquare.scale = factor;
-    gridBackgroundParams.currentGridSquare.focalPoint = epicenter;
+    gridBackgroundParams.gridSquare.scale = factor;
+    gridBackgroundParams.gridSquare.focalPoint = epicenter;
 
     notifyListeners();
   }
 
   double get zoomFactor {
-    return gridBackgroundParams.currentGridSquare.scale;
+    return gridBackgroundParams.gridSquare.scale;
   }
 
   /// needed to know the diagram widget position to compute
