@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
@@ -20,7 +21,6 @@ class Dashboard extends ChangeNotifier {
   Offset handlerFeedbackOffset;
 
   GridBackgroundParams gridBackgroundParams;
-  double _currentZoomFactor = 1;
   bool blockDefaultZoomGestures;
 
   /// minimum zoom factor allowed
@@ -63,7 +63,7 @@ class Dashboard extends ChangeNotifier {
       element.id = const Uuid().v4();
     }
     // element.scale = _currentZoomFactor;
-    element.setScale(1, _currentZoomFactor);
+    element.setScale(1, gridBackgroundParams.currentGridSquare.scale);
     elements.add(element);
     if (notify) {
       notifyListeners();
@@ -189,7 +189,8 @@ class Dashboard extends ChangeNotifier {
   /// [epicenter] is the point where the zoom is centered
   /// default is the center of the dashboard
   void setZoomFactor(double factor, {Offset? epicenter}) {
-    if (factor < minimumZoomFactor || _currentZoomFactor == factor) {
+    if (factor < minimumZoomFactor ||
+        gridBackgroundParams.currentGridSquare.scale == factor) {
       return;
     }
 
@@ -197,21 +198,23 @@ class Dashboard extends ChangeNotifier {
 
     for (FlowElement element in elements) {
       // reversing current zoom
-      element.position =
-          (element.position - epicenter) / _currentZoomFactor + epicenter;
+      element.position = (element.position - epicenter) /
+              gridBackgroundParams.currentGridSquare.scale +
+          epicenter;
       // applying new zoom
       element.position = (element.position - epicenter) * factor + epicenter;
       // element.scale = factor;
-      element.setScale(_currentZoomFactor, factor);
+      element.setScale(gridBackgroundParams.currentGridSquare.scale, factor);
     }
 
-    _currentZoomFactor = factor;
+    gridBackgroundParams.currentGridSquare.scale = factor;
+    gridBackgroundParams.currentGridSquare.focalPoint = epicenter;
 
     notifyListeners();
   }
 
   double get zoomFactor {
-    return _currentZoomFactor;
+    return gridBackgroundParams.currentGridSquare.scale;
   }
 
   /// needed to know the diagram widget position to compute
