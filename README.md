@@ -8,19 +8,25 @@ See online example [here](https://www.marcobavagnoli.com/flutter_flow_chart)
 
 ## Features
 
-* *diamond, rectangle, oval, storage, parallelogram* elements
-* elements can be customizable with background, border and text color, border thickness, text size and weight.
-* interactively connect elements
-* save/load dashboard
+- _diamond, rectangle, oval, storage, parallelogram_ elements
+- elements can be customizable with background, border and text color, border thickness, text size and weight.
+- interactively connect elements
+- save/load dashboard
 
 ## Usage
 
-First create a *Dashboard*:
+First create a _Dashboard_:
+
 ```dart
-Dashboard dashboard = Dashboard();
+Dashboard dashboard = Dashboard(
+    blockDefaultZoomGestures: false,    // optional
+    handlerFeedbackOffset: Offset.zero, // optional
+    minimumZoomFactor: 1.25,            // optional
+);
 ```
 
 then crete the [FlowChart] widget where you can react to the user interactions:
+
 ```dart
 FlowChart(
     dashboard: dashboard,
@@ -34,7 +40,7 @@ FlowChart(
 )
 ```
 
-then use the *dashboard* variable to add, remove, resize etc. elements or load/save the dashboard.
+then use the _dashboard_ variable to add, remove, resize etc. elements or load/save the dashboard.
 
 In the [example](https://github.com/alnitak/flutter_flow_chart/blob/master/example/lib/main.dart), the [StarMenu](https://pub.dev/packages/star_menu) package is used to easily interact with user inputs.
 
@@ -42,61 +48,63 @@ In the [example](https://github.com/alnitak/flutter_flow_chart/blob/master/examp
 
 The **Dashboard** object contains all the methods described below used to interact with the flow chart.
 
-|**relevant methods**|**description**|
-|---|---|
-|*setGridBackgroundParams*|set grid background parameters|
-|*setHandlerFeedbackOffset*|set the feedback offset to help on mobile device to see the end of arrow and not hiding behind the finger when moving it|
-|*setElementResizable*|set the element as resizable. A handle will be displayed on the bottom right and will disappear when finish resizing|
-|*addElement*|add a *FlowElement* to the dashboard|
-|*removeAllElements*|remove all elements|
-|*removeElementConnection*|remove the given handler connection of the given element|
-|*removeElementConnections*|remove all the connections from the given element|
-|*removeElementById*|remove all the elements with the given id from the dashboard|
-|*removeElement*|remove the given element|
-|*addNextById*|make a connection from the given sourceElement to the elements with the given id|
-|*recenter*|Recenter the dashboard relative to the first element in the element array|
-|*saveDashboard*|save the dashboard into the given file path|
-|*loadDashboard*|clear the dashboard and load the new one|
+| **relevant methods**       | **description**                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| _setGridBackgroundParams_  | set grid background parameters                                                                                           |
+| _setHandlerFeedbackOffset_ | set the feedback offset to help on mobile device to see the end of arrow and not hiding behind the finger when moving it |
+| _setElementResizable_      | set the element as resizable. A handle will be displayed on the bottom right and will disappear when finish resizing     |
+| _addElement_               | add a _FlowElement_ to the dashboard                                                                                     |
+| _removeAllElements_        | remove all elements                                                                                                      |
+| _removeElementConnection_  | remove the given handler connection of the given element                                                                 |
+| _removeElementConnections_ | remove all the connections from the given element                                                                        |
+| _removeElementById_        | remove all the elements with the given id from the dashboard                                                             |
+| _removeElement_            | remove the given element                                                                                                 |
+| _addNextById_              | make a connection from the given sourceElement to the elements with the given id                                         |
+| _recenter_                 | Recenter the dashboard relative to the first element in the element array                                                |
+| _saveDashboard_            | save the dashboard into the given file path                                                                              |
+| _loadDashboard_            | clear the dashboard and load the new one                                                                                 |
+| _setZoomFactor_            | Zoom the entire dashboard and content by the given factor corresponding to the given epicenter                           |
 
 ## The FlowElement
 
-The *FlowElement* defines the element kind with its position, size, colors and so on.
+The _FlowElement_ defines the element kind with its position, size, colors and so on.
 
-|**properties**|**type**|**description**|
-|---|---|---|
-|*position*|Offset|The position of the *FlowElement*|
-|*size*|Size|The size of the *FlowElement*|
-|*text*|String|Element text|
-|*textColor*|Color|Text color|
-|*fontFamily*|String|Text font family|
-|*textSize*|double|Text size|
-|*textIsBold*|bool|Makes text bold if true|
-|*kind*|ElementKind|Element shape: enum {rectangle, diamond, storage, oval, parallelogram}|
-|*handlers*|List<Handler>|Connection handlers: enum {topCenter, bottomCenter, rightCenter, leftCenter}|
-|*handlerSize*|Size|The size of element handlers|
-|*backgroundColor*|Size|Background color of the element|
-|*borderColor*|Size|Border color of the element|
-|*borderThickness*|Size|Border thickness of the element|
-|*elevation*|Size|Shadow elevation|
-|*next*|List<ConnectionParams>|Shadow elevation|
+| **properties**    | **type**               | **description**                                                              |
+| ----------------- | ---------------------- | ---------------------------------------------------------------------------- |
+| _position_        | Offset                 | The position of the _FlowElement_                                            |
+| _size_            | Size                   | The size of the _FlowElement_                                                |
+| _text_            | String                 | Element text                                                                 |
+| _textColor_       | Color                  | Text color                                                                   |
+| _fontFamily_      | String                 | Text font family                                                             |
+| _textSize_        | double                 | Text size                                                                    |
+| _textIsBold_      | bool                   | Makes text bold if true                                                      |
+| _kind_            | ElementKind            | Element shape: enum {rectangle, diamond, storage, oval, parallelogram}       |
+| _handlers_        | List<Handler>          | Connection handlers: enum {topCenter, bottomCenter, rightCenter, leftCenter} |
+| _handlerSize_     | Size                   | The size of element handlers                                                 |
+| _backgroundColor_ | Size                   | Background color of the element                                              |
+| _borderColor_     | Size                   | Border color of the element                                                  |
+| _borderThickness_ | Size                   | Border thickness of the element                                              |
+| _elevation_       | Size                   | Shadow elevation                                                             |
+| _next_            | List<ConnectionParams> | Shadow elevation                                                             |
 
-|**relevant methods**|**description**|
-|---|---|
-|*setIsResizing*|When setting to true, a handler will disply at the element bottom right to let the user to resize it. When finish it will disappear.|
-|*setText*|Set element text|
-|*setTextColor*|Set text color|
-|*setTextSize*|Set text size|
-|*setTextIsBold*|Set text bold|
-|*setBackgroundColor*|Set background color|
-|*setBorderColor*|Set border color|
-|*setBorderThickness*|Set border thickness|
-|*setElevation*|Set elevation|
-|*changePosition*|Change element position in the dashboard|
-|*changeSize*|Change element size|
+| **relevant methods** | **description**                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| _setIsResizing_      | When setting to true, a handler will disply at the element bottom right to let the user to resize it. When finish it will disappear. |
+| _setText_            | Set element text                                                                                                                     |
+| _setTextColor_       | Set text color                                                                                                                       |
+| _setTextSize_        | Set text size                                                                                                                        |
+| _setTextIsBold_      | Set text bold                                                                                                                        |
+| _setBackgroundColor_ | Set background color                                                                                                                 |
+| _setBorderColor_     | Set border color                                                                                                                     |
+| _setBorderThickness_ | Set border thickness                                                                                                                 |
+| _setElevation_       | Set elevation                                                                                                                        |
+| _changePosition_     | Change element position in the dashboard                                                                                             |
+| _changeSize_         | Change element size                                                                                                                  |
 
 # Examples
 
 ## Add an element to Dashboard
+
 ```dart
 Dashboard dashboard = Dashboard();
 
@@ -134,7 +142,7 @@ FlowElement element2 = FlowElement(
 dashboard.addElement(element);
 
 ///////////////////////////////////
-/// Connect right handler of element1 
+/// Connect right handler of element1
 /// to the left handler of element2
 dashboard.addNextById(
     element1,
