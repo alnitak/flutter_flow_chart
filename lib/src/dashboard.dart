@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
 import 'package:flutter_flow_chart/src/ui/grid_background.dart';
 import 'package:flutter_flow_chart/src/elements/flow_element.dart';
@@ -63,7 +63,7 @@ class Dashboard extends ChangeNotifier {
       element.id = const Uuid().v4();
     }
     // element.scale = _currentZoomFactor;
-    element.setScale(1, gridBackgroundParams.gridSquare.scale);
+    element.setScale(1, gridBackgroundParams.scale);
     elements.add(element);
     if (notify) {
       notifyListeners();
@@ -186,35 +186,34 @@ class Dashboard extends ChangeNotifier {
   /// giving a value above 1 will zoom the dashboard by the given factor and vice versa
   /// Negative values will be ignored
   /// [zoomFactor] will not go below [minimumZoomFactor]
-  /// [epicenter] is the point where the zoom is centered
+  /// [focalPoint] is the point where the zoom is centered
   /// default is the center of the dashboard
-  void setZoomFactor(double factor, {Offset? epicenter}) {
-    if (factor < minimumZoomFactor ||
-        gridBackgroundParams.gridSquare.scale == factor) {
+  void setZoomFactor(double factor, {Offset? focalPoint}) {
+    if (factor < minimumZoomFactor || gridBackgroundParams.scale == factor) {
       return;
     }
 
-    epicenter ??= Offset(dashboardSize.width / 2, dashboardSize.height / 2);
+    focalPoint ??= Offset(dashboardSize.width / 2, dashboardSize.height / 2);
 
     for (FlowElement element in elements) {
       // reversing current zoom
-      element.position = (element.position - epicenter) /
-              gridBackgroundParams.gridSquare.scale +
-          epicenter;
+      element.position =
+          (element.position - focalPoint) / gridBackgroundParams.scale +
+              focalPoint;
       // applying new zoom
-      element.position = (element.position - epicenter) * factor + epicenter;
+      element.position = (element.position - focalPoint) * factor + focalPoint;
       // element.scale = factor;
-      element.setScale(gridBackgroundParams.gridSquare.scale, factor);
+      element.setScale(gridBackgroundParams.scale, factor);
     }
 
-    gridBackgroundParams.gridSquare.scale = factor;
-    gridBackgroundParams.gridSquare.focalPoint = epicenter;
+    gridBackgroundParams.setScale(factor, focalPoint);
 
     notifyListeners();
   }
 
+  /// shorthand to get the current zoom factor
   double get zoomFactor {
-    return gridBackgroundParams.gridSquare.scale;
+    return gridBackgroundParams.scale;
   }
 
   /// needed to know the diagram widget position to compute

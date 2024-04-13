@@ -1,10 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Defines grid parameters
-class GridBackgroundParams {
-  /// square
-  final GridSquare gridSquare;
+class GridBackgroundParams extends ChangeNotifier {
+  /// Unscaled size of the grid square
+  /// i.e. the size of the square when scale is 1
+  final double rawGridSquareSize;
 
   /// thickness of lines
   final double gridThickness;
@@ -18,76 +18,40 @@ class GridBackgroundParams {
   /// grid lines color
   final Color gridColor;
 
-  /// stream controller to notify changes when moving the grid
-  final StreamController _updateController = StreamController.broadcast();
-
   /// offset to move the grid
   Offset _offset = Offset.zero;
 
+  // scale of the grid
+  double scale = 1;
+
+  /// [gridSquare] is the raw size of the grid square when scale is 1
   GridBackgroundParams({
-    double defaultGridSquareSize = 20.0,
-    GridSquare? gridSquare,
+    double gridSquare = 20.0,
     this.gridThickness = 0.7,
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
     this.gridColor = Colors.black12,
-  }) : gridSquare = gridSquare ?? GridSquare(value: defaultGridSquareSize) {
-    this.gridSquare.addListener(() {
-      _offset = this.gridSquare.getNewOrigin(offset);
-      _updateController.add(null);
-    });
-  }
+  }) : rawGridSquareSize = gridSquare;
 
   set offset(Offset delta) {
     _offset += delta;
-    _updateController.add(null);
-  }
-
-  Stream get stream => _updateController.stream;
-
-  Offset get offset => _offset;
-}
-
-/// Defines a grid square
-/// This class is used to update the grid scale
-class GridSquare extends ChangeNotifier {
-  double _scale;
-
-  /// [_focalPoint] is the point where the user is touching the screen
-  /// i.e. This is where the scaling origins from
-  Offset _focalPoint;
-
-  /// [value] is the actual width and the height of the square
-  final double _value;
-
-  GridSquare({
-    double scale = 1,
-    double value = 20.0,
-    Offset? focalPoint,
-  })  : _scale = scale,
-        _value = value,
-        _focalPoint = focalPoint ?? Offset.zero;
-
-  double get scale => _scale;
-  Offset getNewOrigin(Offset oldOrigin) {
-    Offset offset = Offset(
-      _focalPoint.dx * (1 - _scale),
-      _focalPoint.dy * (1 - _scale),
-    );
-
-    return offset;
-  }
-
-  set scale(double scale) {
-    _scale = scale;
     notifyListeners();
   }
 
-  set focalPoint(Offset focalPoint) {
-    _focalPoint = focalPoint;
+  void setScale(double factor, Offset focalPoint) {
+    _offset = Offset(
+      focalPoint.dx * (1 - factor),
+      focalPoint.dy * (1 - factor),
+    );
+    scale = factor;
+
+    notifyListeners();
   }
 
-  double get value => _value * _scale;
+  /// size of the grid square with scale applied
+  double get gridSquare => rawGridSquareSize * scale;
+
+  Offset get offset => _offset;
 }
 
 /// Uses a CustomPainter to draw a grid with the given parameters
@@ -101,19 +65,20 @@ class GridBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: params.stream,
-        builder: (context, snapshot) {
-          return RepaintBoundary(
-            child: CustomPaint(
-              painter: _GridBackgroundPainter(
-                params: params,
-                dx: params.offset.dx,
-                dy: params.offset.dy,
-              ),
+    return ListenableBuilder(
+      listenable: params,
+      builder: (context, _) {
+        return RepaintBoundary(
+          child: CustomPaint(
+            painter: _GridBackgroundPainter(
+              params: params,
+              dx: params.offset.dx,
+              dy: params.offset.dy,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -144,17 +109,17 @@ class _GridBackgroundPainter extends CustomPainter {
     paint.style = PaintingStyle.stroke;
 
     // Calculate the starting points for x and y
-    double startX = dx % (params.gridSquare.value * params.secondarySquareStep);
-    double startY = dy % (params.gridSquare.value * params.secondarySquareStep);
+    double startX = dx % (params.gridSquare * params.secondarySquareStep);
+    double startY = dy % (params.gridSquare * params.secondarySquareStep);
 
     // Calculate the number of lines to draw outside the visible area
     int extraLines = 2;
 
     // Draw vertical lines
-    for (double x = startX - extraLines * params.gridSquare.value;
-        x < size.width + extraLines * params.gridSquare.value;
-        x += params.gridSquare.value) {
-      paint.strokeWidth = ((x - startX) / params.gridSquare.value).round() %
+    for (double x = startX - extraLines * params.gridSquare;
+        x < size.width + extraLines * params.gridSquare;
+        x += params.gridSquare) {
+      paint.strokeWidth = ((x - startX) / params.gridSquare).round() %
                   params.secondarySquareStep ==
               0
           ? params.gridThickness * 2.0
@@ -163,10 +128,10 @@ class _GridBackgroundPainter extends CustomPainter {
     }
 
     // Draw horizontal lines
-    for (double y = startY - extraLines * params.gridSquare.value;
-        y < size.height + extraLines * params.gridSquare.value;
-        y += params.gridSquare.value) {
-      paint.strokeWidth = ((y - startY) / params.gridSquare.value).round() %
+    for (double y = startY - extraLines * params.gridSquare;
+        y < size.height + extraLines * params.gridSquare;
+        y += params.gridSquare) {
+      paint.strokeWidth = ((y - startY) / params.gridSquare).round() %
                   params.secondarySquareStep ==
               0
           ? params.gridThickness * 2.0

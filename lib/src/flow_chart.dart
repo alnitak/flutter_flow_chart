@@ -216,7 +216,7 @@ class _FlowChartState extends State<FlowChart> {
                     details.scale != 1.0) {
                   widget.dashboard.setZoomFactor(
                     details.scale,
-                    epicenter: details.focalPoint,
+                    focalPoint: details.focalPoint,
                   );
                 }
 
