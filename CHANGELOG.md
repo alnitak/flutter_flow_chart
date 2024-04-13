@@ -1,3 +1,6 @@
+## 2.2.0
+* added support for scaling/zooming (thanks to Isira Herath)
+
 ## 2.1.4
 * fix 'type 'int' is not a subtype of type double' error (by ofbozkurt)
 * assigned UUID upon adding creating a new instance of FlowElement (by Isira Herath)
