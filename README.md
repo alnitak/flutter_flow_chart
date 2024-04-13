@@ -36,7 +36,6 @@ FlowChart(
     onElementPressed: (context, element) {},
     onHandlerPressed: (context, position, handler, element) {},
     onHandlerLongPressed: (context, position, handler, element) {},
-    on
 )
 ```
 

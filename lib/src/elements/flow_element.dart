@@ -73,7 +73,7 @@ class FlowElement extends ChangeNotifier {
   bool isResizing;
 
   FlowElement({
-    this.position = Offset.zero,
+    position = Offset.zero,
     this.size = Size.zero,
     this.text = '',
     this.textColor = Colors.black,
@@ -95,7 +95,12 @@ class FlowElement extends ChangeNotifier {
     next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
-        isResizing = false;
+        isResizing = false,
+        position = position -
+            Offset(
+              size.width / 2 + handlerSize / 2,
+              size.height / 2 + handlerSize / 2,
+            );
 
   @override
   String toString() {

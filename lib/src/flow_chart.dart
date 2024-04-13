@@ -178,10 +178,10 @@ class _FlowChartState extends State<FlowChart> {
           Positioned.fill(
             child: GestureDetector(
               onTapDown: (details) {
-                tapDownPos = details.globalPosition;
+                tapDownPos = details.localPosition;
               },
               onSecondaryTapDown: (details) {
-                secondaryTapDownPos = details.globalPosition;
+                secondaryTapDownPos = details.localPosition;
               },
               onTap: widget.onDashboardTapped == null
                   ? null

@@ -249,7 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               dashboard.addElement(
                 FlowElement(
-                  position: position - const Offset(40, 40),
+                  position: position,
                   size: const Size(80, 80),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
@@ -268,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Add rect'),
             onPressed: () {
               dashboard.addElement(FlowElement(
-                  position: position - const Offset(50, 25),
+                  position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
@@ -285,7 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Add oval'),
             onPressed: () {
               dashboard.addElement(FlowElement(
-                  position: position - const Offset(50, 25),
+                  position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
@@ -302,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Add parallelogram'),
             onPressed: () {
               dashboard.addElement(FlowElement(
-                  position: position - const Offset(50, 25),
+                  position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Add hexagon'),
             onPressed: () {
               dashboard.addElement(FlowElement(
-                  position: position - const Offset(50, 25),
+                  position: position,
                   size: const Size(150, 100),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
@@ -334,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Add storage'),
             onPressed: () {
               dashboard.addElement(FlowElement(
-                  position: position - const Offset(50, 25),
+                  position: position,
                   size: const Size(100, 150),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
