@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-
-import 'connection_params.dart';
+import 'package:flutter_flow_chart/src/elements/connection_params.dart';
 
 enum ElementKind {
   rectangle,
@@ -107,6 +106,14 @@ class FlowElement extends ChangeNotifier {
   /// to let the user to resize it. When finish it will disappear.
   setIsResizing(bool resizing) {
     isResizing = resizing;
+    notifyListeners();
+  }
+
+  setScale(double currentZoom, double factor) {
+    size = size / currentZoom * factor;
+    handlerSize = handlerSize / currentZoom * factor;
+    textSize = textSize / currentZoom * factor;
+
     notifyListeners();
   }
 

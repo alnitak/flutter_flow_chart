@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_flow_chart/flutter_flow_chart.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:star_menu/star_menu.dart';
-import 'element_settings_menu.dart';
 import 'text_menu.dart';
+import 'element_settings_menu.dart';
+import 'package:flutter/material.dart';
+import 'package:star_menu/star_menu.dart';
+import 'package:path_provider/path_provider.dart' as path;
+import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,57 +41,68 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-
-        // child: Container(color: Colors.amber),
-
-        child: Container(
-          constraints: const BoxConstraints.expand(),
-          child: FlowChart(
-            dashboard: dashboard,
-            onDashboardTapped: ((context, position) {
-              debugPrint('Dashboard tapped $position');
-              _displayDashboardMenu(context, position);
-            }),
-            onDashboardSecondaryTapped: (context, position) {
-              debugPrint('Dashboard right clicked $position');
-              _displayDashboardMenu(context, position);
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              dashboard.setZoomFactor(1.5 * dashboard.zoomFactor);
             },
-            onDashboardLongtTapped: ((context, position) {
-              debugPrint('Dashboard long tapped $position');
-            }),
-            onDashboardSecondaryLongTapped: ((context, position) {
-              debugPrint(
-                  'Dashboard long tapped with mouse right click $position');
-            }),
-            onElementLongPressed: (context, position, element) {
-              debugPrint('Element with "${element.text}" text '
-                  'long pressed');
-            },
-            onElementSecondaryLongTapped: (context, position, element) {
-              debugPrint('Element with "${element.text}" text '
-                  'long tapped with mouse right click');
-            },
-            onElementPressed: (context, position, element) {
-              debugPrint('Element with "${element.text}" text pressed');
-              _displayElementMenu(context, position, element);
-            },
-            onElementSecondaryTapped: (context, position, element) {
-              debugPrint('Element with "${element.text}" text pressed');
-              _displayElementMenu(context, position, element);
-            },
-            onHandlerPressed: (context, position, handler, element) {
-              debugPrint('handler pressed: position $position '
-                  'handler $handler" of element $element');
-              _displayHandlerMenu(position, handler, element);
-            },
-            onHandlerLongPressed: (context, position, handler, element) {
-              debugPrint('handler long pressed: position $position '
-                  'handler $handler" of element $element');
-            },
+            icon: const Icon(Icons.zoom_in),
           ),
+          IconButton(
+            onPressed: () {
+              dashboard.setZoomFactor(dashboard.zoomFactor / 1.5);
+            },
+            icon: const Icon(Icons.zoom_out),
+          ),
+        ],
+      ),
+      backgroundColor: Colors.black12,
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        child: FlowChart(
+          dashboard: dashboard,
+          onDashboardTapped: ((context, position) {
+            debugPrint('Dashboard tapped $position');
+            _displayDashboardMenu(context, position);
+          }),
+          onDashboardSecondaryTapped: (context, position) {
+            debugPrint('Dashboard right clicked $position');
+            _displayDashboardMenu(context, position);
+          },
+          onDashboardLongTapped: ((context, position) {
+            debugPrint('Dashboard long tapped $position');
+          }),
+          onDashboardSecondaryLongTapped: ((context, position) {
+            debugPrint(
+                'Dashboard long tapped with mouse right click $position');
+          }),
+          onElementLongPressed: (context, position, element) {
+            debugPrint('Element with "${element.text}" text '
+                'long pressed');
+          },
+          onElementSecondaryLongTapped: (context, position, element) {
+            debugPrint('Element with "${element.text}" text '
+                'long tapped with mouse right click');
+          },
+          onElementPressed: (context, position, element) {
+            debugPrint('Element with "${element.text}" text pressed');
+            _displayElementMenu(context, position, element);
+          },
+          onElementSecondaryTapped: (context, position, element) {
+            debugPrint('Element with "${element.text}" text pressed');
+            _displayElementMenu(context, position, element);
+          },
+          onHandlerPressed: (context, position, handler, element) {
+            debugPrint('handler pressed: position $position '
+                'handler $handler" of element $element');
+            _displayHandlerMenu(position, handler, element);
+          },
+          onHandlerLongPressed: (context, position, handler, element) {
+            debugPrint('handler long pressed: position $position '
+                'handler $handler" of element $element');
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -235,7 +246,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ActionChip(
             label: const Text('Add diamond'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position - const Offset(40, 40),
                   size: const Size(80, 80),
                   text: '${dashboard.elements.length}',
@@ -246,7 +258,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.topCenter,
                     Handler.leftCenter,
                     Handler.rightCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(

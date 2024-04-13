@@ -16,7 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # https://pub.dev/packages/star_menu
-  star_menu: ^3.0.1
+  star_menu: ^4.0.0
 
   # https://pub.dev/packages/path_provider
   path_provider: ^2.0.11

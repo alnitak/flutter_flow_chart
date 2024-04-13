@@ -1,10 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Defines grid parameters
-class GridBackgroundParams {
-  /// square size
-  final double gridSquare;
+class GridBackgroundParams extends ChangeNotifier {
+  /// Unscaled size of the grid square
+  /// i.e. the size of the square when scale is 1
+  final double rawGridSquareSize;
 
   /// thickness of lines
   final double gridThickness;
@@ -18,26 +18,38 @@ class GridBackgroundParams {
   /// grid lines color
   final Color gridColor;
 
-  /// stream controller to notify changes when moving the grid
-  final StreamController _updateController = StreamController.broadcast();
-
   /// offset to move the grid
   Offset _offset = Offset.zero;
 
+  // scale of the grid
+  double scale = 1;
+
+  /// [gridSquare] is the raw size of the grid square when scale is 1
   GridBackgroundParams({
-    this.gridSquare = 20.0,
+    double gridSquare = 20.0,
     this.gridThickness = 0.7,
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
     this.gridColor = Colors.black12,
-  });
+  }) : rawGridSquareSize = gridSquare;
 
   set offset(Offset delta) {
     _offset += delta;
-    _updateController.add(null);
+    notifyListeners();
   }
 
-  Stream get stream => _updateController.stream;
+  void setScale(double factor, Offset focalPoint) {
+    _offset = Offset(
+      focalPoint.dx * (1 - factor),
+      focalPoint.dy * (1 - factor),
+    );
+    scale = factor;
+
+    notifyListeners();
+  }
+
+  /// size of the grid square with scale applied
+  double get gridSquare => rawGridSquareSize * scale;
 
   Offset get offset => _offset;
 }
@@ -53,19 +65,20 @@ class GridBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: params.stream,
-        builder: (context, snapshot) {
-          return RepaintBoundary(
-            child: CustomPaint(
-              painter: _GridBackgroundPainter(
-                params: params,
-                dx: params.offset.dx,
-                dy: params.offset.dy,
-              ),
+    return ListenableBuilder(
+      listenable: params,
+      builder: (context, _) {
+        return RepaintBoundary(
+          child: CustomPaint(
+            painter: _GridBackgroundPainter(
+              params: params,
+              dx: params.offset.dx,
+              dy: params.offset.dy,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -87,8 +100,9 @@ class _GridBackgroundPainter extends CustomPainter {
     // Background
     paint.color = params.backgroundColor;
     canvas.drawRect(
-        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)),
-        paint);
+      Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)),
+      paint,
+    );
 
     // grid
     paint.color = params.gridColor;

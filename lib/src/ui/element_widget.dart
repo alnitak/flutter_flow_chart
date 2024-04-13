@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flow_chart/flutter_flow_chart.dart';
+import 'package:flutter_flow_chart/src/ui/resize_widget.dart';
 import 'package:flutter_flow_chart/src/objects/oval_widget.dart';
-import '../../flutter_flow_chart.dart';
-import '../objects/parallelogram_widget.dart';
-import 'element_handlers.dart';
-import '../objects/diamond_widget.dart';
-import '../objects/rectangle_widget.dart';
-import '../objects/storage_widget.dart';
-import '../objects/hexagon_widget.dart';
-import 'resize_widget.dart';
+import 'package:flutter_flow_chart/src/ui/element_handlers.dart';
+import 'package:flutter_flow_chart/src/objects/diamond_widget.dart';
+import 'package:flutter_flow_chart/src/objects/storage_widget.dart';
+import 'package:flutter_flow_chart/src/objects/hexagon_widget.dart';
+import 'package:flutter_flow_chart/src/objects/rectangle_widget.dart';
+import 'package:flutter_flow_chart/src/objects/parallelogram_widget.dart';
 
 /// Widget that use [element] properties to display it on the dashboard scene
 class ElementWidget extends StatefulWidget {
