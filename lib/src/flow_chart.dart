@@ -149,6 +149,8 @@ class _FlowChartState extends State<FlowChart> {
     if (mounted) setState(() {});
   }
 
+  double _oldScaleUpdateDelta = 0;
+
   @override
   Widget build(BuildContext context) {
     /// get dashboard position after first frame is drawn
@@ -212,10 +214,12 @@ class _FlowChartState extends State<FlowChart> {
                 }
               },
               onScaleUpdate: (details) {
-                widget.dashboard.setZoomFactor(
-                  (details.scale - 1) * 0.05 + widget.dashboard.zoomFactor,
-                  focalPoint: details.focalPoint,
-                );
+                if (details.scale != 1) {
+                  widget.dashboard.setZoomFactor(
+                    details.scale + _oldScaleUpdateDelta,
+                    focalPoint: details.focalPoint,
+                  );
+                }
 
                 for (int i = 0; i < widget.dashboard.elements.length; i++) {
                   widget.dashboard.elements[i].position +=
@@ -224,6 +228,9 @@ class _FlowChartState extends State<FlowChart> {
                 widget.dashboard.gridBackgroundParams.offset =
                     details.focalPointDelta;
                 setState(() {});
+              },
+              onScaleEnd: (details) {
+                _oldScaleUpdateDelta = widget.dashboard.zoomFactor - 1;
               },
               child: GridBackground(
                 key: gridKey,

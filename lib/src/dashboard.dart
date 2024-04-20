@@ -44,6 +44,9 @@ class Dashboard extends ChangeNotifier {
         gridBackgroundParams = GridBackgroundParams(
           onScaleUpdate: onScaleUpdate,
         ) {
+    // This is a workaround to set the handlerFeedbackOffset
+    // to improve the user experience on devices with touch screens
+    // This will prevent the handler being covered by user's finger
     if (handlerFeedbackOffset != null) {
       this.handlerFeedbackOffset = handlerFeedbackOffset;
     } else {
