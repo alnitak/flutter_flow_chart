@@ -211,7 +211,6 @@ class Dashboard extends ChangeNotifier {
               focalPoint;
       // applying new zoom
       element.position = (element.position - focalPoint) * factor + focalPoint;
-      // element.scale = factor;
       element.setScale(gridBackgroundParams.scale, factor);
     }
 

@@ -294,9 +294,10 @@ class _FlowChartState extends State<FlowChart> {
               DrawArrow(
                 key: UniqueKey(),
                 srcElement: widget.dashboard.elements[i],
-                destElement: widget.dashboard.elements[widget.dashboard
-                    .findElementIndexById(
-                        widget.dashboard.elements[i].next[n].destElementId)],
+                destElement: widget
+                    .dashboard.elements[widget.dashboard.findElementIndexById(
+                  widget.dashboard.elements[i].next[n].destElementId,
+                )],
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 onTap: widget.onLineTapped,
                 onLongPress: widget.onLineLongPressed,
