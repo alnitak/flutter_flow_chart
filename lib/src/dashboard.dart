@@ -29,18 +29,27 @@ class Dashboard extends ChangeNotifier {
   /// setting it to 0 will remove the limit
   double minimumZoomFactor;
 
+  /// callback when the scale is updated
+  final void Function(double scale)? onScaleUpdate;
+
   Dashboard({
     this.handlerFeedbackOffset = const Offset(0, 0),
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
+    this.onScaleUpdate,
   })  : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
-        gridBackgroundParams = GridBackgroundParams();
+        gridBackgroundParams = GridBackgroundParams(
+          onScaleUpdate: onScaleUpdate,
+        );
 
   /// set grid background parameters
   setGridBackgroundParams(GridBackgroundParams params) {
     gridBackgroundParams = params;
+    if (onScaleUpdate != null) {
+      params.addOnScaleUpdateListener(onScaleUpdate!);
+    }
     notifyListeners();
   }
 

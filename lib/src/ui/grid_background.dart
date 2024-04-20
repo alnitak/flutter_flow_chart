@@ -24,6 +24,12 @@ class GridBackgroundParams extends ChangeNotifier {
   // scale of the grid
   double scale = 1;
 
+  void addOnScaleUpdateListener(void Function(double scale) listener) {
+    _onScaleUpdateListeners.add(listener);
+  }
+
+  final List<void Function(double scale)> _onScaleUpdateListeners = [];
+
   /// [gridSquare] is the raw size of the grid square when scale is 1
   GridBackgroundParams({
     double gridSquare = 20.0,
@@ -31,7 +37,12 @@ class GridBackgroundParams extends ChangeNotifier {
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
     this.gridColor = Colors.black12,
-  }) : rawGridSquareSize = gridSquare;
+    void Function(double scale)? onScaleUpdate,
+  }) : rawGridSquareSize = gridSquare {
+    if (onScaleUpdate != null) {
+      _onScaleUpdateListeners.add(onScaleUpdate);
+    }
+  }
 
   set offset(Offset delta) {
     _offset += delta;
@@ -45,6 +56,9 @@ class GridBackgroundParams extends ChangeNotifier {
     );
     scale = factor;
 
+    for (final listener in _onScaleUpdateListeners) {
+      listener(scale);
+    }
     notifyListeners();
   }
 
