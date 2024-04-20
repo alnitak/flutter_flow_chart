@@ -28,6 +28,10 @@ class GridBackgroundParams extends ChangeNotifier {
     _onScaleUpdateListeners.add(listener);
   }
 
+  void removeOnScaleUpdateListener(void Function(double scale) listener) {
+    _onScaleUpdateListeners.remove(listener);
+  }
+
   final List<void Function(double scale)> _onScaleUpdateListeners = [];
 
   /// [gridSquare] is the raw size of the grid square when scale is 1
