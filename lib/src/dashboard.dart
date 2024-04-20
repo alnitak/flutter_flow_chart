@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +19,7 @@ class Dashboard extends ChangeNotifier {
 
   /// [handlerFeedbackOffset] sets an offset for the handler when user is dragging it
   /// This can be used to prevent the handler being covered by user's finger on touch screens
-  Offset handlerFeedbackOffset;
+  late Offset handlerFeedbackOffset;
 
   GridBackgroundParams gridBackgroundParams;
   bool blockDefaultZoomGestures;
@@ -33,7 +34,7 @@ class Dashboard extends ChangeNotifier {
   final void Function(double scale)? onScaleUpdate;
 
   Dashboard({
-    this.handlerFeedbackOffset = const Offset(0, 0),
+    Offset? handlerFeedbackOffset,
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
     this.onScaleUpdate,
@@ -42,7 +43,21 @@ class Dashboard extends ChangeNotifier {
         dashboardSize = const Size(0, 0),
         gridBackgroundParams = GridBackgroundParams(
           onScaleUpdate: onScaleUpdate,
-        );
+        ) {
+    if (handlerFeedbackOffset != null) {
+      this.handlerFeedbackOffset = handlerFeedbackOffset;
+    } else {
+      if (kIsWeb) {
+        this.handlerFeedbackOffset = const Offset(0, 0);
+      } else {
+        if (Platform.isIOS || Platform.isAndroid) {
+          this.handlerFeedbackOffset = const Offset(0, -50);
+        } else {
+          this.handlerFeedbackOffset = const Offset(0, 0);
+        }
+      }
+    }
+  }
 
   /// set grid background parameters
   setGridBackgroundParams(GridBackgroundParams params) {
