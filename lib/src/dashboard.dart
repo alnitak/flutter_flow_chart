@@ -132,8 +132,11 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// remove the [handler] connection of [element]
-  removeElementConnection(FlowElement element, Handler handler,
-      {bool notify = true}) {
+  removeElementConnection(
+    FlowElement element,
+    Handler handler, {
+    bool notify = true,
+  }) {
     Alignment alignment;
     switch (handler) {
       case Handler.topCenter:
@@ -256,9 +259,14 @@ class Dashboard extends ChangeNotifier {
   /// make an arrow connection from [sourceElement] to
   /// the elements with id [destId]
   /// [arrowParams] definition of arrow parameters
-  addNextById(FlowElement sourceElement, String destId, ArrowParams arrowParams,
-      {bool notify = true}) {
+  addNextById(
+    FlowElement sourceElement,
+    String destId,
+    ArrowParams arrowParams, {
+    bool notify = true,
+  }) {
     int found = 0;
+    arrowParams.setScale(1, gridBackgroundParams.scale);
     for (int i = 0; i < elements.length; i++) {
       if (elements[i].id == destId) {
         // if the [id] already exist, remove it and add this new connection
