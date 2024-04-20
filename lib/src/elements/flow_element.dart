@@ -118,6 +118,9 @@ class FlowElement extends ChangeNotifier {
     size = size / currentZoom * factor;
     handlerSize = handlerSize / currentZoom * factor;
     textSize = textSize / currentZoom * factor;
+    for (ConnectionParams element in next) {
+      element.arrowParams.setScale(currentZoom, factor);
+    }
 
     notifyListeners();
   }

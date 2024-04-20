@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../flutter_flow_chart.dart';
+import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 
 /// Arrow parameters used by [DrawArrow] widget
-class ArrowParams {
+class ArrowParams extends ChangeNotifier {
   /// Arrow thickness
-  final double thickness;
+  double thickness;
+
+  double headRadius;
 
   /// Arrow color
   final Color color;
@@ -16,8 +18,9 @@ class ArrowParams {
   /// The end position alignment
   final Alignment endArrowPosition;
 
-  const ArrowParams({
+  ArrowParams({
     this.thickness = 1.7,
+    this.headRadius = 6,
     this.color = Colors.black,
     this.startArrowPosition = Alignment.centerRight,
     this.endArrowPosition = Alignment.centerLeft,
@@ -67,6 +70,12 @@ class ArrowParams {
 
   factory ArrowParams.fromJson(String source) =>
       ArrowParams.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  void setScale(double curretnZoom, double factor) {
+    thickness = thickness / curretnZoom * factor;
+    headRadius = headRadius / curretnZoom * factor;
+    notifyListeners();
+  }
 }
 
 /// Notifier to update arrows position, starting/ending points and params
@@ -74,7 +83,7 @@ class DrawingArrow extends ChangeNotifier {
   DrawingArrow._();
   static final instance = DrawingArrow._();
 
-  ArrowParams params = const ArrowParams();
+  ArrowParams params = ArrowParams();
   setParams(ArrowParams params) {
     this.params = params;
     notifyListeners();
@@ -97,7 +106,7 @@ class DrawingArrow extends ChangeNotifier {
   }
 
   reset() {
-    params = const ArrowParams();
+    params = ArrowParams();
     from = Offset.zero;
     to = Offset.zero;
     notifyListeners();
@@ -135,16 +144,16 @@ class DrawArrow extends StatefulWidget {
     FlowElement destElement,
   )? onSecondaryLongPress;
 
-  const DrawArrow({
+  DrawArrow({
     super.key,
-    this.arrowParams = const ArrowParams(),
+    ArrowParams? arrowParams,
     required this.srcElement,
     required this.destElement,
     this.onTap,
     this.onLongPress,
     this.onSecondaryTap,
     this.onSecondaryLongPress,
-  });
+  }) : arrowParams = arrowParams ?? ArrowParams();
 
   @override
   State<DrawArrow> createState() => _DrawArrowState();
@@ -321,7 +330,7 @@ class ArrowPainter extends CustomPainter {
     // canvas.drawCircle(p1, 9, paint);
     // canvas.drawCircle(p2, 8, paint);
     // canvas.drawCircle(p3, 7, paint);
-    canvas.drawCircle(p4, 6, paint);
+    canvas.drawCircle(p4, params.headRadius, paint);
 
     paint.color = params.color;
     paint.strokeWidth = params.thickness;

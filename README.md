@@ -22,6 +22,7 @@ Dashboard dashboard = Dashboard(
     blockDefaultZoomGestures: false,    // optional
     handlerFeedbackOffset: Offset.zero, // optional
     minimumZoomFactor: 1.25,            // optional
+    onScaleUpdate: (newScale) {},        // optional
 );
 ```
 

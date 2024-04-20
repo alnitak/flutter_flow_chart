@@ -149,6 +149,8 @@ class _FlowChartState extends State<FlowChart> {
     if (mounted) setState(() {});
   }
 
+  double _oldScaleUpdateDelta = 0;
+
   @override
   Widget build(BuildContext context) {
     /// get dashboard position after first frame is drawn
@@ -212,10 +214,9 @@ class _FlowChartState extends State<FlowChart> {
                 }
               },
               onScaleUpdate: (details) {
-                if (!widget.dashboard.blockDefaultZoomGestures &&
-                    details.scale != 1.0) {
+                if (details.scale != 1) {
                   widget.dashboard.setZoomFactor(
-                    details.scale,
+                    details.scale + _oldScaleUpdateDelta,
                     focalPoint: details.focalPoint,
                   );
                 }
@@ -227,6 +228,9 @@ class _FlowChartState extends State<FlowChart> {
                 widget.dashboard.gridBackgroundParams.offset =
                     details.focalPointDelta;
                 setState(() {});
+              },
+              onScaleEnd: (details) {
+                _oldScaleUpdateDelta = widget.dashboard.zoomFactor - 1;
               },
               child: GridBackground(
                 key: gridKey,
@@ -297,9 +301,10 @@ class _FlowChartState extends State<FlowChart> {
               DrawArrow(
                 key: UniqueKey(),
                 srcElement: widget.dashboard.elements[i],
-                destElement: widget.dashboard.elements[widget.dashboard
-                    .findElementIndexById(
-                        widget.dashboard.elements[i].next[n].destElementId)],
+                destElement: widget
+                    .dashboard.elements[widget.dashboard.findElementIndexById(
+                  widget.dashboard.elements[i].next[n].destElementId,
+                )],
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 onTap: widget.onLineTapped,
                 onLongPress: widget.onLineLongPressed,
