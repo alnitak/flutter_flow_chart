@@ -212,13 +212,10 @@ class _FlowChartState extends State<FlowChart> {
                 }
               },
               onScaleUpdate: (details) {
-                if (!widget.dashboard.blockDefaultZoomGestures &&
-                    details.scale != 1.0) {
-                  widget.dashboard.setZoomFactor(
-                    details.scale,
-                    focalPoint: details.focalPoint,
-                  );
-                }
+                widget.dashboard.setZoomFactor(
+                  (details.scale - 1) * 0.05 + widget.dashboard.zoomFactor,
+                  focalPoint: details.focalPoint,
+                );
 
                 for (int i = 0; i < widget.dashboard.elements.length; i++) {
                   widget.dashboard.elements[i].position +=
