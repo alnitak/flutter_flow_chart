@@ -1,3 +1,8 @@
+## 2.2.1
+* Improved scaling gesture responsiveness (thanks to Isira Herath)
+* Fixed scaling of arrows when sooming (thanks to Isira Herath)
+* Implemented onScaleUpdate method on dashboard (thanks to Isira Herath)
+
 ## 2.2.0
 * added support for scaling/zooming (thanks to Isira Herath)
 
