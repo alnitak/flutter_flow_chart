@@ -37,12 +37,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Dashboard dashboard = Dashboard(
-    onScaleUpdate: (double scale) {
-      // This will spam the console with scale updates
-      debugPrint('Scale updated to $scale');
-    },
-  );
+  Dashboard dashboard = Dashboard();
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
             debugPrint('Dashboard tapped $position');
             _displayDashboardMenu(context, position);
           }),
+          onScaleUpdate: (newScale) {
+            debugPrint('Scale updated. new scale: $newScale');
+          },
           onDashboardSecondaryTapped: (context, position) {
             debugPrint('Dashboard right clicked $position');
             _displayDashboardMenu(context, position);

@@ -107,6 +107,8 @@ class FlowChart extends StatefulWidget {
   /// main dashboard to use
   final Dashboard dashboard;
 
+  final void Function(double scale)? onScaleUpdate;
+
   const FlowChart({
     super.key,
     this.onElementPressed,
@@ -125,6 +127,7 @@ class FlowChart extends StatefulWidget {
     this.onLineLongPressed,
     this.onLineSecondaryTapped,
     this.onLineSecondaryLongTapped,
+    this.onScaleUpdate,
     required this.dashboard,
   });
 
@@ -137,11 +140,21 @@ class _FlowChartState extends State<FlowChart> {
   void initState() {
     super.initState();
     widget.dashboard.addListener(_elementChanged);
+    if (widget.onScaleUpdate != null) {
+      widget.dashboard.gridBackgroundParams.addOnScaleUpdateListener(
+        widget.onScaleUpdate!,
+      );
+    }
   }
 
   @override
   void dispose() {
     widget.dashboard.removeListener(_elementChanged);
+    if (widget.onScaleUpdate != null) {
+      widget.dashboard.gridBackgroundParams.removeOnScaleUpdateListener(
+        widget.onScaleUpdate!,
+      );
+    }
     super.dispose();
   }
 
