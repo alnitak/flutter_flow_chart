@@ -1,3 +1,6 @@
+## 3.0.0
+# breaking change: moved onScaleUpdate callback to the FlowChart widget
+
 ## 2.2.1
 * Improved scaling gesture responsiveness (thanks to Isira Herath)
 * Fixed scaling of arrows when sooming (thanks to Isira Herath)
