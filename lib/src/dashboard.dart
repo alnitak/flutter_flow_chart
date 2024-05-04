@@ -31,19 +31,16 @@ class Dashboard extends ChangeNotifier {
   double minimumZoomFactor;
 
   /// callback when the scale is updated
-  final void Function(double scale)? onScaleUpdate;
+  void Function(double scale)? onScaleUpdate;
 
   Dashboard({
     Offset? handlerFeedbackOffset,
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
-    this.onScaleUpdate,
   })  : elements = [],
         dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
-        gridBackgroundParams = GridBackgroundParams(
-          onScaleUpdate: onScaleUpdate,
-        ) {
+        gridBackgroundParams = GridBackgroundParams() {
     // This is a workaround to set the handlerFeedbackOffset
     // to improve the user experience on devices with touch screens
     // This will prevent the handler being covered by user's finger

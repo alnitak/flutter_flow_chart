@@ -22,7 +22,6 @@ Dashboard dashboard = Dashboard(
     blockDefaultZoomGestures: false,    // optional
     handlerFeedbackOffset: Offset.zero, // optional
     minimumZoomFactor: 1.25,            // optional
-    onScaleUpdate: (newScale) {},        // optional
 );
 ```
 
@@ -37,6 +36,7 @@ FlowChart(
     onElementPressed: (context, element) {},
     onHandlerPressed: (context, position, handler, element) {},
     onHandlerLongPressed: (context, position, handler, element) {},
+    onScaleUpdate: (newScale) {},
 )
 ```
 
