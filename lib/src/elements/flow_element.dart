@@ -66,7 +66,7 @@ class FlowElement extends ChangeNotifier {
   /// Shadow elevation
   double elevation;
 
-  /// List of connections of this element
+  /// List of connections from this element
   List<ConnectionParams> next;
 
   /// Element text
@@ -96,6 +96,7 @@ class FlowElement extends ChangeNotifier {
   })  : next = next ?? [],
         id = const Uuid().v4(),
         isResizing = false,
+        // fixing offset issue under extreme scaling
         position = position -
             Offset(
               size.width / 2 + handlerSize / 2,
@@ -250,10 +251,6 @@ class FlowElement extends ChangeNotifier {
 
   factory FlowElement.fromMap(Map<String, dynamic> map) {
     FlowElement e = FlowElement(
-      position: Offset(
-        map['positionDx'].toDouble(),
-        map['positionDy'].toDouble(),
-      ),
       size: Size(map['size.width'].toDouble(), map['size.height'].toDouble()),
       text: map['text'] as String,
       textColor: Color(map['textColor'] as int),
@@ -280,6 +277,10 @@ class FlowElement extends ChangeNotifier {
           : [],
     );
     e.setId(map['id'] as String);
+    e.position = Offset(
+      map['positionDx'].toDouble(),
+      map['positionDy'].toDouble(),
+    );
     return e;
   }
 

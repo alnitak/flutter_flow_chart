@@ -48,6 +48,21 @@ class GridBackgroundParams extends ChangeNotifier {
     }
   }
 
+  factory GridBackgroundParams.fromMap(Map map) {
+    final params = GridBackgroundParams(
+      gridSquare: map['gridSquare'] ?? 20.0,
+      gridThickness: map['gridThickness'] ?? 0.7,
+      secondarySquareStep: map['secondarySquareStep'] ?? 5,
+      backgroundColor: Color(map['backgroundColor']),
+      gridColor: Color(map['gridColor']),
+    );
+
+    params.scale = map['scale'] ?? 1.0;
+    params._offset = Offset(map['offset.dx'], map['offset.dy']);
+
+    return params;
+  }
+
   set offset(Offset delta) {
     _offset += delta;
     notifyListeners();
@@ -70,6 +85,19 @@ class GridBackgroundParams extends ChangeNotifier {
   double get gridSquare => rawGridSquareSize * scale;
 
   Offset get offset => _offset;
+
+  toMap() {
+    return {
+      'offset.dx': _offset.dx,
+      'offset.dy': _offset.dy,
+      'scale': scale,
+      'gridSquare': rawGridSquareSize,
+      'gridThickness': gridThickness,
+      'secondarySquareStep': secondarySquareStep,
+      'backgroundColor': backgroundColor.value,
+      'gridColor': gridColor.value,
+    };
+  }
 }
 
 /// Uses a CustomPainter to draw a grid with the given parameters

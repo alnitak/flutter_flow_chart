@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Dashboard dashboard = Dashboard();
+  Dashboard dashboard = Dashboard(arrowStyle: ArrowStyle.segmented);
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
         constraints: const BoxConstraints.expand(),
         child: FlowChart(
           dashboard: dashboard,
+          onNewConnection: (p1, p2) {
+            debugPrint("new connection");
+          },
           onDashboardTapped: ((context, position) {
             debugPrint('Dashboard tapped $position');
             _displayDashboardMenu(context, position);
@@ -107,6 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
             debugPrint('handler long pressed: position $position '
                 'handler $handler" of element $element');
           },
+          onPivotSecondaryPressed: (context, pivot) {
+            dashboard.removeDissection(pivot);
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -149,7 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
             child: const Icon(Icons.delete),
             onPressed: () =>
                 dashboard.removeElementConnection(element, handler),
-          )
+          ),
+          FloatingActionButton(
+            child: const Icon(Icons.control_point),
+            onPressed: () {
+              dashboard.dissectElementConnection(element, handler);
+            },
+          ),
         ],
         parentContext: context,
       ),

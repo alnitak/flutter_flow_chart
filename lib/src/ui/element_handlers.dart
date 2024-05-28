@@ -171,9 +171,9 @@ class _ElementHandler extends StatelessWidget {
             },
             child: GestureDetector(
               onTapDown: (details) => tapDown =
-                  details.globalPosition - dashboard.dashboardPosition,
+                  details.globalPosition - dashboard.position,
               onSecondaryTapDown: (details) => secondaryTapDown =
-                  details.globalPosition - dashboard.dashboardPosition,
+                  details.globalPosition - dashboard.position,
               onTap: () {
                 if (onHandlerPressed != null) {
                   onHandlerPressed!(context, tapDown, handler, element);
@@ -207,11 +207,11 @@ class _ElementHandler extends StatelessWidget {
                     startArrowPosition: alignment,
                     endArrowPosition: const Alignment(0, 0));
                 DrawingArrow.instance.from =
-                    details.globalPosition - dashboard.dashboardPosition;
+                    details.globalPosition - dashboard.position;
                 isDragging = true;
               }
               DrawingArrow.instance.setTo(details.globalPosition -
-                  dashboard.dashboardPosition +
+                  dashboard.position +
                   dashboard.handlerFeedbackOffset);
             },
             onDragEnd: (details) {
