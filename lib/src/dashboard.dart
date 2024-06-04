@@ -104,6 +104,20 @@ class Dashboard extends ChangeNotifier {
     }
   }
 
+  /// set the [element] position
+  setArrowStyle(FlowElement src, FlowElement dest, ArrowStyle style,
+      {bool notify = true}) {
+    for (final conn in src.next) {
+      if (conn.destElementId == dest.id) {
+        conn.arrowParams.style = style;
+        break;
+      }
+    }
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
   /// find the element by its [id]
   int findElementIndexById(String id) {
     return elements.indexWhere((element) => element.id == id);

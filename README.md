@@ -72,6 +72,7 @@ FlowChart(
     | _setZoomFactor_            | Zoom the entire dashboard and content by the given factor corresponding to the given epicenter                           |
     | _dissectElementConnection_ | Dissect the connection into two segments from the given point. Only available on ArrowStyle.segmented                    |
     | _dissectElementConnection_ | Remove dissection by the given pivot                                                                                     |
+    | _setArrowStyle_            | Update arrow style for single connection using the source and destination elements                                       |
 
 ## The FlowElement
 
