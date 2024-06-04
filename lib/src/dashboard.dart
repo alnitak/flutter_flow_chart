@@ -8,9 +8,9 @@ import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
 
 typedef ConnectionListener = void Function(
-    FlowElement srcElement,
-    FlowElement destElement,
-    );
+  FlowElement srcElement,
+  FlowElement destElement,
+);
 
 /// Class to store all the scene elements.
 /// This also acts as the controller to the flow_chart widget
@@ -19,7 +19,7 @@ class Dashboard extends ChangeNotifier {
   List<FlowElement> elements;
   Offset _dashboardPosition;
   Size dashboardSize;
-  final ArrowStyle arrowStyle;
+  final ArrowStyle defaultArrowStyle;
 
   /// [handlerFeedbackOffset] sets an offset for the handler when user is dragging it
   /// This can be used to prevent the handler being covered by user's finger on touch screens
@@ -40,7 +40,7 @@ class Dashboard extends ChangeNotifier {
     Offset? handlerFeedbackOffset,
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
-    this.arrowStyle = ArrowStyle.curve,
+    this.defaultArrowStyle = ArrowStyle.curve,
   })  : elements = [],
         _dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
@@ -123,9 +123,9 @@ class Dashboard extends ChangeNotifier {
   /// return null if not found
   /// In case of multiple connections, first connection is returned
   ConnectionParams? findConnectionByElements(
-      FlowElement srcElement,
-      FlowElement destElement,
-      ) {
+    FlowElement srcElement,
+    FlowElement destElement,
+  ) {
     try {
       return srcElement.next
           .firstWhere((element) => element.destElementId == destElement.id);
@@ -155,10 +155,10 @@ class Dashboard extends ChangeNotifier {
 
   /// remove the [handler] connection of [element]
   removeElementConnection(
-      FlowElement element,
-      Handler handler, {
-        bool notify = true,
-      }) {
+    FlowElement element,
+    Handler handler, {
+    bool notify = true,
+  }) {
     Alignment alignment;
     switch (handler) {
       case Handler.topCenter:
@@ -185,12 +185,12 @@ class Dashboard extends ChangeNotifier {
 
     if (isSrc) {
       element.next.removeWhere((handlerParam) =>
-      handlerParam.arrowParams.startArrowPosition == alignment);
+          handlerParam.arrowParams.startArrowPosition == alignment);
     } else {
       final src = findSrcElementByDestElement(element);
       if (src != null) {
         src.next.removeWhere(
-                (handlerParam) => handlerParam.destElementId == element.id);
+            (handlerParam) => handlerParam.destElementId == element.id);
       }
     }
 
@@ -202,11 +202,11 @@ class Dashboard extends ChangeNotifier {
   /// [point] is the point where the connection is dissected
   /// if [point] is null, point is automatically calculated
   dissectElementConnection(
-      FlowElement element,
-      Handler handler, {
-        Offset? point,
-        bool notify = true,
-      }) {
+    FlowElement element,
+    Handler handler, {
+    Offset? point,
+    bool notify = true,
+  }) {
     Alignment alignment;
     switch (handler) {
       case Handler.topCenter:
@@ -229,14 +229,14 @@ class Dashboard extends ChangeNotifier {
       try {
         // assuming element is the src
         conn = element.next.firstWhere((handlerParam) =>
-        handlerParam.arrowParams.startArrowPosition == alignment);
+            handlerParam.arrowParams.startArrowPosition == alignment);
         final dest = findElementById(conn.destElementId);
         point = (dest!.position + element.position) / 2;
       } catch (e) {
         // apparently tis not
         final src = findSrcElementByDestElement(element)!;
         conn = src.next.firstWhere(
-              (handlerParam) => handlerParam.destElementId == element.id,
+          (handlerParam) => handlerParam.destElementId == element.id,
         );
         point = (element.position + src.position) / 2;
       }
@@ -263,7 +263,7 @@ class Dashboard extends ChangeNotifier {
   removeConnectionByElements(FlowElement srcElement, FlowElement destElement,
       {bool notify = true}) {
     srcElement.next.removeWhere(
-            (handlerParam) => handlerParam.destElementId == destElement.id);
+        (handlerParam) => handlerParam.destElementId == destElement.id);
     if (notify) notifyListeners();
   }
 
@@ -307,7 +307,7 @@ class Dashboard extends ChangeNotifier {
     // remove all connections to the element
     for (FlowElement e in elements) {
       e.next.removeWhere(
-              (handlerParams) => handlerParams.destElementId == elementId);
+          (handlerParams) => handlerParams.destElementId == elementId);
     }
     if (notify) notifyListeners();
     return found;
@@ -330,8 +330,8 @@ class Dashboard extends ChangeNotifier {
     for (FlowElement element in elements) {
       // applying new zoom
       element.position = (element.position - focalPoint) /
-          gridBackgroundParams.scale *
-          factor +
+              gridBackgroundParams.scale *
+              factor +
           focalPoint;
       element.setScale(gridBackgroundParams.scale, factor);
       for (final conn in element.next) {
@@ -368,11 +368,11 @@ class Dashboard extends ChangeNotifier {
   /// the elements with id [destId]
   /// [arrowParams] definition of arrow parameters
   addNextById(
-      FlowElement sourceElement,
-      String destId,
-      ArrowParams arrowParams, {
-        bool notify = true,
-      }) {
+    FlowElement sourceElement,
+    String destId,
+    ArrowParams arrowParams, {
+    bool notify = true,
+  }) {
     int found = 0;
     arrowParams.setScale(1, gridBackgroundParams.scale);
     for (int i = 0; i < elements.length; i++) {
@@ -413,16 +413,16 @@ class Dashboard extends ChangeNotifier {
       'gridBackgroundParams': gridBackgroundParams.toMap(),
       'blockDefaultZoomGestures': blockDefaultZoomGestures,
       'minimumZoomFactor': minimumZoomFactor,
-      'arrowStyle': arrowStyle.index,
+      'arrowStyle': defaultArrowStyle.index,
     };
   }
 
   factory Dashboard.fromMap(Map<String, dynamic> map) {
-    Dashboard d =
-    Dashboard(arrowStyle: ArrowStyle.values[map['arrowStyle'] as int? ?? 0]);
+    Dashboard d = Dashboard(
+        defaultArrowStyle: ArrowStyle.values[map['arrowStyle'] as int? ?? 0]);
     d.elements = List<FlowElement>.from(
       (map['elements'] as List<dynamic>).map<FlowElement>(
-            (x) => FlowElement.fromMap(x as Map<String, dynamic>),
+        (x) => FlowElement.fromMap(x as Map<String, dynamic>),
       ),
     );
     d.dashboardSize = Size(
@@ -434,7 +434,8 @@ class Dashboard extends ChangeNotifier {
       d.gridBackgroundParams =
           GridBackgroundParams.fromMap(map['gridBackgroundParams'] as Map);
     }
-    d.blockDefaultZoomGestures = map['blockDefaultZoomGestures'] as bool? ?? false;
+    d.blockDefaultZoomGestures =
+        map['blockDefaultZoomGestures'] as bool? ?? false;
     d.minimumZoomFactor = map['minimumZoomFactor'] as double? ?? 0.25;
 
     return d;
@@ -485,7 +486,7 @@ class Dashboard extends ChangeNotifier {
       gridBackgroundParams = GridBackgroundParams.fromMap(
           (json.decode(source))['gridBackgroundParams'] as Map);
       blockDefaultZoomGestures =
-      (json.decode(source)['blockDefaultZoomGestures'] as bool);
+          (json.decode(source)['blockDefaultZoomGestures'] as bool);
       minimumZoomFactor = (json.decode(source)['minimumZoomFactor'] as double);
       dashboardSize = Size(
         json.decode(source)['dashboardSizeWidth'] as double,
@@ -494,7 +495,7 @@ class Dashboard extends ChangeNotifier {
 
       final loadedElements = List<FlowElement>.from(
         ((json.decode(source))['elements'] as List<dynamic>).map<FlowElement>(
-              (x) => FlowElement.fromMap(x as Map<String, dynamic>),
+          (x) => FlowElement.fromMap(x as Map<String, dynamic>),
         ),
       );
       elements.clear();

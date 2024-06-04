@@ -355,7 +355,6 @@ class _FlowChartState extends State<FlowChart> {
                     .dashboard.elements[widget.dashboard.findElementIndexById(
                   widget.dashboard.elements[i].next[n].destElementId,
                 )],
-                style: widget.dashboard.arrowStyle,
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 pivots: widget.dashboard.elements[i].next[n].pivots,
                 onTap: widget.onLineTapped,
@@ -363,7 +362,7 @@ class _FlowChartState extends State<FlowChart> {
                 onSecondaryTap: widget.onLineSecondaryTapped,
                 onSecondaryLongPress: widget.onLineSecondaryLongTapped,
               ),
-          if (widget.dashboard.arrowStyle == ArrowStyle.segmented)
+          if (widget.dashboard.defaultArrowStyle == ArrowStyle.segmented)
             // drawing segment handlers
             for (int i = 0; i < widget.dashboard.elements.length; i++)
               for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
@@ -378,7 +377,7 @@ class _FlowChartState extends State<FlowChart> {
                     onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
                   ),
           // user drawing when connecting elements
-          DrawingArrowWidget(style: widget.dashboard.arrowStyle),
+          DrawingArrowWidget(style: widget.dashboard.defaultArrowStyle),
         ],
       ),
     );
@@ -420,7 +419,6 @@ class _DrawingArrowWidgetState extends State<DrawingArrowWidget> {
         params: DrawingArrow.instance.params,
         from: DrawingArrow.instance.from,
         to: DrawingArrow.instance.to,
-        style: widget.style,
       ),
     );
   }

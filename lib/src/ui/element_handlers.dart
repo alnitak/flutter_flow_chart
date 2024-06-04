@@ -140,8 +140,12 @@ class _ElementHandler extends StatelessWidget {
       alignment: alignment,
       child: DragTarget<Map>(
         onWillAcceptWithDetails: (details) {
-          DrawingArrow.instance.setParams(DrawingArrow.instance.params
-              .copyWith(endArrowPosition: alignment));
+          DrawingArrow.instance.setParams(
+            DrawingArrow.instance.params.copyWith(
+              endArrowPosition: alignment,
+              style: dashboard.defaultArrowStyle,
+            ),
+          );
           if (element == details.data['srcElement']) return false;
           return true;
         },
@@ -149,12 +153,18 @@ class _ElementHandler extends StatelessWidget {
           dashboard.addNextById(
             details.data['srcElement'],
             element.id,
-            DrawingArrow.instance.params.copyWith(endArrowPosition: alignment),
+            DrawingArrow.instance.params.copyWith(
+              endArrowPosition: alignment,
+            ),
           );
         },
         onLeave: (data) {
-          DrawingArrow.instance.setParams(DrawingArrow.instance.params
-              .copyWith(endArrowPosition: const Alignment(0.0, 0.0)));
+          DrawingArrow.instance.setParams(
+            DrawingArrow.instance.params.copyWith(
+              endArrowPosition: const Alignment(0.0, 0.0),
+              style: dashboard.defaultArrowStyle,
+            ),
+          );
         },
         builder: (context, candidateData, rejectedData) {
           return Draggable<Map>(
@@ -170,8 +180,8 @@ class _ElementHandler extends StatelessWidget {
               'alignment': alignment,
             },
             child: GestureDetector(
-              onTapDown: (details) => tapDown =
-                  details.globalPosition - dashboard.position,
+              onTapDown: (details) =>
+                  tapDown = details.globalPosition - dashboard.position,
               onSecondaryTapDown: (details) => secondaryTapDown =
                   details.globalPosition - dashboard.position,
               onTap: () {

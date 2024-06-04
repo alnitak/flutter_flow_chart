@@ -28,11 +28,15 @@ class ArrowParams extends ChangeNotifier {
   /// The tail length of the arrow
   double _tailLength;
 
+  /// The style of the arrow
+  ArrowStyle? style;
+
   ArrowParams({
     this.thickness = 1.7,
     this.headRadius = 6,
     double tailLength = 25.0,
     this.color = Colors.black,
+    this.style,
     this.startArrowPosition = Alignment.centerRight,
     this.endArrowPosition = Alignment.centerLeft,
   }) : _tailLength = tailLength;
@@ -40,12 +44,14 @@ class ArrowParams extends ChangeNotifier {
   ArrowParams copyWith({
     double? thickness,
     Color? color,
+    ArrowStyle? style,
     Alignment? startArrowPosition,
     Alignment? endArrowPosition,
   }) {
     return ArrowParams(
       thickness: thickness ?? this.thickness,
       color: color ?? this.color,
+      style: style ?? this.style,
       startArrowPosition: startArrowPosition ?? this.startArrowPosition,
       endArrowPosition: endArrowPosition ?? this.endArrowPosition,
     );
@@ -57,6 +63,7 @@ class ArrowParams extends ChangeNotifier {
       'headRadius': headRadius,
       'tailLength': _tailLength,
       'color': color.value,
+      'style': style?.index,
       'startArrowPositionX': startArrowPosition.x,
       'startArrowPositionY': startArrowPosition.y,
       'endArrowPositionX': endArrowPosition.x,
@@ -70,6 +77,7 @@ class ArrowParams extends ChangeNotifier {
       headRadius: map['headRadius']?.toDouble() ?? 6.0,
       tailLength: map['tailLength']?.toDouble() ?? 25.0,
       color: Color(map['color'] as int),
+      style: ArrowStyle.values[map['style'] as int? ?? 0],
       startArrowPosition: Alignment(
         map['startArrowPositionX'].toDouble(),
         map['startArrowPositionY'].toDouble(),
@@ -163,7 +171,6 @@ class DrawArrow extends StatefulWidget {
   )? onSecondaryLongPress;
 
   final PivotsNotifier pivots;
-  final ArrowStyle style;
 
   DrawArrow({
     super.key,
@@ -175,7 +182,6 @@ class DrawArrow extends StatefulWidget {
     this.onSecondaryTap,
     this.onSecondaryLongPress,
     required List<Pivot> pivots,
-    required this.style,
   })  : arrowParams = arrowParams ?? ArrowParams(),
         pivots = PivotsNotifier(pivots);
 
@@ -284,7 +290,6 @@ class _DrawArrowState extends State<DrawArrow> {
               from: from,
               to: to,
               pivots: widget.pivots.value,
-              style: widget.style,
             ),
             child: Container(),
           );
@@ -303,25 +308,23 @@ class ArrowPainter extends CustomPainter {
   final Path path = Path();
   final lines = [];
   final List<Pivot> pivots;
-  final ArrowStyle style;
 
   ArrowPainter({
     required this.params,
     required this.from,
     required this.to,
     List<Pivot>? pivots,
-    required this.style,
   }) : pivots = pivots ?? [];
 
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint();
     paint.strokeWidth = params.thickness;
-    if (style == ArrowStyle.curve) {
+    if (params.style == ArrowStyle.curve) {
       drawCurve(canvas, paint);
-    } else if (style == ArrowStyle.segmented) {
+    } else if (params.style == ArrowStyle.segmented) {
       drawLine(canvas, paint);
-    } else if (style == ArrowStyle.rectangular) {
+    } else if (params.style == ArrowStyle.rectangular) {
       drawRectangularLine(canvas, paint);
     }
 

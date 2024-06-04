@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Dashboard dashboard = Dashboard(arrowStyle: ArrowStyle.segmented);
+  Dashboard dashboard = Dashboard(defaultArrowStyle: ArrowStyle.segmented);
 
   @override
   Widget build(BuildContext context) {
