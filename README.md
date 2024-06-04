@@ -1,15 +1,15 @@
 # Flutter Flow Chart
 
-A package that let you draw a flow chart diagram with different kind of customizable elements. Dashboards can be saved for later use.
+A package that let you draw a flow chart diagram with different kinds of customizable elements. Dashboards can be saved for later use.
 
-    ![Image](https://github.com/alnitak/flutter_flow_chart/raw/main/images/flowchart.gif)
+![Image](https://github.com/alnitak/flutter_flow_chart/raw/main/images/flowchart.gif)
 
-    See online example [here](https://www.marcobavagnoli.com/flutter_flow_chart)
+See the online example [here](https://www.marcobavagnoli.com/flutter_flow_chart)
 
 ## Features
 
 - _diamond, rectangle, oval, storage, parallelogram_ elements
-- elements can be customizable with background, border and text color, border thickness, text size and weight.
+- elements can be customizable with background, border and text color, border thickness, text size, and weight.
 - interactively connect elements
 - save/load dashboard
 
@@ -46,7 +46,7 @@ FlowChart(
 )
 ```
 
-    then use the _dashboard_ variable to add, remove, resize etc. elements or load/save the dashboard.
+    then use the _dashboard_ variable to add, remove, resize, etc. elements or load/save the dashboard.
 
     In the [example](https://github.com/alnitak/flutter_flow_chart/blob/master/example/lib/main.dart), the [StarMenu](https://pub.dev/packages/star_menu) package is used to easily interact with user inputs.
 
