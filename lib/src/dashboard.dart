@@ -1,21 +1,25 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
-import 'package:flutter_flow_chart/src/ui/grid_background.dart';
-import 'package:flutter_flow_chart/src/elements/flow_element.dart';
-import 'package:flutter_flow_chart/src/elements/connection_params.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_flow_chart/flutter_flow_chart.dart';
+import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
+
+typedef ConnectionListener = void Function(
+  FlowElement srcElement,
+  FlowElement destElement,
+);
 
 /// Class to store all the scene elements.
 /// This also acts as the controller to the flow_chart widget
 /// It notifies changes to [FlowChart]
 class Dashboard extends ChangeNotifier {
   List<FlowElement> elements;
-  Offset dashboardPosition;
+  Offset _dashboardPosition;
   Size dashboardSize;
+  final ArrowStyle defaultArrowStyle;
 
   /// [handlerFeedbackOffset] sets an offset for the handler when user is dragging it
   /// This can be used to prevent the handler being covered by user's finger on touch screens
@@ -30,15 +34,15 @@ class Dashboard extends ChangeNotifier {
   /// setting it to 0 will remove the limit
   double minimumZoomFactor;
 
-  /// callback when the scale is updated
-  void Function(double scale)? onScaleUpdate;
+  final List<ConnectionListener> _connectionListeners = [];
 
   Dashboard({
     Offset? handlerFeedbackOffset,
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
+    this.defaultArrowStyle = ArrowStyle.curve,
   })  : elements = [],
-        dashboardPosition = Offset.zero,
+        _dashboardPosition = Offset.zero,
         dashboardSize = const Size(0, 0),
         gridBackgroundParams = GridBackgroundParams() {
     // This is a workaround to set the handlerFeedbackOffset
@@ -59,12 +63,19 @@ class Dashboard extends ChangeNotifier {
     }
   }
 
+  /// add listener called when a new connection is created
+  addConnectionListener(ConnectionListener listener) {
+    _connectionListeners.add(listener);
+  }
+
+  /// remove connection listener
+  removeConnectionListener(ConnectionListener listener) {
+    _connectionListeners.remove(listener);
+  }
+
   /// set grid background parameters
   setGridBackgroundParams(GridBackgroundParams params) {
     gridBackgroundParams = params;
-    if (onScaleUpdate != null) {
-      params.addOnScaleUpdateListener(onScaleUpdate!);
-    }
     notifyListeners();
   }
 
@@ -86,9 +97,22 @@ class Dashboard extends ChangeNotifier {
     if (element.id.isEmpty) {
       element.id = const Uuid().v4();
     }
-    // element.scale = _currentZoomFactor;
     element.setScale(1, gridBackgroundParams.scale);
     elements.add(element);
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  /// set the [element] position
+  setArrowStyle(FlowElement src, FlowElement dest, ArrowStyle style,
+      {bool notify = true}) {
+    for (final conn in src.next) {
+      if (conn.destElementId == dest.id) {
+        conn.arrowParams.style = style;
+        break;
+      }
+    }
     if (notify) {
       notifyListeners();
     }
@@ -113,13 +137,28 @@ class Dashboard extends ChangeNotifier {
   /// return null if not found
   /// In case of multiple connections, first connection is returned
   ConnectionParams? findConnectionByElements(
-      FlowElement srcElement, FlowElement destElement) {
+    FlowElement srcElement,
+    FlowElement destElement,
+  ) {
     try {
       return srcElement.next
           .firstWhere((element) => element.destElementId == destElement.id);
     } catch (e) {
       return null;
     }
+  }
+
+  /// find the source element of the [element]
+  FlowElement? findSrcElementByDestElement(FlowElement dest) {
+    for (final element in elements) {
+      for (final connection in element.next) {
+        if (connection.destElementId == dest.id) {
+          return element;
+        }
+      }
+    }
+
+    return null;
   }
 
   /// remove all elements
@@ -149,8 +188,110 @@ class Dashboard extends ChangeNotifier {
       default:
         alignment = const Alignment(1.0, 0.0);
     }
-    element.next.removeWhere((handlerParam) =>
-        handlerParam.arrowParams.startArrowPosition == alignment);
+
+    bool isSrc = false;
+    for (final connection in element.next) {
+      if (connection.arrowParams.startArrowPosition == alignment) {
+        isSrc = true;
+        break;
+      }
+    }
+
+    if (isSrc) {
+      element.next.removeWhere((handlerParam) =>
+          handlerParam.arrowParams.startArrowPosition == alignment);
+    } else {
+      final src = findSrcElementByDestElement(element);
+      if (src != null) {
+        src.next.removeWhere(
+            (handlerParam) => handlerParam.destElementId == element.id);
+      }
+    }
+
+    if (notify) notifyListeners();
+  }
+
+  /// dissect an element connection
+  /// [handler] is the handler that is in connection
+  /// [point] is the point where the connection is dissected
+  /// if [point] is null, point is automatically calculated
+  dissectElementConnection(
+    FlowElement element,
+    Handler handler, {
+    Offset? point,
+    bool notify = true,
+  }) {
+    Alignment alignment;
+    Offset elementStartPos = Offset.zero;
+    switch (handler) {
+      case Handler.topCenter:
+        alignment = const Alignment(0.0, -1.0);
+        elementStartPos = element.position +
+            Offset(
+              element.size.width / 2 + element.handlerSize / 2,
+              element.handlerSize / 2,
+            );
+        break;
+      case Handler.bottomCenter:
+        alignment = const Alignment(0.0, 1.0);
+        elementStartPos = element.position +
+            Offset(element.size.width / 2 + element.handlerSize / 2,
+                element.size.height + element.handlerSize / 2);
+        break;
+      case Handler.leftCenter:
+        alignment = const Alignment(-1.0, 0.0);
+        elementStartPos = element.position +
+            Offset(element.handlerSize / 2,
+                element.size.height / 2 + element.handlerSize / 2);
+        break;
+      case Handler.rightCenter:
+      default:
+        alignment = const Alignment(1.0, 0.0);
+        elementStartPos = element.position +
+            Offset(element.size.width + element.handlerSize / 2,
+                element.size.height / 2 + element.handlerSize / 2);
+    }
+
+    ConnectionParams? conn;
+
+    if (point == null) {
+      try {
+        // assuming element is the src
+        conn = element.next.firstWhere((handlerParam) =>
+            handlerParam.arrowParams.startArrowPosition == alignment);
+        final dest = findElementById(conn.destElementId);
+        // point = (dest!.position + element.position) / 2;
+        point = (dest!.getHandlerPosition(conn.arrowParams.endArrowPosition) +
+                element
+                    .getHandlerPosition(conn.arrowParams.startArrowPosition)) /
+            2;
+      } catch (e) {
+        // apparently is not
+        final src = findSrcElementByDestElement(element)!;
+        conn = src.next.firstWhere(
+          (handlerParam) => handlerParam.destElementId == element.id,
+        );
+
+        point = (element.getHandlerPosition(conn.arrowParams.endArrowPosition) +
+                src.getHandlerPosition(conn.arrowParams.startArrowPosition)) /
+            2;
+      }
+    }
+
+    conn?.dissect(point);
+
+    if (notify && conn != null) {
+      notifyListeners();
+    }
+  }
+
+  /// remove the dissection of the connection
+  removeDissection(Pivot pivot, {bool notify = true}) {
+    for (FlowElement element in elements) {
+      for (ConnectionParams connection in element.next) {
+        connection.pivots.removeWhere((item) => item == pivot);
+      }
+    }
     if (notify) notifyListeners();
   }
 
@@ -223,13 +364,17 @@ class Dashboard extends ChangeNotifier {
     focalPoint ??= Offset(dashboardSize.width / 2, dashboardSize.height / 2);
 
     for (FlowElement element in elements) {
-      // reversing current zoom
-      element.position =
-          (element.position - focalPoint) / gridBackgroundParams.scale +
-              focalPoint;
       // applying new zoom
-      element.position = (element.position - focalPoint) * factor + focalPoint;
+      element.position = (element.position - focalPoint) /
+              gridBackgroundParams.scale *
+              factor +
+          focalPoint;
       element.setScale(gridBackgroundParams.scale, factor);
+      for (final conn in element.next) {
+        for (final pivot in conn.pivots) {
+          pivot.setScale(gridBackgroundParams.scale, focalPoint, factor);
+        }
+      }
     }
 
     gridBackgroundParams.setScale(factor, focalPoint);
@@ -245,8 +390,10 @@ class Dashboard extends ChangeNotifier {
   /// needed to know the diagram widget position to compute
   /// offsets for drag and drop elements
   setDashboardPosition(Offset position) {
-    dashboardPosition = position;
+    _dashboardPosition = position;
   }
+
+  get position => _dashboardPosition;
 
   /// needed to know the diagram widget size
   setDashboardSize(Size size) {
@@ -269,10 +416,15 @@ class Dashboard extends ChangeNotifier {
         // if the [id] already exist, remove it and add this new connection
         sourceElement.next
             .removeWhere((element) => element.destElementId == destId);
-        sourceElement.next.add(ConnectionParams(
+        final conn = ConnectionParams(
           destElementId: elements[i].id,
           arrowParams: arrowParams,
-        ));
+          pivots: [],
+        );
+        sourceElement.next.add(conn);
+        for (final listener in _connectionListeners) {
+          listener(sourceElement, elements[i]);
+        }
 
         found++;
       }
@@ -292,16 +444,36 @@ class Dashboard extends ChangeNotifier {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'elements': elements.map((x) => x.toMap()).toList(),
+      'dashboardSizeWidth': dashboardSize.width,
+      'dashboardSizeHeight': dashboardSize.height,
+      'gridBackgroundParams': gridBackgroundParams.toMap(),
+      'blockDefaultZoomGestures': blockDefaultZoomGestures,
+      'minimumZoomFactor': minimumZoomFactor,
+      'arrowStyle': defaultArrowStyle.index,
     };
   }
 
   factory Dashboard.fromMap(Map<String, dynamic> map) {
-    Dashboard d = Dashboard();
+    Dashboard d = Dashboard(
+        defaultArrowStyle: ArrowStyle.values[map['arrowStyle'] as int? ?? 0]);
     d.elements = List<FlowElement>.from(
       (map['elements'] as List<dynamic>).map<FlowElement>(
         (x) => FlowElement.fromMap(x as Map<String, dynamic>),
       ),
     );
+    d.dashboardSize = Size(
+      map['dashboardSizeWidth'] as double? ?? 0,
+      map['dashboardSizeHeight'] as double? ?? 0,
+    );
+
+    if (map['gridBackgroundParams'] != null) {
+      d.gridBackgroundParams =
+          GridBackgroundParams.fromMap(map['gridBackgroundParams'] as Map);
+    }
+    d.blockDefaultZoomGestures =
+        map['blockDefaultZoomGestures'] as bool? ?? false;
+    d.minimumZoomFactor = map['minimumZoomFactor'] as double? ?? 0.25;
+
     return d;
   }
 
@@ -324,6 +496,11 @@ class Dashboard extends ChangeNotifier {
       Offset currentDeviation = elements.first.position - center;
       for (FlowElement element in elements) {
         element.position -= currentDeviation;
+        for (final next in element.next) {
+          for (final pivot in next.pivots) {
+            pivot.pivot -= currentDeviation;
+          }
+        }
       }
     }
     notifyListeners();
@@ -342,17 +519,25 @@ class Dashboard extends ChangeNotifier {
       elements.clear();
       String source = f.readAsStringSync();
 
-      List<FlowElement> all = List<FlowElement>.from(
+      gridBackgroundParams = GridBackgroundParams.fromMap(
+          (json.decode(source))['gridBackgroundParams'] as Map);
+      blockDefaultZoomGestures =
+          (json.decode(source)['blockDefaultZoomGestures'] as bool);
+      minimumZoomFactor = (json.decode(source)['minimumZoomFactor'] as double);
+      dashboardSize = Size(
+        json.decode(source)['dashboardSizeWidth'] as double,
+        json.decode(source)['dashboardSizeHeight'] as double,
+      );
+
+      final loadedElements = List<FlowElement>.from(
         ((json.decode(source))['elements'] as List<dynamic>).map<FlowElement>(
           (x) => FlowElement.fromMap(x as Map<String, dynamic>),
         ),
       );
-      for (int i = 0; i < all.length; i++) {
-        addElement(all.elementAt(i));
-      }
-      notifyListeners();
-    }
+      elements.clear();
+      elements.addAll(loadedElements);
 
-    recenter();
+      recenter();
+    }
   }
 }

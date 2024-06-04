@@ -5,6 +5,7 @@ import 'package:flutter_flow_chart/src/dashboard.dart';
 import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
 import 'package:flutter_flow_chart/src/ui/element_widget.dart';
 import 'package:flutter_flow_chart/src/ui/grid_background.dart';
+import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
 import 'package:flutter_flow_chart/src/elements/flow_element.dart';
 
 /// Main flow chart Widget.
@@ -28,7 +29,7 @@ class FlowChart extends StatefulWidget {
   final Function(BuildContext context, Offset position, FlowElement element)?
       onElementPressed;
 
-  /// callback for mouse rightclick event on an element
+  /// callback for mouse right click event on an element
   final Function(BuildContext context, Offset position, FlowElement element)?
       onElementSecondaryTapped;
 
@@ -39,6 +40,12 @@ class FlowChart extends StatefulWidget {
   /// callback for right click long press event on an element
   final Function(BuildContext context, Offset position, FlowElement element)?
       onElementSecondaryLongTapped;
+
+  /// callback for onclick event of pivot
+  final Function(BuildContext context, Pivot pivot)? onPivotPressed;
+
+  /// callback for secondary press event of pivot
+  final Function(BuildContext context, Pivot pivot)? onPivotSecondaryPressed;
 
   /// callback for handler pressed
   final Function(
@@ -104,6 +111,9 @@ class FlowChart extends StatefulWidget {
     FlowElement destElement,
   )? onLineSecondaryLongTapped;
 
+  /// callback when adding a new connection
+  final ConnectionListener? onNewConnection;
+
   /// main dashboard to use
   final Dashboard dashboard;
 
@@ -123,11 +133,14 @@ class FlowChart extends StatefulWidget {
     this.onHandlerSecondaryTapped,
     this.onHandlerLongPressed,
     this.onHandlerSecondaryLongTapped,
-    this.onLineTapped,
-    this.onLineLongPressed,
-    this.onLineSecondaryTapped,
-    this.onLineSecondaryLongTapped,
+    this.onPivotPressed,
+    this.onPivotSecondaryPressed,
+    @Deprecated('') this.onLineTapped,
+    @Deprecated('') this.onLineLongPressed,
+    @Deprecated('') this.onLineSecondaryTapped,
+    @Deprecated('') this.onLineSecondaryLongTapped,
     this.onScaleUpdate,
+    this.onNewConnection,
     required this.dashboard,
   });
 
@@ -144,6 +157,9 @@ class _FlowChartState extends State<FlowChart> {
       widget.dashboard.gridBackgroundParams.addOnScaleUpdateListener(
         widget.onScaleUpdate!,
       );
+    }
+    if (widget.onNewConnection != null) {
+      widget.dashboard.addConnectionListener(widget.onNewConnection!);
     }
   }
 
@@ -234,10 +250,19 @@ class _FlowChartState extends State<FlowChart> {
                   );
                 }
 
+                widget.dashboard.setDashboardPosition(
+                  widget.dashboard.position + details.focalPointDelta,
+                );
                 for (int i = 0; i < widget.dashboard.elements.length; i++) {
                   widget.dashboard.elements[i].position +=
                       details.focalPointDelta;
+                  for (final conn in widget.dashboard.elements[i].next) {
+                    for (final pivot in conn.pivots) {
+                      pivot.pivot += details.focalPointDelta;
+                    }
+                  }
                 }
+
                 widget.dashboard.gridBackgroundParams.offset =
                     details.focalPointDelta;
                 setState(() {});
@@ -295,18 +320,30 @@ class _FlowChartState extends State<FlowChart> {
                   ? null
                   : (context, position, handler, element) =>
                       widget.onHandlerSecondaryTapped!(
-                          context, position, handler, element),
+                        context,
+                        position,
+                        handler,
+                        element,
+                      ),
               onHandlerLongPressed: widget.onHandlerLongPressed == null
                   ? null
                   : (context, position, handler, element) =>
                       widget.onHandlerLongPressed!(
-                          context, position, handler, element),
+                        context,
+                        position,
+                        handler,
+                        element,
+                      ),
               onHandlerSecondaryLongTapped:
                   widget.onHandlerSecondaryLongTapped == null
                       ? null
                       : (context, position, handler, element) =>
                           widget.onHandlerSecondaryLongTapped!(
-                              context, position, handler, element),
+                            context,
+                            position,
+                            handler,
+                            element,
+                          ),
             ),
           // Draw arrows
           for (int i = 0; i < widget.dashboard.elements.length; i++)
@@ -319,13 +356,28 @@ class _FlowChartState extends State<FlowChart> {
                   widget.dashboard.elements[i].next[n].destElementId,
                 )],
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
+                pivots: widget.dashboard.elements[i].next[n].pivots,
                 onTap: widget.onLineTapped,
                 onLongPress: widget.onLineLongPressed,
                 onSecondaryTap: widget.onLineSecondaryTapped,
                 onSecondaryLongPress: widget.onLineSecondaryLongTapped,
               ),
+          if (widget.dashboard.defaultArrowStyle == ArrowStyle.segmented)
+            // drawing segment handlers
+            for (int i = 0; i < widget.dashboard.elements.length; i++)
+              for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
+                for (int j = 0;
+                    j < widget.dashboard.elements[i].next[n].pivots.length;
+                    j++)
+                  SegmentHandler(
+                    key: UniqueKey(),
+                    pivot: widget.dashboard.elements[i].next[n].pivots[j],
+                    dashboard: widget.dashboard,
+                    onPivotPressed: widget.onPivotPressed,
+                    onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
+                  ),
           // user drawing when connecting elements
-          const DrawingArrowWidget(),
+          DrawingArrowWidget(style: widget.dashboard.defaultArrowStyle),
         ],
       ),
     );
@@ -334,7 +386,9 @@ class _FlowChartState extends State<FlowChart> {
 
 /// Widget to draw interactive connection when the user tap on handlers
 class DrawingArrowWidget extends StatefulWidget {
-  const DrawingArrowWidget({super.key});
+  final ArrowStyle style;
+
+  const DrawingArrowWidget({super.key, required this.style});
 
   @override
   State<DrawingArrowWidget> createState() => _DrawingArrowWidgetState();
