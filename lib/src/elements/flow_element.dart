@@ -108,6 +108,16 @@ class FlowElement extends ChangeNotifier {
     return 'kind: $kind  text: $text';
   }
 
+  /// Get the handler center of this handler for the given alignment.
+  Offset getHandlerPosition(Alignment alignment) {
+    // The zero position coordinate is the top-left of this element.
+    Offset ret = Offset(
+      position.dx + (size.width * ((alignment.x + 1) / 2)) + handlerSize / 2,
+      position.dy + (size.height * ((alignment.y + 1) / 2) + handlerSize / 2),
+    );
+    return ret;
+  }
+
   /// When setting to true, a handler will disply at the element bottom right
   /// to let the user to resize it. When finish it will disappear.
   setIsResizing(bool resizing) {

@@ -222,19 +222,34 @@ class Dashboard extends ChangeNotifier {
     bool notify = true,
   }) {
     Alignment alignment;
+    Offset elementStartPos = Offset.zero;
     switch (handler) {
       case Handler.topCenter:
         alignment = const Alignment(0.0, -1.0);
+        elementStartPos = element.position +
+            Offset(
+              element.size.width / 2 + element.handlerSize / 2,
+              element.handlerSize / 2,
+            );
         break;
       case Handler.bottomCenter:
         alignment = const Alignment(0.0, 1.0);
+        elementStartPos = element.position +
+            Offset(element.size.width / 2 + element.handlerSize / 2,
+                element.size.height + element.handlerSize / 2);
         break;
       case Handler.leftCenter:
         alignment = const Alignment(-1.0, 0.0);
+        elementStartPos = element.position +
+            Offset(element.handlerSize / 2,
+                element.size.height / 2 + element.handlerSize / 2);
         break;
       case Handler.rightCenter:
       default:
         alignment = const Alignment(1.0, 0.0);
+        elementStartPos = element.position +
+            Offset(element.size.width + element.handlerSize / 2,
+                element.size.height / 2 + element.handlerSize / 2);
     }
 
     ConnectionParams? conn;
@@ -245,20 +260,27 @@ class Dashboard extends ChangeNotifier {
         conn = element.next.firstWhere((handlerParam) =>
             handlerParam.arrowParams.startArrowPosition == alignment);
         final dest = findElementById(conn.destElementId);
-        point = (dest!.position + element.position) / 2;
+        // point = (dest!.position + element.position) / 2;
+        point = (dest!.getHandlerPosition(conn.arrowParams.endArrowPosition) +
+                element
+                    .getHandlerPosition(conn.arrowParams.startArrowPosition)) /
+            2;
       } catch (e) {
-        // apparently tis not
+        // apparently is not
         final src = findSrcElementByDestElement(element)!;
         conn = src.next.firstWhere(
           (handlerParam) => handlerParam.destElementId == element.id,
         );
-        point = (element.position + src.position) / 2;
+
+        point = (element.getHandlerPosition(conn.arrowParams.endArrowPosition) +
+                src.getHandlerPosition(conn.arrowParams.startArrowPosition)) /
+            2;
       }
     }
 
     conn?.dissect(point);
 
-    if (notify) {
+    if (notify && conn != null) {
       notifyListeners();
     }
   }
