@@ -51,13 +51,11 @@ class _SegmentHandlerState extends State<SegmentHandler> {
         child: Draggable(
           feedback: const SizedBox(),
           onDragUpdate: (details) {
-            widget.pivot.pivot = details.globalPosition -
-                widget.dashboard.position -
-                delta;
+            widget.pivot.pivot =
+                details.globalPosition - widget.dashboard.position - delta;
           },
           onDragEnd: (details) {
-            widget.pivot.pivot =
-                details.offset - widget.dashboard.position;
+            widget.pivot.pivot = details.offset - widget.dashboard.position;
           },
           child: GestureDetector(
             onTap: () {

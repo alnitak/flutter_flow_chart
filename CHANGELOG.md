@@ -1,5 +1,8 @@
+## 3.1.0
+* Implemented styling new arrows (thanks to Isira Herath)
+
 ## 3.0.0
-# breaking change: moved onScaleUpdate callback to the FlowChart widget
+* breaking change: moved onScaleUpdate callback to the FlowChart widget
 
 ## 2.2.1
 * Improved scaling gesture responsiveness (thanks to Isira Herath)

@@ -222,34 +222,19 @@ class Dashboard extends ChangeNotifier {
     bool notify = true,
   }) {
     Alignment alignment;
-    Offset elementStartPos = Offset.zero;
     switch (handler) {
       case Handler.topCenter:
         alignment = const Alignment(0.0, -1.0);
-        elementStartPos = element.position +
-            Offset(
-              element.size.width / 2 + element.handlerSize / 2,
-              element.handlerSize / 2,
-            );
         break;
       case Handler.bottomCenter:
         alignment = const Alignment(0.0, 1.0);
-        elementStartPos = element.position +
-            Offset(element.size.width / 2 + element.handlerSize / 2,
-                element.size.height + element.handlerSize / 2);
         break;
       case Handler.leftCenter:
         alignment = const Alignment(-1.0, 0.0);
-        elementStartPos = element.position +
-            Offset(element.handlerSize / 2,
-                element.size.height / 2 + element.handlerSize / 2);
         break;
       case Handler.rightCenter:
       default:
         alignment = const Alignment(1.0, 0.0);
-        elementStartPos = element.position +
-            Offset(element.size.width + element.handlerSize / 2,
-                element.size.height / 2 + element.handlerSize / 2);
     }
 
     ConnectionParams? conn;
