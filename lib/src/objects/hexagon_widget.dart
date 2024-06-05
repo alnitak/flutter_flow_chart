@@ -44,16 +44,18 @@ class _HexagonPainter extends CustomPainter {
     final paint = Paint();
     final path = Path();
 
-    paint..style = PaintingStyle.fill
-    ..color = element.backgroundColor;
+    paint
+      ..style = PaintingStyle.fill
+      ..color = element.backgroundColor;
 
-    path..moveTo(0, size.height / 2)
-    ..lineTo(size.width / 4, size.height)
-    ..lineTo(size.width * 3 / 4, size.height)
-    ..lineTo(size.width, size.height / 2)
-    ..lineTo(size.width * 3 / 4, 0)
-    ..lineTo(size.width / 4, 0)
-    ..close();
+    path
+      ..moveTo(0, size.height / 2)
+      ..lineTo(size.width / 4, size.height)
+      ..lineTo(size.width * 3 / 4, size.height)
+      ..lineTo(size.width, size.height / 2)
+      ..lineTo(size.width * 3 / 4, 0)
+      ..lineTo(size.width / 4, 0)
+      ..close();
 
     if (element.elevation > 0.01) {
       canvas.drawShadow(
@@ -65,9 +67,10 @@ class _HexagonPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint..strokeWidth = element.borderThickness
-    ..color = element.borderColor
-    ..style = PaintingStyle.stroke;
+    paint
+      ..strokeWidth = element.borderThickness
+      ..color = element.borderColor
+      ..style = PaintingStyle.stroke;
     canvas.drawPath(path, paint);
   }
 

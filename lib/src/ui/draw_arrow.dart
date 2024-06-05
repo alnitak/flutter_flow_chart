@@ -187,10 +187,6 @@ class DrawArrow extends StatefulWidget {
     required List<Pivot> pivots,
     super.key,
     ArrowParams? arrowParams,
-    this.onTap,
-    this.onLongPress,
-    this.onSecondaryTap,
-    this.onSecondaryLongPress,
   })  : arrowParams = arrowParams ?? ArrowParams(),
         pivots = PivotsNotifier(pivots);
 
@@ -202,38 +198,6 @@ class DrawArrow extends StatefulWidget {
 
   ///
   final FlowElement destElement;
-
-  ///
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onTap;
-
-  ///
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLongPress;
-
-  ///
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onSecondaryTap;
-
-  ///
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onSecondaryLongPress;
 
   ///
   final PivotsNotifier pivots;
@@ -289,58 +253,19 @@ class _DrawArrowState extends State<DrawArrow> {
               ((widget.arrowParams.endArrowPosition.y + 1) / 2)),
     );
 
-    var tapPosition = Offset.zero;
-    var secondaryTapPosition = Offset.zero;
-    return GestureDetector(
-      onTapDown: (details) => tapPosition = details.localPosition,
-      onSecondaryTapDown: (details) =>
-          secondaryTapPosition = details.localPosition,
-      onTap: () {
-        widget.onTap?.call(
-          context,
-          tapPosition,
-          widget.srcElement,
-          widget.destElement,
-        );
-      },
-      onLongPress: () {
-        widget.onLongPress?.call(
-          context,
-          tapPosition,
-          widget.srcElement,
-          widget.destElement,
-        );
-      },
-      onSecondaryTap: () {
-        widget.onSecondaryTap?.call(
-          context,
-          secondaryTapPosition,
-          widget.srcElement,
-          widget.destElement,
-        );
-      },
-      onSecondaryLongPress: () {
-        widget.onSecondaryLongPress?.call(
-          context,
-          secondaryTapPosition,
-          widget.srcElement,
-          widget.destElement,
-        );
-      },
-      child: RepaintBoundary(
-        child: Builder(
-          builder: (context) {
-            return CustomPaint(
-              painter: ArrowPainter(
-                params: widget.arrowParams,
-                from: from,
-                to: to,
-                pivots: widget.pivots.value,
-              ),
-              child: Container(),
-            );
-          },
-        ),
+    return RepaintBoundary(
+      child: Builder(
+        builder: (context) {
+          return CustomPaint(
+            painter: ArrowPainter(
+              params: widget.arrowParams,
+              from: from,
+              to: to,
+              pivots: widget.pivots.value,
+            ),
+            child: Container(),
+          );
+        },
       ),
     );
   }
@@ -504,52 +429,7 @@ class ArrowPainter extends CustomPainter {
   }
 
   @override
-  bool? hitTest(Offset position) {
-    // if (path.contains(position)) {
-    //   return true;
-    // }
-
-    // for (final pivot in pivots) {
-    //   if ((pivot.pivot - position).distanceSquared < 25) {
-    //     return true;
-    //   }
-    // }
-
-    // // check if the position is near the line
-    // for (final line in lines) {
-    //   if (line[0].dx == line[1].dx) {
-    //     if (line[0].dy < line[1].dy) {
-    //       if (position.dx == line[0].dx &&
-    //           position.dy >= line[0].dy &&
-    //           position.dy <= line[1].dy) {
-    //         return true;
-    //       }
-    //     } else {
-    //       if (position.dx == line[0].dx &&
-    //           position.dy <= line[0].dy &&
-    //           position.dy >= line[1].dy) {
-    //         return true;
-    //       }
-    //     }
-    //   } else {
-    //     if (line[0].dx < line[1].dx) {
-    //       if (position.dy == line[0].dy &&
-    //           position.dx >= line[0].dx &&
-    //           position.dx <= line[1].dx) {
-    //         return true;
-    //       }
-    //     } else {
-    //       if (position.dy == line[0].dy &&
-    //           position.dx <= line[0].dx &&
-    //           position.dx >= line[1].dx) {
-    //         return true;
-    //       }
-    //     }
-    //   }
-    // }
-
-    return false;
-  }
+  bool? hitTest(Offset position) => false;
 }
 
 /// Notifier for pivot points.

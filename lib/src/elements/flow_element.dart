@@ -59,7 +59,6 @@ enum Handler {
 
 /// Class to store [ElementWidget]s and notify its changes
 class FlowElement extends ChangeNotifier {
-
   ///
   FlowElement({
     Offset position = Offset.zero,
@@ -120,11 +119,11 @@ class FlowElement extends ChangeNotifier {
             )
           : [],
     )
-    ..setId(map['id'] as String)
-    ..position = Offset(
-      map['positionDx'] as double,
-      map['positionDy'] as double,
-    );
+      ..setId(map['id'] as String)
+      ..position = Offset(
+        map['positionDx'] as double,
+        map['positionDy'] as double,
+      );
     return e;
   }
 

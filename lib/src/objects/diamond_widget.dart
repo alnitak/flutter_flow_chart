@@ -34,7 +34,6 @@ class DiamondWidget extends StatelessWidget {
 }
 
 class _DiamondPainter extends CustomPainter {
-
   _DiamondPainter({
     required this.element,
   });
@@ -45,15 +44,17 @@ class _DiamondPainter extends CustomPainter {
     final paint = Paint();
     final path = Path();
 
-    paint..strokeJoin = StrokeJoin.round
-    ..style = PaintingStyle.fill
-    ..color = element.backgroundColor;
-    
-    path..moveTo(size.width / 2, 0)
-    ..lineTo(size.width, size.height / 2)
-    ..lineTo(size.width / 2, size.height)
-    ..lineTo(0, size.height / 2)
-    ..close();
+    paint
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.fill
+      ..color = element.backgroundColor;
+
+    path
+      ..moveTo(size.width / 2, 0)
+      ..lineTo(size.width, size.height / 2)
+      ..lineTo(size.width / 2, size.height)
+      ..lineTo(0, size.height / 2)
+      ..close();
 
     if (element.elevation > 0.01) {
       canvas.drawShadow(
@@ -65,10 +66,11 @@ class _DiamondPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint..strokeWidth = element.borderThickness
-    ..color = element.borderColor
-    ..style = PaintingStyle.stroke;
-    
+    paint
+      ..strokeWidth = element.borderThickness
+      ..color = element.borderColor
+      ..style = PaintingStyle.stroke;
+
     canvas.drawPath(path, paint);
   }
 

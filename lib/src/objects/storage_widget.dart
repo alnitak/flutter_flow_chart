@@ -10,6 +10,7 @@ class StorageWidget extends StatelessWidget {
     required this.element,
     super.key,
   });
+
   ///
   final FlowElement element;
 
@@ -34,7 +35,6 @@ class StorageWidget extends StatelessWidget {
 }
 
 class _StoragePainter extends CustomPainter {
-
   _StoragePainter({
     required this.element,
   });
@@ -47,19 +47,21 @@ class _StoragePainter extends CustomPainter {
     final path = Path();
     final path2 = Path();
 
-    paint..strokeJoin = StrokeJoin.round
-    ..style = PaintingStyle.fill
-    ..color = element.backgroundColor;
+    paint
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.fill
+      ..color = element.backgroundColor;
 
-    path2..moveTo(size.width, size.height / 4.0 / 2.0)
-    ..lineTo(size.width, size.height)
-    ..lineTo(0, size.height)
-    ..lineTo(0, size.height / 4.0 / 2.0)
-    
-    // oval
-    ..addArc(Rect.fromLTWH(0, 0, size.width, size.height / 4.0), pi, pi)
-    ..addArc(Rect.fromLTWH(0, 0, size.width, size.height / 4.0), 0, pi)
-    ..addArc(Rect.fromLTWH(0, 4, size.width, size.height / 4.0 + 4), 0, pi);
+    path2
+      ..moveTo(size.width, size.height / 4.0 / 2.0)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..lineTo(0, size.height / 4.0 / 2.0)
+
+      // oval
+      ..addArc(Rect.fromLTWH(0, 0, size.width, size.height / 4.0), pi, pi)
+      ..addArc(Rect.fromLTWH(0, 0, size.width, size.height / 4.0), 0, pi)
+      ..addArc(Rect.fromLTWH(0, 4, size.width, size.height / 4.0 + 4), 0, pi);
 
     if (element.elevation > 0.01) {
       canvas.drawShadow(
@@ -71,12 +73,14 @@ class _StoragePainter extends CustomPainter {
     }
     canvas.drawPath(path2, paint);
 
-    paint..strokeWidth = element.borderThickness
-    ..color = element.borderColor
-    ..style = PaintingStyle.stroke;
-    
-    canvas..drawPath(path, paint)
-    ..drawPath(path2, paint);
+    paint
+      ..strokeWidth = element.borderThickness
+      ..color = element.borderColor
+      ..style = PaintingStyle.stroke;
+
+    canvas
+      ..drawPath(path, paint)
+      ..drawPath(path2, paint);
   }
 
   @override

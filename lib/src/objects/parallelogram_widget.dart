@@ -4,12 +4,12 @@ import 'package:flutter_flow_chart/src/objects/element_text_widget.dart';
 
 /// A kind of element
 class ParallelogramWidget extends StatelessWidget {
-
   ///
   const ParallelogramWidget({
     required this.element,
     super.key,
   });
+
   ///
   final FlowElement element;
 
@@ -34,7 +34,6 @@ class ParallelogramWidget extends StatelessWidget {
 }
 
 class _ParallelogramPainter extends CustomPainter {
-
   _ParallelogramPainter({
     required this.element,
   });
@@ -46,14 +45,16 @@ class _ParallelogramPainter extends CustomPainter {
     final paint = Paint();
     final path = Path();
 
-    paint..style = PaintingStyle.fill
-    ..color = element.backgroundColor;
+    paint
+      ..style = PaintingStyle.fill
+      ..color = element.backgroundColor;
 
-    path..moveTo(size.width / 8, 0)
-    ..lineTo(size.width, 0)
-    ..lineTo(size.width - size.width / 8, size.height)
-    ..lineTo(0, size.height)
-    ..close();
+    path
+      ..moveTo(size.width / 8, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width - size.width / 8, size.height)
+      ..lineTo(0, size.height)
+      ..close();
 
     if (element.elevation > 0.01) {
       canvas.drawShadow(
@@ -65,9 +66,10 @@ class _ParallelogramPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint..strokeWidth = element.borderThickness
-    ..color = element.borderColor
-    ..style = PaintingStyle.stroke;
+    paint
+      ..strokeWidth = element.borderThickness
+      ..color = element.borderColor
+      ..style = PaintingStyle.stroke;
     canvas.drawPath(path, paint);
   }
 

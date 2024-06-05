@@ -44,8 +44,9 @@ class _OvalPainter extends CustomPainter {
     final paint = Paint();
     final path = Path();
 
-    paint..style = PaintingStyle.fill
-    ..color = element.backgroundColor;
+    paint
+      ..style = PaintingStyle.fill
+      ..color = element.backgroundColor;
 
     path.addOval(Rect.fromLTWH(0, 0, size.width, size.height));
     if (element.elevation > 0.01) {
@@ -58,10 +59,11 @@ class _OvalPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint..strokeWidth = element.borderThickness
-    ..color = element.borderColor
-    ..style = PaintingStyle.stroke;
-    
+    paint
+      ..strokeWidth = element.borderThickness
+      ..color = element.borderColor
+      ..style = PaintingStyle.stroke;
+
     canvas.drawPath(path, paint);
   }
 

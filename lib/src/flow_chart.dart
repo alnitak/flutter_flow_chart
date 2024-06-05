@@ -30,10 +30,6 @@ class FlowChart extends StatefulWidget {
     this.onHandlerSecondaryLongTapped,
     this.onPivotPressed,
     this.onPivotSecondaryPressed,
-    @Deprecated('') this.onLineTapped,
-    @Deprecated('') this.onLineLongPressed,
-    @Deprecated('') this.onLineSecondaryTapped,
-    @Deprecated('') this.onLineSecondaryLongTapped,
     this.onScaleUpdate,
     this.onNewConnection,
   });
@@ -111,42 +107,6 @@ class FlowChart extends StatefulWidget {
     Handler handler,
     FlowElement element,
   )? onHandlerLongPressed;
-
-  /// callback for line tapped
-  @Deprecated('')
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineTapped;
-
-  /// callback for line long pressed
-  @Deprecated('')
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineLongPressed;
-
-  /// callback for line right click event
-  @Deprecated('')
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineSecondaryTapped;
-
-  /// callback for line right click long press event
-  @Deprecated('')
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineSecondaryLongTapped;
 
   /// callback when adding a new connection
   final ConnectionListener? onNewConnection;
@@ -242,16 +202,16 @@ class _FlowChartState extends State<FlowChart> {
                         tapDownPos,
                       ),
               onSecondaryTap: () {
-                  widget.onDashboardSecondaryTapped?.call(
-                    gridKey.currentContext!,
-                    secondaryTapDownPos,
-                  );
+                widget.onDashboardSecondaryTapped?.call(
+                  gridKey.currentContext!,
+                  secondaryTapDownPos,
+                );
               },
               onSecondaryLongPress: () {
-                  widget.onDashboardSecondaryLongTapped?.call(
-                    gridKey.currentContext!,
-                    secondaryTapDownPos,
-                  );
+                widget.onDashboardSecondaryLongTapped?.call(
+                  gridKey.currentContext!,
+                  secondaryTapDownPos,
+                );
               },
               onScaleUpdate: (details) {
                 if (details.scale != 1) {
@@ -368,10 +328,6 @@ class _FlowChartState extends State<FlowChart> {
                 )],
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 pivots: widget.dashboard.elements[i].next[n].pivots,
-                onTap: widget.onLineTapped,
-                onLongPress: widget.onLineLongPressed,
-                onSecondaryTap: widget.onLineSecondaryTapped,
-                onSecondaryLongPress: widget.onLineSecondaryLongTapped,
               ),
           if (widget.dashboard.defaultArrowStyle == ArrowStyle.segmented)
             // drawing segment handlers
