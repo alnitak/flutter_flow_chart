@@ -1,125 +1,20 @@
+// ignore: directives_ordering
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_flow_chart/src/dashboard.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
 import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
 import 'package:flutter_flow_chart/src/ui/element_widget.dart';
 import 'package:flutter_flow_chart/src/ui/grid_background.dart';
 import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
-import 'package:flutter_flow_chart/src/elements/flow_element.dart';
 
 /// Main flow chart Widget.
 /// It displays the background grid, all the elements and connection lines
 class FlowChart extends StatefulWidget {
-  /// callback for tap on dashboard
-  final Function(BuildContext context, Offset position)? onDashboardTapped;
-
-  /// callback for long tap on dashboard
-  final Function(BuildContext context, Offset position)? onDashboardLongTapped;
-
-  /// callback for mouse right click on dashboard
-  final Function(BuildContext context, Offset postision)?
-      onDashboardSecondaryTapped;
-
-  /// callback for mouse right click long press on dashboard
-  final Function(BuildContext context, Offset position)?
-      onDashboardSecondaryLongTapped;
-
-  /// callback for element pressed
-  final Function(BuildContext context, Offset position, FlowElement element)?
-      onElementPressed;
-
-  /// callback for mouse right click event on an element
-  final Function(BuildContext context, Offset position, FlowElement element)?
-      onElementSecondaryTapped;
-
-  /// callback for element long pressed
-  final Function(BuildContext context, Offset position, FlowElement element)?
-      onElementLongPressed;
-
-  /// callback for right click long press event on an element
-  final Function(BuildContext context, Offset position, FlowElement element)?
-      onElementSecondaryLongTapped;
-
-  /// callback for onclick event of pivot
-  final Function(BuildContext context, Pivot pivot)? onPivotPressed;
-
-  /// callback for secondary press event of pivot
-  final Function(BuildContext context, Pivot pivot)? onPivotSecondaryPressed;
-
-  /// callback for handler pressed
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerPressed;
-
-  /// callback for handler right click event
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryTapped;
-
-  /// callback for handler right click long press event
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryLongTapped;
-
-  /// callback for handler long pressed
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerLongPressed;
-
-  /// callback for line tapped
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineTapped;
-
-  /// callback for line long pressed
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineLongPressed;
-
-  /// callback for line right click event
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineSecondaryTapped;
-
-  /// callback for line right click long press event
-  final void Function(
-    BuildContext context,
-    Offset clickPosition,
-    FlowElement srcElement,
-    FlowElement destElement,
-  )? onLineSecondaryLongTapped;
-
-  /// callback when adding a new connection
-  final ConnectionListener? onNewConnection;
-
-  /// main dashboard to use
-  final Dashboard dashboard;
-
-  final void Function(double scale)? onScaleUpdate;
-
+  ///
   const FlowChart({
+    required this.dashboard,
     super.key,
     this.onElementPressed,
     this.onElementSecondaryTapped,
@@ -141,8 +36,126 @@ class FlowChart extends StatefulWidget {
     @Deprecated('') this.onLineSecondaryLongTapped,
     this.onScaleUpdate,
     this.onNewConnection,
-    required this.dashboard,
   });
+
+  /// callback for tap on dashboard
+  final void Function(BuildContext context, Offset position)? onDashboardTapped;
+
+  /// callback for long tap on dashboard
+  final void Function(BuildContext context, Offset position)?
+      onDashboardLongTapped;
+
+  /// callback for mouse right click on dashboard
+  final void Function(BuildContext context, Offset postision)?
+      onDashboardSecondaryTapped;
+
+  /// callback for mouse right click long press on dashboard
+  final void Function(BuildContext context, Offset position)?
+      onDashboardSecondaryLongTapped;
+
+  /// callback for element pressed
+  final void Function(
+          BuildContext context, Offset position, FlowElement element)?
+      onElementPressed;
+
+  /// callback for mouse right click event on an element
+  final void Function(
+          BuildContext context, Offset position, FlowElement element)?
+      onElementSecondaryTapped;
+
+  /// callback for element long pressed
+  final void Function(
+          BuildContext context, Offset position, FlowElement element)?
+      onElementLongPressed;
+
+  /// callback for right click long press event on an element
+  final void Function(
+          BuildContext context, Offset position, FlowElement element)?
+      onElementSecondaryLongTapped;
+
+  /// callback for onclick event of pivot
+  final void Function(BuildContext context, Pivot pivot)? onPivotPressed;
+
+  /// callback for secondary press event of pivot
+  final void Function(BuildContext context, Pivot pivot)?
+      onPivotSecondaryPressed;
+
+  /// callback for handler pressed
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerPressed;
+
+  /// callback for handler right click event
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryTapped;
+
+  /// callback for handler right click long press event
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
+
+  /// callback for handler long pressed
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerLongPressed;
+
+  /// callback for line tapped
+  @Deprecated('')
+  final void Function(
+    BuildContext context,
+    Offset clickPosition,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineTapped;
+
+  /// callback for line long pressed
+  @Deprecated('')
+  final void Function(
+    BuildContext context,
+    Offset clickPosition,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineLongPressed;
+
+  /// callback for line right click event
+  @Deprecated('')
+  final void Function(
+    BuildContext context,
+    Offset clickPosition,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineSecondaryTapped;
+
+  /// callback for line right click long press event
+  @Deprecated('')
+  final void Function(
+    BuildContext context,
+    Offset clickPosition,
+    FlowElement srcElement,
+    FlowElement destElement,
+  )? onLineSecondaryLongTapped;
+
+  /// callback when adding a new connection
+  final ConnectionListener? onNewConnection;
+
+  /// main dashboard to use
+  final Dashboard dashboard;
+
+  /// Trigger for the scale change
+  final void Function(double scale)? onScaleUpdate;
 
   @override
   State<FlowChart> createState() => _FlowChartState();
@@ -174,7 +187,7 @@ class _FlowChartState extends State<FlowChart> {
     super.dispose();
   }
 
-  _elementChanged() {
+  void _elementChanged() {
     if (mounted) setState(() {});
   }
 
@@ -185,22 +198,24 @@ class _FlowChartState extends State<FlowChart> {
     /// get dashboard position after first frame is drawn
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (mounted) {
-        final object = (context.findRenderObject() as RenderBox);
-        final translation = object.getTransformTo(null).getTranslation();
-        final Size size = object.semanticBounds.size;
-        Offset position = Offset(translation.x, translation.y);
+        final object = context.findRenderObject() as RenderBox?;
+        if (object != null) {
+          final translation = object.getTransformTo(null).getTranslation();
+          final size = object.semanticBounds.size;
+          final position = Offset(translation.x, translation.y);
 
-        widget.dashboard.setDashboardSize(size);
-        widget.dashboard.setDashboardPosition(position);
+          widget.dashboard.setDashboardSize(size);
+          widget.dashboard.setDashboardPosition(position);
+        }
       }
     });
 
     // disabling default browser context menu on web
     if (kIsWeb) BrowserContextMenu.disableContextMenu();
 
-    GlobalKey gridKey = GlobalKey();
-    Offset tapDownPos = Offset.zero;
-    Offset secondaryTapDownPos = Offset.zero;
+    final gridKey = GlobalKey();
+    var tapDownPos = Offset.zero;
+    var secondaryTapDownPos = Offset.zero;
     return ClipRect(
       child: Stack(
         clipBehavior: Clip.none,
@@ -227,20 +242,16 @@ class _FlowChartState extends State<FlowChart> {
                         tapDownPos,
                       ),
               onSecondaryTap: () {
-                if (widget.onDashboardSecondaryTapped != null) {
-                  widget.onDashboardSecondaryTapped!(
+                  widget.onDashboardSecondaryTapped?.call(
                     gridKey.currentContext!,
                     secondaryTapDownPos,
                   );
-                }
               },
               onSecondaryLongPress: () {
-                if (widget.onDashboardSecondaryLongTapped != null) {
-                  widget.onDashboardSecondaryLongTapped!(
+                  widget.onDashboardSecondaryLongTapped?.call(
                     gridKey.currentContext!,
                     secondaryTapDownPos,
                   );
-                }
               },
               onScaleUpdate: (details) {
                 if (details.scale != 1) {
@@ -253,7 +264,7 @@ class _FlowChartState extends State<FlowChart> {
                 widget.dashboard.setDashboardPosition(
                   widget.dashboard.position + details.focalPointDelta,
                 );
-                for (int i = 0; i < widget.dashboard.elements.length; i++) {
+                for (var i = 0; i < widget.dashboard.elements.length; i++) {
                   widget.dashboard.elements[i].position +=
                       details.focalPointDelta;
                   for (final conn in widget.dashboard.elements[i].next) {
@@ -366,16 +377,18 @@ class _FlowChartState extends State<FlowChart> {
             // drawing segment handlers
             for (int i = 0; i < widget.dashboard.elements.length; i++)
               for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
-                for (int j = 0;
-                    j < widget.dashboard.elements[i].next[n].pivots.length;
-                    j++)
-                  SegmentHandler(
-                    key: UniqueKey(),
-                    pivot: widget.dashboard.elements[i].next[n].pivots[j],
-                    dashboard: widget.dashboard,
-                    onPivotPressed: widget.onPivotPressed,
-                    onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
-                  ),
+                if (widget.dashboard.elements[i].next[n].arrowParams.style ==
+                    ArrowStyle.segmented)
+                  for (int j = 0;
+                      j < widget.dashboard.elements[i].next[n].pivots.length;
+                      j++)
+                    SegmentHandler(
+                      key: UniqueKey(),
+                      pivot: widget.dashboard.elements[i].next[n].pivots[j],
+                      dashboard: widget.dashboard,
+                      onPivotPressed: widget.onPivotPressed,
+                      onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
+                    ),
           // user drawing when connecting elements
           DrawingArrowWidget(style: widget.dashboard.defaultArrowStyle),
         ],
@@ -386,9 +399,11 @@ class _FlowChartState extends State<FlowChart> {
 
 /// Widget to draw interactive connection when the user tap on handlers
 class DrawingArrowWidget extends StatefulWidget {
-  final ArrowStyle style;
+  ///
+  const DrawingArrowWidget({required this.style, super.key});
 
-  const DrawingArrowWidget({super.key, required this.style});
+  ///
+  final ArrowStyle style;
 
   @override
   State<DrawingArrowWidget> createState() => _DrawingArrowWidgetState();
@@ -407,7 +422,7 @@ class _DrawingArrowWidgetState extends State<DrawingArrowWidget> {
     super.dispose();
   }
 
-  _arrowChanged() {
+  void _arrowChanged() {
     if (mounted) setState(() {});
   }
 

@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 
+/// The arrow tip.
 class HandlerWidget extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color backgroundColor;
-  final Color borderColor;
-  final Widget? icon;
-
+  ///
   const HandlerWidget({
-    super.key,
     required this.width,
     required this.height,
+    super.key,
     this.backgroundColor = Colors.white,
     this.borderColor = Colors.blue,
     this.icon,
   });
+
+  ///
+  final double width;
+
+  ///
+  final double height;
+
+  ///
+  final Color backgroundColor;
+
+  ///
+  final Color borderColor;
+
+  ///
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +44,7 @@ class HandlerWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(4),
         child: FittedBox(child: icon),
       ),
     );

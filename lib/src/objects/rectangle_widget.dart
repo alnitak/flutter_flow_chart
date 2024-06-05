@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import '../elements/flow_element.dart';
-import 'element_text_widget.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/objects/element_text_widget.dart';
 
 /// A kind of element
 class RectangleWidget extends StatelessWidget {
-  final FlowElement element;
-
+  ///
   const RectangleWidget({
-    super.key,
     required this.element,
+    super.key,
   });
+
+  ///
+  final FlowElement element;
 
   @override
   Widget build(BuildContext context) {

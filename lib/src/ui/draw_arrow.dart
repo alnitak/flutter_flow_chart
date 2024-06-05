@@ -505,48 +505,48 @@ class ArrowPainter extends CustomPainter {
 
   @override
   bool? hitTest(Offset position) {
-    if (path.contains(position)) {
-      return true;
-    }
+    // if (path.contains(position)) {
+    //   return true;
+    // }
 
-    for (final pivot in pivots) {
-      if ((pivot.pivot - position).distanceSquared < 25) {
-        return true;
-      }
-    }
+    // for (final pivot in pivots) {
+    //   if ((pivot.pivot - position).distanceSquared < 25) {
+    //     return true;
+    //   }
+    // }
 
-    // check if the position is near the line
-    for (final line in lines) {
-      if (line[0].dx == line[1].dx) {
-        if (line[0].dy < line[1].dy) {
-          if (position.dx == line[0].dx &&
-              position.dy >= line[0].dy &&
-              position.dy <= line[1].dy) {
-            return true;
-          }
-        } else {
-          if (position.dx == line[0].dx &&
-              position.dy <= line[0].dy &&
-              position.dy >= line[1].dy) {
-            return true;
-          }
-        }
-      } else {
-        if (line[0].dx < line[1].dx) {
-          if (position.dy == line[0].dy &&
-              position.dx >= line[0].dx &&
-              position.dx <= line[1].dx) {
-            return true;
-          }
-        } else {
-          if (position.dy == line[0].dy &&
-              position.dx <= line[0].dx &&
-              position.dx >= line[1].dx) {
-            return true;
-          }
-        }
-      }
-    }
+    // // check if the position is near the line
+    // for (final line in lines) {
+    //   if (line[0].dx == line[1].dx) {
+    //     if (line[0].dy < line[1].dy) {
+    //       if (position.dx == line[0].dx &&
+    //           position.dy >= line[0].dy &&
+    //           position.dy <= line[1].dy) {
+    //         return true;
+    //       }
+    //     } else {
+    //       if (position.dx == line[0].dx &&
+    //           position.dy <= line[0].dy &&
+    //           position.dy >= line[1].dy) {
+    //         return true;
+    //       }
+    //     }
+    //   } else {
+    //     if (line[0].dx < line[1].dx) {
+    //       if (position.dy == line[0].dy &&
+    //           position.dx >= line[0].dx &&
+    //           position.dx <= line[1].dx) {
+    //         return true;
+    //       }
+    //     } else {
+    //       if (position.dy == line[0].dy &&
+    //           position.dx <= line[0].dx &&
+    //           position.dx >= line[1].dx) {
+    //         return true;
+    //       }
+    //     }
+    //   }
+    // }
 
     return false;
   }

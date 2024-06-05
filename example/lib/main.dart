@@ -1,10 +1,13 @@
+// ignore_for_file: public_member_api_docs
+
 import 'dart:io';
-import 'text_menu.dart';
-import 'element_settings_menu.dart';
+
+import 'package:example/element_settings_menu.dart';
+import 'package:example/text_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:star_menu/star_menu.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
+import 'package:path_provider/path_provider.dart' as path;
+import 'package:star_menu/star_menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,13 +25,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Flow Chart Demo'),
     );
   }
 }
 
+///
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({required this.title, super.key});
 
   final String title;
 
@@ -38,6 +42,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Dashboard dashboard = Dashboard(defaultArrowStyle: ArrowStyle.segmented);
+
+  /// Notifier for the tension slider
+  final segmentedTension = ValueNotifier<double>(1);
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FlowChart(
           dashboard: dashboard,
           onNewConnection: (p1, p2) {
-            debugPrint("new connection");
+            debugPrint('new connection');
           },
-          onDashboardTapped: ((context, position) {
+          onDashboardTapped: (context, position) {
             debugPrint('Dashboard tapped $position');
             _displayDashboardMenu(context, position);
-          }),
+          },
           onScaleUpdate: (newScale) {
             debugPrint('Scale updated. new scale: $newScale');
           },
@@ -78,13 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
             debugPrint('Dashboard right clicked $position');
             _displayDashboardMenu(context, position);
           },
-          onDashboardLongTapped: ((context, position) {
+          onDashboardLongTapped: (context, position) {
             debugPrint('Dashboard long tapped $position');
-          }),
-          onDashboardSecondaryLongTapped: ((context, position) {
+          },
+          onDashboardSecondaryLongTapped: (context, position) {
             debugPrint(
-                'Dashboard long tapped with mouse right click $position');
-          }),
+              'Dashboard long tapped with mouse right click $position',
+            );
+          },
           onElementLongPressed: (context, position, element) {
             debugPrint('Element with "${element.text}" text '
                 'long pressed');
@@ -116,8 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: dashboard.recenter,
-          child: const Icon(Icons.center_focus_strong)),
+        onPressed: dashboard.recenter,
+        child: const Icon(Icons.center_focus_strong),
+      ),
     );
   }
 
@@ -126,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //*********************
 
   /// Display a drop down menu when tapping on a handler
-  _displayHandlerMenu(
+  void _displayHandlerMenu(
     Offset position,
     Handler handler,
     FlowElement element,
@@ -140,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
           linearShapeParams: const LinearShapeParams(
             angle: 270,
             space: 10,
+            alignment: LinearAlignment.left,
           ),
           onHoverScale: 1.1,
           useTouchAsCenter: true,
@@ -162,6 +172,62 @@ class _MyHomePageState extends State<MyHomePage> {
               dashboard.dissectElementConnection(element, handler);
             },
           ),
+          ValueListenableBuilder<double>(
+            valueListenable: segmentedTension,
+            builder: (_, tension, __) {
+              return Wrap(
+                children: [
+                  OutlinedButton(
+                    child: const Text('segmented'),
+                    onPressed: () {
+                      dashboard.setArrowStyleByHandler(
+                        element,
+                        handler,
+                        ArrowStyle.segmented,
+                        tension: tension,
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: Slider(
+                      value: tension,
+                      max: 3,
+                      onChanged: (v) {
+                        segmentedTension.value = v;
+                        dashboard.setArrowStyleByHandler(
+                          element,
+                          handler,
+                          ArrowStyle.segmented,
+                          tension: v,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          OutlinedButton(
+            child: const Text('curved'),
+            onPressed: () {
+              dashboard.setArrowStyleByHandler(
+                element,
+                handler,
+                ArrowStyle.curve,
+              );
+            },
+          ),
+          OutlinedButton(
+            child: const Text('rectangular'),
+            onPressed: () {
+              dashboard.setArrowStyleByHandler(
+                element,
+                handler,
+                ArrowStyle.rectangular,
+              );
+            },
+          ),
         ],
         parentContext: context,
       ),
@@ -169,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Display a drop down menu when tapping on an element
-  _displayElementMenu(
+  void _displayElementMenu(
     BuildContext context,
     Offset position,
     FlowElement element,
@@ -237,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Display a linear menu for the dashboard
   /// with menu entries built with [menuEntries]
-  _displayDashboardMenu(BuildContext context, Offset position) {
+  void _displayDashboardMenu(BuildContext context, Offset position) {
     StarMenuOverlay.displayStarMenu(
       context,
       StarMenu(
@@ -282,7 +348,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ActionChip(
             label: const Text('Add rect'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
@@ -293,13 +360,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.topCenter,
                     Handler.leftCenter,
                     Handler.rightCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(
             label: const Text('Add oval'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
@@ -310,13 +380,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.topCenter,
                     Handler.leftCenter,
                     Handler.rightCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(
             label: const Text('Add parallelogram'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position,
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
@@ -325,13 +398,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   handlers: [
                     Handler.bottomCenter,
                     Handler.topCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(
             label: const Text('Add hexagon'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position,
                   size: const Size(150, 100),
                   text: '${dashboard.elements.length}',
@@ -342,13 +418,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                     Handler.topCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(
             label: const Text('Add storage'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
+              dashboard.addElement(
+                FlowElement(
                   position: position,
                   size: const Size(100, 150),
                   text: '${dashboard.elements.length}',
@@ -358,7 +437,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.bottomCenter,
                     Handler.leftCenter,
                     Handler.rightCenter,
-                  ]));
+                  ],
+                ),
+              );
             },
           ),
           ActionChip(
@@ -370,16 +451,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ActionChip(
             label: const Text('SAVE dashboard'),
             onPressed: () async {
-              Directory appDocDir =
-                  await path.getApplicationDocumentsDirectory();
+              final appDocDir = await path.getApplicationDocumentsDirectory();
               dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
             },
           ),
           ActionChip(
             label: const Text('LOAD dashboard'),
             onPressed: () async {
-              Directory appDocDir =
-                  await path.getApplicationDocumentsDirectory();
+              final appDocDir = await path.getApplicationDocumentsDirectory();
               dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
             },
           ),

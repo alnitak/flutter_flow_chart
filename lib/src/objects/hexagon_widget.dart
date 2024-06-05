@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import '../elements/flow_element.dart';
-import 'element_text_widget.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/objects/element_text_widget.dart';
 
 /// A kind of element
 class HexagonWidget extends StatelessWidget {
-  final FlowElement element;
-
+  ///
   const HexagonWidget({
-    super.key,
     required this.element,
+    super.key,
   });
+
+  ///
+  final FlowElement element;
 
   @override
   Widget build(BuildContext context) {
@@ -32,27 +34,26 @@ class HexagonWidget extends StatelessWidget {
 }
 
 class _HexagonPainter extends CustomPainter {
-  final FlowElement element;
-
   _HexagonPainter({
     required this.element,
   });
+  final FlowElement element;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint();
-    final Path path = Path();
+    final paint = Paint();
+    final path = Path();
 
-    paint.style = PaintingStyle.fill;
-    paint.color = element.backgroundColor;
+    paint..style = PaintingStyle.fill
+    ..color = element.backgroundColor;
 
-    path.moveTo(0, size.height / 2);
-    path.lineTo(size.width / 4, size.height);
-    path.lineTo(size.width * 3 / 4, size.height);
-    path.lineTo(size.width, size.height / 2);
-    path.lineTo(size.width * 3 / 4, 0);
-    path.lineTo(size.width / 4, 0);
-    path.close();
+    path..moveTo(0, size.height / 2)
+    ..lineTo(size.width / 4, size.height)
+    ..lineTo(size.width * 3 / 4, size.height)
+    ..lineTo(size.width, size.height / 2)
+    ..lineTo(size.width * 3 / 4, 0)
+    ..lineTo(size.width / 4, 0)
+    ..close();
 
     if (element.elevation > 0.01) {
       canvas.drawShadow(
@@ -64,9 +65,9 @@ class _HexagonPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint.strokeWidth = element.borderThickness;
-    paint.color = element.borderColor;
-    paint.style = PaintingStyle.stroke;
+    paint..strokeWidth = element.borderThickness
+    ..color = element.borderColor
+    ..style = PaintingStyle.stroke;
     canvas.drawPath(path, paint);
   }
 

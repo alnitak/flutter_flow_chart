@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import '../elements/flow_element.dart';
-import 'element_text_widget.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/objects/element_text_widget.dart';
 
 /// A kind of element
 class ParallelogramWidget extends StatelessWidget {
-  final FlowElement element;
 
+  ///
   const ParallelogramWidget({
-    super.key,
     required this.element,
+    super.key,
   });
+  ///
+  final FlowElement element;
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +34,27 @@ class ParallelogramWidget extends StatelessWidget {
 }
 
 class _ParallelogramPainter extends CustomPainter {
-  final FlowElement element;
 
   _ParallelogramPainter({
     required this.element,
   });
 
+  final FlowElement element;
+
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint();
-    final Path path = Path();
+    final paint = Paint();
+    final path = Path();
 
-    paint.style = PaintingStyle.fill;
-    paint.color = element.backgroundColor;
+    paint..style = PaintingStyle.fill
+    ..color = element.backgroundColor;
 
-    path.moveTo(size.width / 8, 0);
-    path.lineTo(size.width, 0);
-    path.lineTo(size.width - size.width / 8, size.height);
-    path.lineTo(0, size.height);
-    path.close();
+    path..moveTo(size.width / 8, 0)
+    ..lineTo(size.width, 0)
+    ..lineTo(size.width - size.width / 8, size.height)
+    ..lineTo(0, size.height)
+    ..close();
+
     if (element.elevation > 0.01) {
       canvas.drawShadow(
         path.shift(Offset(element.elevation, element.elevation)),
@@ -61,9 +65,9 @@ class _ParallelogramPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint.strokeWidth = element.borderThickness;
-    paint.color = element.borderColor;
-    paint.style = PaintingStyle.stroke;
+    paint..strokeWidth = element.borderThickness
+    ..color = element.borderColor
+    ..style = PaintingStyle.stroke;
     canvas.drawPath(path, paint);
   }
 

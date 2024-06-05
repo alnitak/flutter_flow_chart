@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import '../elements/flow_element.dart';
-import 'element_text_widget.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/objects/element_text_widget.dart';
 
 /// A kind of element
 class OvalWidget extends StatelessWidget {
-  final FlowElement element;
-
+  ///
   const OvalWidget({
-    super.key,
     required this.element,
+    super.key,
   });
+
+  ///
+  final FlowElement element;
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +34,18 @@ class OvalWidget extends StatelessWidget {
 }
 
 class _OvalPainter extends CustomPainter {
-  final FlowElement element;
-
   _OvalPainter({
     required this.element,
   });
+  final FlowElement element;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint();
-    Path path = Path();
+    final paint = Paint();
+    final path = Path();
 
-    paint.style = PaintingStyle.fill;
-    paint.color = element.backgroundColor;
+    paint..style = PaintingStyle.fill
+    ..color = element.backgroundColor;
 
     path.addOval(Rect.fromLTWH(0, 0, size.width, size.height));
     if (element.elevation > 0.01) {
@@ -57,9 +58,10 @@ class _OvalPainter extends CustomPainter {
     }
     canvas.drawPath(path, paint);
 
-    paint.strokeWidth = element.borderThickness;
-    paint.color = element.borderColor;
-    paint.style = PaintingStyle.stroke;
+    paint..strokeWidth = element.borderThickness
+    ..color = element.borderColor
+    ..style = PaintingStyle.stroke;
+    
     canvas.drawPath(path, paint);
   }
 

@@ -1,39 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Defines grid parameters
+/// Defines grid parameters.
 class GridBackgroundParams extends ChangeNotifier {
-  /// Unscaled size of the grid square
-  /// i.e. the size of the square when scale is 1
-  final double rawGridSquareSize;
-
-  /// thickness of lines
-  final double gridThickness;
-
-  /// how many vertical or horizontal lines to draw the marked lines
-  final int secondarySquareStep;
-
-  /// grid background color
-  final Color backgroundColor;
-
-  /// grid lines color
-  final Color gridColor;
-
-  /// offset to move the grid
-  Offset _offset = Offset.zero;
-
-  // scale of the grid
-  double scale = 1;
-
-  void addOnScaleUpdateListener(void Function(double scale) listener) {
-    _onScaleUpdateListeners.add(listener);
-  }
-
-  void removeOnScaleUpdateListener(void Function(double scale) listener) {
-    _onScaleUpdateListeners.remove(listener);
-  }
-
-  final List<void Function(double scale)> _onScaleUpdateListeners = [];
-
   /// [gridSquare] is the raw size of the grid square when scale is 1
   GridBackgroundParams({
     double gridSquare = 20.0,
@@ -48,26 +16,65 @@ class GridBackgroundParams extends ChangeNotifier {
     }
   }
 
-  factory GridBackgroundParams.fromMap(Map map) {
+  ///
+  factory GridBackgroundParams.fromMap(Map<String, dynamic> map) {
     final params = GridBackgroundParams(
-      gridSquare: map['gridSquare'] ?? 20.0,
-      gridThickness: map['gridThickness'] ?? 0.7,
-      secondarySquareStep: map['secondarySquareStep'] ?? 5,
-      backgroundColor: Color(map['backgroundColor']),
-      gridColor: Color(map['gridColor']),
-    );
-
-    params.scale = map['scale'] ?? 1.0;
-    params._offset = Offset(map['offset.dx'], map['offset.dy']);
+      gridSquare: map['gridSquare'] as double? ?? 20.0,
+      gridThickness: map['gridThickness'] as double? ?? 0.7,
+      secondarySquareStep: map['secondarySquareStep'] as int? ?? 5,
+      backgroundColor: Color(map['backgroundColor'] as int? ?? 0xFFFFFFFF),
+      gridColor: Color(map['gridColor'] as int? ?? 0xFFFFFFFF),
+    )
+      ..scale = map['scale'] as double? ?? 1.0
+      .._offset = Offset(
+        map['offset.dx'] as double? ?? 0.0,
+        map['offset.dy'] as double? ?? 0.0,
+      );
 
     return params;
   }
 
+  /// Unscaled size of the grid square
+  /// i.e. the size of the square when scale is 1
+  final double rawGridSquareSize;
+
+  /// Thickness of lines.
+  final double gridThickness;
+
+  /// How many vertical or horizontal lines to draw the marked lines.
+  final int secondarySquareStep;
+
+  /// Grid background color.
+  final Color backgroundColor;
+
+  /// Grid lines color.
+  final Color gridColor;
+
+  /// offset to move the grid
+  Offset _offset = Offset.zero;
+
+  /// Scale of the grid.
+  double scale = 1;
+
+  /// Add listener for scaling
+  void addOnScaleUpdateListener(void Function(double scale) listener) {
+    _onScaleUpdateListeners.add(listener);
+  }
+
+  /// Remove listener for scaling
+  void removeOnScaleUpdateListener(void Function(double scale) listener) {
+    _onScaleUpdateListeners.remove(listener);
+  }
+
+  final List<void Function(double scale)> _onScaleUpdateListeners = [];
+
+  ///
   set offset(Offset delta) {
     _offset += delta;
     notifyListeners();
   }
 
+  ///
   void setScale(double factor, Offset focalPoint) {
     _offset = Offset(
       focalPoint.dx * (1 - factor),
@@ -84,9 +91,11 @@ class GridBackgroundParams extends ChangeNotifier {
   /// size of the grid square with scale applied
   double get gridSquare => rawGridSquareSize * scale;
 
+  ///
   Offset get offset => _offset;
 
-  toMap() {
+  ///
+  Map<String, dynamic> toMap() {
     return {
       'offset.dx': _offset.dx,
       'offset.dy': _offset.dy,
@@ -102,12 +111,11 @@ class GridBackgroundParams extends ChangeNotifier {
 
 /// Uses a CustomPainter to draw a grid with the given parameters
 class GridBackground extends StatelessWidget {
-  final GridBackgroundParams params;
-
   GridBackground({
     super.key,
     GridBackgroundParams? params,
   }) : params = params ?? GridBackgroundParams();
+  final GridBackgroundParams params;
 
   @override
   Widget build(BuildContext context) {
@@ -129,15 +137,14 @@ class GridBackground extends StatelessWidget {
 }
 
 class _GridBackgroundPainter extends CustomPainter {
-  final GridBackgroundParams params;
-  final double dx;
-  final double dy;
-
   _GridBackgroundPainter({
     required this.params,
     required this.dx,
     required this.dy,
   });
+  final GridBackgroundParams params;
+  final double dx;
+  final double dy;
 
   @override
   void paint(Canvas canvas, Size size) {

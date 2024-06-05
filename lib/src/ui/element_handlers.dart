@@ -1,42 +1,13 @@
 import 'package:flutter/material.dart';
-import '../dashboard.dart';
-import '../elements/flow_element.dart';
-import 'draw_arrow.dart';
-import 'handler_widget.dart';
+import 'package:flutter_flow_chart/src/dashboard.dart';
+import 'package:flutter_flow_chart/src/elements/flow_element.dart';
+import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
+import 'package:flutter_flow_chart/src/ui/handler_widget.dart';
 
 /// Draw handlers over the element
 class ElementHandlers extends StatelessWidget {
-  final Dashboard dashboard;
-  final FlowElement element;
-  final Widget child;
-  final double handlerSize;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerPressed;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerLongPressed;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryTapped;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryLongTapped;
-
+  ///
   const ElementHandlers({
-    super.key,
     required this.dashboard,
     required this.element,
     required this.handlerSize,
@@ -45,7 +16,52 @@ class ElementHandlers extends StatelessWidget {
     required this.onHandlerSecondaryTapped,
     required this.onHandlerLongPressed,
     required this.onHandlerSecondaryLongTapped,
+    super.key,
   });
+
+  ///
+  final Dashboard dashboard;
+
+  ///
+  final FlowElement element;
+
+  ///
+  final Widget child;
+
+  ///
+  final double handlerSize;
+
+  ///
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerPressed;
+
+  ///
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerLongPressed;
+
+  ///
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryTapped;
+
+  ///
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -74,35 +90,6 @@ class ElementHandlers extends StatelessWidget {
 }
 
 class _ElementHandler extends StatelessWidget {
-  final FlowElement element;
-  final Handler handler;
-  final Dashboard dashboard;
-  final double handlerSize;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerPressed;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryTapped;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerLongPressed;
-  final Function(
-    BuildContext context,
-    Offset position,
-    Handler handler,
-    FlowElement element,
-  )? onHandlerSecondaryLongTapped;
-
   const _ElementHandler({
     required this.element,
     required this.handler,
@@ -113,32 +100,60 @@ class _ElementHandler extends StatelessWidget {
     required this.onHandlerLongPressed,
     required this.onHandlerSecondaryLongTapped,
   });
+  final FlowElement element;
+  final Handler handler;
+  final Dashboard dashboard;
+  final double handlerSize;
+
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerPressed;
+
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryTapped;
+
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerLongPressed;
+
+  final void Function(
+    BuildContext context,
+    Offset position,
+    Handler handler,
+    FlowElement element,
+  )? onHandlerSecondaryLongTapped;
 
   @override
   Widget build(BuildContext context) {
-    bool isDragging = false;
+    var isDragging = false;
 
     Alignment alignment;
     switch (handler) {
       case Handler.topCenter:
-        alignment = const Alignment(0.0, -1.0);
-        break;
+        alignment = Alignment.topCenter;
       case Handler.bottomCenter:
-        alignment = const Alignment(0.0, 1.0);
-        break;
+        alignment = Alignment.bottomCenter;
       case Handler.leftCenter:
-        alignment = const Alignment(-1.0, 0.0);
-        break;
+        alignment = Alignment.centerLeft;
       case Handler.rightCenter:
-      default:
-        alignment = const Alignment(1.0, 0.0);
+        alignment = Alignment.centerRight;
     }
 
-    Offset tapDown = Offset.zero;
-    Offset secondaryTapDown = Offset.zero;
+    var tapDown = Offset.zero;
+    var secondaryTapDown = Offset.zero;
     return Align(
       alignment: alignment,
-      child: DragTarget<Map>(
+      child: DragTarget<Map<dynamic, dynamic>>(
         onWillAcceptWithDetails: (details) {
           DrawingArrow.instance.setParams(
             DrawingArrow.instance.params.copyWith(
@@ -146,12 +161,11 @@ class _ElementHandler extends StatelessWidget {
               style: dashboard.defaultArrowStyle,
             ),
           );
-          if (element == details.data['srcElement']) return false;
-          return true;
+          return element != details.data['srcElement'] as FlowElement;
         },
         onAcceptWithDetails: (details) {
           dashboard.addNextById(
-            details.data['srcElement'],
+            details.data['srcElement'] as FlowElement,
             element.id,
             DrawingArrow.instance.params.copyWith(
               endArrowPosition: alignment,
@@ -161,7 +175,7 @@ class _ElementHandler extends StatelessWidget {
         onLeave: (data) {
           DrawingArrow.instance.setParams(
             DrawingArrow.instance.params.copyWith(
-              endArrowPosition: const Alignment(0.0, 0.0),
+              endArrowPosition: Alignment.center,
               style: dashboard.defaultArrowStyle,
             ),
           );
@@ -185,26 +199,36 @@ class _ElementHandler extends StatelessWidget {
               onSecondaryTapDown: (details) => secondaryTapDown =
                   details.globalPosition - dashboard.position,
               onTap: () {
-                if (onHandlerPressed != null) {
-                  onHandlerPressed!(context, tapDown, handler, element);
-                }
+                onHandlerPressed?.call(
+                  context,
+                  tapDown,
+                  handler,
+                  element,
+                );
               },
               onSecondaryTap: () {
-                if (onHandlerSecondaryTapped != null) {
-                  onHandlerSecondaryTapped!(
-                      context, secondaryTapDown, handler, element);
-                }
+                onHandlerSecondaryTapped?.call(
+                  context,
+                  secondaryTapDown,
+                  handler,
+                  element,
+                );
               },
               onLongPress: () {
-                if (onHandlerLongPressed != null) {
-                  onHandlerLongPressed!(context, tapDown, handler, element);
-                }
+                onHandlerLongPressed?.call(
+                  context,
+                  tapDown,
+                  handler,
+                  element,
+                );
               },
               onSecondaryLongPress: () {
-                if (onHandlerSecondaryLongTapped != null) {
-                  onHandlerSecondaryLongTapped!(
-                      context, secondaryTapDown, handler, element);
-                }
+                onHandlerSecondaryLongTapped?.call(
+                  context,
+                  secondaryTapDown,
+                  handler,
+                  element,
+                );
               },
               child: HandlerWidget(
                 width: handlerSize,
@@ -214,15 +238,18 @@ class _ElementHandler extends StatelessWidget {
             onDragUpdate: (details) {
               if (!isDragging) {
                 DrawingArrow.instance.params = ArrowParams(
-                    startArrowPosition: alignment,
-                    endArrowPosition: const Alignment(0, 0));
+                  startArrowPosition: alignment,
+                  endArrowPosition: Alignment.center,
+                );
                 DrawingArrow.instance.from =
                     details.globalPosition - dashboard.position;
                 isDragging = true;
               }
-              DrawingArrow.instance.setTo(details.globalPosition -
-                  dashboard.position +
-                  dashboard.handlerFeedbackOffset);
+              DrawingArrow.instance.setTo(
+                details.globalPosition -
+                    dashboard.position +
+                    dashboard.handlerFeedbackOffset,
+              );
             },
             onDragEnd: (details) {
               DrawingArrow.instance.reset();
