@@ -163,13 +163,13 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         items: [
-          FloatingActionButton(
-            child: const Icon(Icons.delete),
+          ActionChip(
+            label: const Icon(Icons.delete),
             onPressed: () =>
                 dashboard.removeElementConnection(element, handler),
           ),
-          FloatingActionButton(
-            child: const Icon(Icons.control_point),
+          ActionChip(
+            label: const Icon(Icons.control_point),
             onPressed: () {
               dashboard.dissectElementConnection(element, handler);
             },
