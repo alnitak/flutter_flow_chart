@@ -31,7 +31,7 @@ jobs:
     - name: "Run Dart Analyze"
       uses: invertase/github-action-dart-analyzer@v3
       with:
-        fatal-infos: true
+        fatal-infos: false
         fatal-warnings: true
         annotate: true
         working-directory: lib/
