@@ -51,23 +51,31 @@ class FlowChart extends StatefulWidget {
 
   /// callback for element pressed
   final void Function(
-          BuildContext context, Offset position, FlowElement element)?
-      onElementPressed;
+    BuildContext context,
+    Offset position,
+    FlowElement element,
+  )? onElementPressed;
 
   /// callback for mouse right click event on an element
   final void Function(
-          BuildContext context, Offset position, FlowElement element)?
-      onElementSecondaryTapped;
+    BuildContext context,
+    Offset position,
+    FlowElement element,
+  )? onElementSecondaryTapped;
 
   /// callback for element long pressed
   final void Function(
-          BuildContext context, Offset position, FlowElement element)?
-      onElementLongPressed;
+    BuildContext context,
+    Offset position,
+    FlowElement element,
+  )? onElementLongPressed;
 
   /// callback for right click long press event on an element
   final void Function(
-          BuildContext context, Offset position, FlowElement element)?
-      onElementSecondaryLongTapped;
+    BuildContext context,
+    Offset position,
+    FlowElement element,
+  )? onElementSecondaryLongTapped;
 
   /// callback for onclick event of pivot
   final void Function(BuildContext context, Pivot pivot)? onPivotPressed;
@@ -329,7 +337,6 @@ class _FlowChartState extends State<FlowChart> {
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 pivots: widget.dashboard.elements[i].next[n].pivots,
               ),
-          if (widget.dashboard.defaultArrowStyle == ArrowStyle.segmented)
             // drawing segment handlers
             for (int i = 0; i < widget.dashboard.elements.length; i++)
               for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
