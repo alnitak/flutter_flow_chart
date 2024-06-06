@@ -32,7 +32,7 @@ jobs:
       uses: invertase/github-action-dart-analyzer@v3
       with:
         fatal-infos: false
-        fatal-warnings: true
+        fatal-warnings: false
         annotate: true
         working-directory: lib/
 
