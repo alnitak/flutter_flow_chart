@@ -20,7 +20,9 @@ class ConnectionParams {
       arrowParams:
           ArrowParams.fromMap(map['arrowParams'] as Map<String, dynamic>),
       pivots: (map['pivots'] as List?)
-              ?.map<Pivot>((pivot) => Pivot.fromMap(pivot))
+              ?.map<Pivot>(
+                (pivot) => Pivot.fromMap(pivot as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );

@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs
 
-import 'dart:io';
-
 import 'package:example/element_settings_menu.dart';
 import 'package:example/text_menu.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Dashboard dashboard = Dashboard(defaultArrowStyle: ArrowStyle.segmented);
+  Dashboard dashboard = Dashboard();
 
   /// Notifier for the tension slider
   final segmentedTension = ValueNotifier<double>(1);
@@ -159,7 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 dashboard.dashboardSize.height / 2,
               ),
         ),
-        onItemTapped: (index, controller) => controller.closeMenu!(),
+        onItemTapped: (index, controller) {
+          if (index != 2) {
+            controller.closeMenu!();
+          }
+        },
         items: [
           FloatingActionButton(
             child: const Icon(Icons.delete),
@@ -177,8 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (_, tension, __) {
               return Wrap(
                 children: [
-                  OutlinedButton(
-                    child: const Text('segmented'),
+                  ActionChip(
+                    label: const Text('segmented'),
                     onPressed: () {
                       dashboard.setArrowStyleByHandler(
                         element,
@@ -208,8 +210,8 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          OutlinedButton(
-            child: const Text('curved'),
+          ActionChip(
+            label: const Text('curved'),
             onPressed: () {
               dashboard.setArrowStyleByHandler(
                 element,
@@ -218,8 +220,8 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          OutlinedButton(
-            child: const Text('rectangular'),
+          ActionChip(
+            label: const Text('rectangular'),
             onPressed: () {
               dashboard.setArrowStyleByHandler(
                 element,
@@ -253,9 +255,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onHoverScale: 1.1,
           centerOffset: position - const Offset(50, 0),
-          backgroundParams: const BackgroundParams(
-            backgroundColor: Colors.transparent,
-          ),
           boundaryBackground: BoundaryBackground(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(

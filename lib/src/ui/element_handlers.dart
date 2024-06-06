@@ -181,7 +181,7 @@ class _ElementHandler extends StatelessWidget {
           );
         },
         builder: (context, candidateData, rejectedData) {
-          return Draggable<Map>(
+          return Draggable(
             feedback: const SizedBox.shrink(),
             feedbackOffset: dashboard.handlerFeedbackOffset,
             childWhenDragging: HandlerWidget(

@@ -1,3 +1,6 @@
+## 3.1.1
+* Added curvature tension between pivot point of segmented arrows.
+
 ## 3.1.0
 * Implemented styling new arrows (thanks to Isira Herath)
 
