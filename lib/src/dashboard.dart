@@ -164,12 +164,12 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// add a [FlowElement] to the dashboard
-  void addElement(FlowElement element, {bool notify = true}) {
+  void addElement(FlowElement element, {bool notify = true, int? position}) {
     if (element.id.isEmpty) {
       element.id = const Uuid().v4();
     }
     element.setScale(1, gridBackgroundParams.scale);
-    elements.add(element);
+    elements.insert(position ?? elements.length, element);
     if (notify) {
       notifyListeners();
     }
