@@ -13,8 +13,6 @@ dependencies:
   flutter_flow_chart:
     path: ../
 
-  cupertino_icons: ^1.0.8
-
   # https://pub.dev/packages/star_menu
   star_menu: ^4.0.1
 
@@ -23,6 +21,9 @@ dependencies:
 
   # https://pub.dev/packages/flutter_colorpicker
   flutter_colorpicker: ^1.0.3
+
+  # https://pub.dev/packages/file_picker
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:

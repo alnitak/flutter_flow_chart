@@ -2,6 +2,7 @@
 
 import 'package:example/element_settings_menu.dart';
 import 'package:example/text_menu.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:path_provider/path_provider.dart' as path;
@@ -471,6 +472,31 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.rightCenter,
                   ],
                 ),
+              );
+            },
+          ),
+          ActionChip(
+            label: const Text('Add image'),
+            onPressed: () async {
+              final pickResult = await FilePicker.platform.pickFiles(
+                type: FileType.image,
+              );
+              if (pickResult == null) return;
+              dashboard.addElement(
+                FlowElement(
+                  position: position,
+                  // size: const Size(200, 200),
+                  // text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.image,
+                  handlers: [
+                    Handler.topCenter,
+                    Handler.bottomCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ],
+                  data: Image.memory(pickResult.files.single.bytes!).image,
+                )..isResizable = true,
               );
             },
           ),

@@ -26,6 +26,9 @@ enum ElementKind {
 
   ///
   hexagon,
+
+  ///
+  image,
 }
 
 /// Handler supported by elements
@@ -80,6 +83,7 @@ class FlowElement extends ChangeNotifier {
     this.borderColor = Colors.blue,
     this.borderThickness = 3,
     this.elevation = 4,
+    this.data,
     List<ConnectionParams>? next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
@@ -189,6 +193,9 @@ class FlowElement extends ChangeNotifier {
 
   /// Whether this element can be connected to others
   bool isConnectable;
+
+  /// Kind-specific data
+  dynamic data;
 
   @override
   String toString() {
