@@ -175,6 +175,16 @@ class Dashboard extends ChangeNotifier {
     }
   }
 
+  /// Enable editing mode for an element
+  void setElementEditingText(
+    FlowElement element,
+    bool editing, {
+    bool notify = true,
+  }) {
+    element.isEditingText = editing;
+    if (notify) notifyListeners();
+  }
+
   /// Set a new [style] to the arrow staring from [src] pointing to [dest].
   /// If [notify] is true the dasboard is refreshed.
   /// The [tension] parameter is used when [style] is [ArrowStyle.segmented] to

@@ -91,6 +91,7 @@ class FlowElement extends ChangeNotifier {
         isResizable = false,
         isConnectable = true,
         isDeletable = false,
+        isEditingText = false,
         // fixing offset issue under extreme scaling
         position = position -
             Offset(
@@ -197,6 +198,9 @@ class FlowElement extends ChangeNotifier {
 
   /// Whether this element can be connected to others
   bool isConnectable;
+
+  /// Whether the text of this element is being edited with a form field
+  bool isEditingText;
 
   /// Kind-specific data
   dynamic data;
