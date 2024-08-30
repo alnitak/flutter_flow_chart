@@ -179,6 +179,7 @@ class _ElementWidgetState extends State<ElementWidget> {
           children: [
             element,
             if (widget.element.isResizable) _buildResizeHandle(),
+            if (widget.element.isDeletable) _buildDeleteHandle(),
           ],
         ),
       ),
@@ -203,6 +204,22 @@ class _ElementWidgetState extends State<ElementWidget> {
           width: 30,
           height: 30,
           icon: Icon(Icons.compare_arrows),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteHandle() {
+    return Listener(
+      onPointerUp: (event) {
+        widget.dashboard.removeElement(widget.element);
+      },
+      child: const Align(
+        alignment: Alignment.bottomLeft,
+        child: HandlerWidget(
+          width: 30,
+          height: 30,
+          icon: Icon(Icons.delete_outline),
         ),
       ),
     );

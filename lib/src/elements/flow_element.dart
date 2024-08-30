@@ -90,6 +90,7 @@ class FlowElement extends ChangeNotifier {
         isDraggable = true,
         isResizable = false,
         isConnectable = true,
+        isDeletable = false,
         // fixing offset issue under extreme scaling
         position = position -
             Offset(
@@ -190,6 +191,9 @@ class FlowElement extends ChangeNotifier {
 
   /// Whether this element can be resized
   bool isResizable;
+
+  /// Whether this element can be deleted quickly by clicking on the trash icon
+  bool isDeletable;
 
   /// Whether this element can be connected to others
   bool isConnectable;
