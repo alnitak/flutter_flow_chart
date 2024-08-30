@@ -67,10 +67,14 @@ class _ImageWidgetState extends State<ImageWidget> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Image(
-      image: widget.imageProvider,
-      width: widget.element.size.width,
-      height: widget.element.size.height,
+    return ColoredBox(
+      color: Colors.black12,
+      child: Image(
+        image: widget.imageProvider,
+        width: widget.element.size.width,
+        height: widget.element.size.height,
+        fit: BoxFit.contain,
+      ),
     );
   }
 }
