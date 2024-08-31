@@ -1,16 +1,13 @@
 // ignore_for_file: public_member_api_docs
 
-import 'dart:convert' show base64Encode, jsonDecode, utf8;
-
 import 'package:example/element_settings_menu.dart';
+import 'package:example/platforms/hooks_mobile.dart'
+    if (dart.library.js) 'package:example/platforms/hooks_web.dart';
 import 'package:example/text_menu.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:star_menu/star_menu.dart';
-import 'package:web/web.dart' as web;
 
 void main() {
   runApp(const MyApp());
@@ -514,44 +511,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ActionChip(
             label: const Text('SAVE dashboard'),
-            onPressed: _saveDashboard,
+            onPressed: () => saveDashboard(dashboard),
           ),
           ActionChip(
             label: const Text('LOAD dashboard'),
-            onPressed: _loadDashboard,
+            onPressed: () => loadDashboard(dashboard),
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _saveDashboard() async {
-    if (!kIsWeb) {
-      final appDocDir = await path.getApplicationDocumentsDirectory();
-      dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
-    } else {
-      final bytes = utf8.encode(dashboard.prettyJson());
-      final anchor = web.document.createElement('a') as web.HTMLAnchorElement
-        ..href = 'data:application/octet-stream;base64,${base64Encode(bytes)}'
-        ..style.display = 'none'
-        ..download = 'FLOWCHART.json';
-      web.document.body!.appendChild(anchor);
-      anchor.click();
-      web.document.body!.removeChild(anchor);
-    }
-  }
-
-  Future<void> _loadDashboard() async {
-    if (!kIsWeb) {
-      final appDocDir = await path.getApplicationDocumentsDirectory();
-      dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
-    } else {
-      final result = await FilePicker.platform.pickFiles();
-      if (result == null) return;
-      dashboard.loadDashboardData(
-        jsonDecode(String.fromCharCodes(result.files.first.bytes!))
-            as Map<String, dynamic>,
-      );
-    }
   }
 }
