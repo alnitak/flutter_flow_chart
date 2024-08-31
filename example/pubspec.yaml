@@ -13,17 +13,20 @@ dependencies:
   flutter_flow_chart:
     path: ../
 
-  # https://pub.dev/packages/star_menu
-  star_menu: ^4.0.1
-
-  # https://pub.dev/packages/path_provider
-  path_provider: ^2.1.3
+  # https://pub.dev/packages/file_picker
+  file_picker: ^8.1.2
 
   # https://pub.dev/packages/flutter_colorpicker
   flutter_colorpicker: ^1.0.3
 
-  # https://pub.dev/packages/file_picker
-  file_picker: ^8.1.2
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.3
+
+  # https://pub.dev/packages/star_menu
+  star_menu: ^4.0.1
+
+  # https://pub.dev/packages/web
+  web: ^1.0.0
 
 dev_dependencies:
   flutter_test:
