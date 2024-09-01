@@ -92,7 +92,6 @@ class FlowElement extends ChangeNotifier {
         isConnectable = true,
         isDeletable = false,
         isEditingText = false,
-        isAutoSizeText = false,
         // fixing offset issue under extreme scaling
         position = position -
             Offset(
@@ -202,9 +201,6 @@ class FlowElement extends ChangeNotifier {
 
   /// Whether the text of this element is being edited with a form field
   bool isEditingText;
-
-  /// Set to true to allow auto-size of text for both view and edit mode
-  bool isAutoSizeText;
 
   /// Kind-specific data
   dynamic data;

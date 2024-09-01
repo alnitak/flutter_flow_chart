@@ -102,11 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           onElementPressed: (context, position, element) {
             debugPrint('Element with "${element.text}" text pressed');
-            if (element.data == 'inplace-edit') {
-              dashboard.setElementEditingText(element, true);
-            } else {
-              _displayElementMenu(context, position, element);
-            }
+            _displayElementMenu(context, position, element);
           },
           onElementSecondaryTapped: (context, position, element) {
             debugPrint('Element with "${element.text}" text pressed');
@@ -385,21 +381,21 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           ActionChip(
-            label: const Text(
-                'Add rect (draggable, resizable, not connectable, auto-size-text)'),
+            label:
+                const Text('Add rect (draggable, resizable, not connectable)'),
             onPressed: () {
-              dashboard.addElement(FlowElement(
-                position: position,
-                size: const Size(100, 50),
-                text: '${dashboard.elements.length}',
-                handlerSize: 25,
-                kind: ElementKind.rectangle,
-                data: 'inplace-edit',
-              )
-                ..isDraggable = true
-                ..isResizable = true
-                ..isConnectable = false
-                ..isAutoSizeText = true);
+              dashboard.addElement(
+                FlowElement(
+                  position: position,
+                  size: const Size(100, 50),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.rectangle,
+                )
+                  ..isDraggable = true
+                  ..isResizable = true
+                  ..isConnectable = false,
+              );
             },
           ),
           ActionChip(
