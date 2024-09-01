@@ -11,6 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://pub.dev/packages/auto_size_text
+  auto_size_text: ^3.0.0
+
+  # https://pub.dev/packages/auto_size_text_field
+  auto_size_text_field: ^2.2.4
+
   # https://pub.dev/packages/uuid
   uuid: ^4.4.0
 

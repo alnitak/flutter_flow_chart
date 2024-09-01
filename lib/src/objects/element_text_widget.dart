@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 
@@ -37,13 +39,30 @@ class _ElementTextWidgetState extends State<ElementTextWidget> {
       fontFamily: widget.element.fontFamily,
     );
 
-    return Align(
-      child: widget.element.isEditingText
+    Widget textWidget;
+    if (widget.element.isAutoSizeText) {
+      textWidget = widget.element.isEditingText
+          ? AutoSizeTextField(
+              controller: _controller,
+              autofocus: true,
+              onTapOutside: (event) => dismissTextEditor(),
+              // FIXME: waiting for https://github.com/lzhuor/auto_size_text_field/pull/36
+              // onFieldSubmitted: dismissTextEditor,
+              textAlign: TextAlign.center,
+              style: textStyle,
+            )
+          : AutoSizeText(
+              widget.element.text,
+              minFontSize: 8,
+              textAlign: TextAlign.center,
+              style: textStyle,
+            );
+    } else {
+      textWidget = widget.element.isEditingText
           ? TextFormField(
               controller: _controller,
               autofocus: true,
               onTapOutside: (event) => dismissTextEditor(),
-              onFieldSubmitted: dismissTextEditor,
               textAlign: TextAlign.center,
               style: textStyle,
             )
@@ -51,7 +70,14 @@ class _ElementTextWidgetState extends State<ElementTextWidget> {
               widget.element.text,
               textAlign: TextAlign.center,
               style: textStyle,
-            ),
+            );
+    }
+
+    return Align(
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: textWidget,
+      ),
     );
   }
 
