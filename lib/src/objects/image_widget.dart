@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/src/elements/flow_element.dart';
@@ -30,45 +30,44 @@ class ImageWidget extends StatefulWidget {
 }
 
 class _ImageWidgetState extends State<ImageWidget> {
-  ImageInfo? imageInfo;
-  String? error;
+  ui.Image? _cachedImage;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    _loadImageData();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadImage());
   }
 
-  void _loadImageData() {
+  void _loadImage() {
+    // Ensure we have a size size
+    if (widget.element.size == Size.zero) {
+      widget.element.changeSize(const Size(200, 150));
+    }
     // Load image
     widget.imageProvider.resolve(ImageConfiguration.empty).addListener(
           ImageStreamListener(
             (ImageInfo info, _) async {
-              // Apply size
-              if (widget.element.size == Size.zero) {
-                widget.element.changeSize(
-                  Size(
-                    info.image.width.toDouble(),
-                    info.image.height.toDouble(),
-                  ),
-                );
-              }
+              debugPrint('Image info completed: $info');
+              // Adjust size
+              widget.element.changeSize(Size(
+                info.image.width.toDouble(),
+                info.image.height.toDouble(),
+              ));
               // Serialize image to save/load dashboard
               final imageData =
-                  await info.image.toByteData(format: ImageByteFormat.png);
+                  await info.image.toByteData(format: ui.ImageByteFormat.png);
               widget.element.serializedData =
                   base64Encode(imageData!.buffer.asUint8List());
-              // Render image
-              if (mounted) setState(() => imageInfo = info);
+              ui.decodeImageFromList(imageData.buffer.asUint8List(), (image) {
+                debugPrint('Image decoding completed: $image');
+                // Render image
+                if (mounted) setState(() => _cachedImage = image);
+              });
             },
             onError: (exception, stackTrace) {
               debugPrintStack(stackTrace: stackTrace);
-              // Ensure we have a size size
-              if (widget.element.size == Size.zero) {
-                widget.element.changeSize(const Size(200, 150));
-              }
-              // Show error
-              if (mounted) setState(() => error = exception.toString());
+              if (mounted) setState(() => _error = exception.toString());
             },
           ),
         );
@@ -76,20 +75,21 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (error != null) {
-      return Center(child: Text(error!));
-    } else if (imageInfo == null) {
+    debugPrint('Rendering ImageWidget ${widget.element.id} '
+        'from provider ${widget.imageProvider.runtimeType} '
+        'and cachedImage $_cachedImage');
+
+    if (_error != null) {
+      return Center(child: Text(_error!));
+    } else if (_cachedImage == null) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    debugPrint('Rendering ImageWidget ${widget.element.id} '
-        'from provider ${widget.imageProvider.runtimeType}');
     return ColoredBox(
       color: Colors.black12,
-      child: Image(
-        image: widget.imageProvider,
+      child: RawImage(
         width: widget.element.size.width,
         height: widget.element.size.height,
+        image: _cachedImage,
         fit: BoxFit.contain,
       ),
     );

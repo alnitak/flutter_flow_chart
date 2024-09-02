@@ -147,6 +147,9 @@ class _ElementWidgetState extends State<ElementWidget> {
 
     if (widget.element.isDraggable) {
       element = _buildDraggableWidget(element);
+    } else {
+      // Since element is not draggable, move the grid when dragging on it
+      element = IgnorePointer(child: element);
     }
 
     var tapLocation = Offset.zero;

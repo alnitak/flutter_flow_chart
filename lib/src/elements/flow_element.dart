@@ -203,7 +203,7 @@ class FlowElement extends ChangeNotifier {
 
   @override
   String toString() {
-    return 'kind: $kind  text: $text';
+    return 'FlowElement{kind: $kind, text: $text}';
   }
 
   /// Get the handler center of this handler for the given alignment.

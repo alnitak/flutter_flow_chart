@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 
 /// Defines grid parameters.
@@ -12,20 +8,11 @@ class GridBackgroundParams extends ChangeNotifier {
     this.gridThickness = 0.7,
     this.secondarySquareStep = 5,
     this.backgroundColor = Colors.white,
-    this.backgroundImage,
     this.gridColor = Colors.black12,
     void Function(double scale)? onScaleUpdate,
   }) : rawGridSquareSize = gridSquare {
     if (onScaleUpdate != null) {
       _onScaleUpdateListeners.add(onScaleUpdate);
-    }
-    if (backgroundImage != null) {
-      _backgroundImageNeedsPaint = true;
-      ui.decodeImageFromList(backgroundImage!, (image) {
-        debugPrint('Image decoding completed: $image');
-        _backgroundImage = image;
-        notifyListeners();
-      });
     }
   }
 
@@ -36,9 +23,6 @@ class GridBackgroundParams extends ChangeNotifier {
       gridThickness: map['gridThickness'] as double? ?? 0.7,
       secondarySquareStep: map['secondarySquareStep'] as int? ?? 5,
       backgroundColor: Color(map['backgroundColor'] as int? ?? 0xFFFFFFFF),
-      backgroundImage: map['backgroundImage'] != null
-          ? base64Decode(map['backgroundImage'] as String) as Uint8List?
-          : null,
       gridColor: Color(map['gridColor'] as int? ?? 0xFFFFFFFF),
     )
       ..scale = map['scale'] as double? ?? 1.0
@@ -62,11 +46,6 @@ class GridBackgroundParams extends ChangeNotifier {
 
   /// Grid background color.
   final Color backgroundColor;
-
-  /// Grid background image.
-  final Uint8List? backgroundImage;
-  ui.Image? _backgroundImage;
-  bool _backgroundImageNeedsPaint = false;
 
   /// Grid lines color.
   final Color gridColor;
@@ -125,8 +104,6 @@ class GridBackgroundParams extends ChangeNotifier {
       'gridThickness': gridThickness,
       'secondarySquareStep': secondarySquareStep,
       'backgroundColor': backgroundColor.value,
-      'backgroundImage':
-          backgroundImage != null ? base64Encode(backgroundImage!) : null,
       'gridColor': gridColor.value,
     };
   }
@@ -215,26 +192,11 @@ class _GridBackgroundPainter extends CustomPainter {
           : params.gridThickness;
       canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
     }
-
-    // debugPrint(
-    //     'Moving to: ${dx},${dy} (start=${startX},${startY}) with scale=${params.scale}');
-    if (params._backgroundImage != null) {
-      final image = params._backgroundImage!;
-      final scale = params.scale;
-      final srcRect =
-          Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
-      final dstRect =
-          Rect.fromLTWH(dx, dy, image.width * scale, image.height * scale);
-      canvas.drawImageRect(image, srcRect, dstRect, Paint());
-      params._backgroundImageNeedsPaint = false;
-    }
   }
 
   @override
   bool shouldRepaint(_GridBackgroundPainter oldDelegate) {
     debugPrint('shouldRepaint ${oldDelegate.dx} $dx ${oldDelegate.dy} $dy');
-    return oldDelegate.dx != dx ||
-        oldDelegate.dy != dy ||
-        params._backgroundImageNeedsPaint;
+    return oldDelegate.dx != dx || oldDelegate.dy != dy;
   }
 }
