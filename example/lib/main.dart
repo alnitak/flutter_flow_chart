@@ -287,13 +287,13 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: const Text('Remove all connections'),
           ),
-          InkWell(
-            onTap: () {
-              dashboard.setElementDraggable(element, !element.isDraggable);
-            },
-            child:
-                Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     dashboard.setElementDraggable(element, !element.isDraggable);
+          //   },
+          //   child:
+          //       Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
+          // ),
           InkWell(
             onTap: () {
               dashboard.setElementConnectable(element, !element.isConnectable);
