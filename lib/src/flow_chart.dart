@@ -258,7 +258,7 @@ class _FlowChartState extends State<FlowChart> {
           // Draw elements
           for (int i = 0; i < widget.dashboard.elements.length; i++)
             ElementWidget(
-              key: ValueKey(widget.dashboard.elements.elementAt(i).id),
+              key: UniqueKey(),
               dashboard: widget.dashboard,
               element: widget.dashboard.elements.elementAt(i),
               onElementPressed: widget.onElementPressed == null
