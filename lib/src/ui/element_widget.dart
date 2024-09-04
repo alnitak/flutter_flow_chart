@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:flutter_flow_chart/src/objects/diamond_widget.dart';
 import 'package:flutter_flow_chart/src/objects/hexagon_widget.dart';
+import 'package:flutter_flow_chart/src/objects/image_widget.dart';
 import 'package:flutter_flow_chart/src/objects/oval_widget.dart';
 import 'package:flutter_flow_chart/src/objects/parallelogram_widget.dart';
 import 'package:flutter_flow_chart/src/objects/rectangle_widget.dart';
@@ -122,6 +123,8 @@ class _ElementWidgetState extends State<ElementWidget> {
         element = HexagonWidget(element: widget.element);
       case ElementKind.rectangle:
         element = RectangleWidget(element: widget.element);
+      case ElementKind.image:
+        element = ImageWidget(element: widget.element);
     }
 
     if (widget.element.isConnectable && widget.element.handlers.isNotEmpty) {
@@ -144,6 +147,9 @@ class _ElementWidgetState extends State<ElementWidget> {
 
     if (widget.element.isDraggable) {
       element = _buildDraggableWidget(element);
+    } else {
+      // Since element is not draggable, move the grid when dragging on it
+      element = IgnorePointer(child: element);
     }
 
     var tapLocation = Offset.zero;

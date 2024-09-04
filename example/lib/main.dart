@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:example/element_settings_menu.dart';
+import 'package:example/platforms/hooks_mobile.dart'
+    if (dart.library.js) 'package:example/platforms/hooks_web.dart';
 import 'package:example/text_menu.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:star_menu/star_menu.dart';
 
 void main() {
@@ -285,19 +287,20 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: const Text('Remove all connections'),
           ),
-          InkWell(
-            onTap: () {
-              dashboard.setElementDraggable(element, !element.isDraggable);
-            },
-            child:
-                Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     dashboard.setElementDraggable(element, !element.isDraggable);
+          //   },
+          //   child:
+          //       Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
+          // ),
           InkWell(
             onTap: () {
               dashboard.setElementConnectable(element, !element.isConnectable);
             },
             child: Text(
-                'Toggle Connectable (${element.isConnectable ? '✔' : '✘'})'),
+              'Toggle Connectable (${element.isConnectable ? '✔' : '✘'})',
+            ),
           ),
           InkWell(
             onTap: () {
@@ -316,7 +319,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Display a linear menu for the dashboard
-  /// with menu entries built with [menuEntries]
   void _displayDashboardMenu(BuildContext context, Offset position) {
     StarMenuOverlay.displayStarMenu(
       context,
@@ -368,6 +370,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
+                  // ignore: avoid_redundant_argument_values
                   kind: ElementKind.rectangle,
                   handlers: [
                     Handler.bottomCenter,
@@ -389,6 +392,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   size: const Size(100, 50),
                   text: '${dashboard.elements.length}',
                   handlerSize: 25,
+                  // ignore: avoid_redundant_argument_values
                   kind: ElementKind.rectangle,
                 )
                   ..isDraggable = true
@@ -475,6 +479,31 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           ActionChip(
+            label: const Text('Add image'),
+            onPressed: () async {
+              final pickResult = await FilePicker.platform.pickFiles(
+                type: FileType.image,
+              );
+              if (pickResult == null) return;
+              dashboard.addElement(
+                FlowElement(
+                  position: position,
+                  // size: const Size(200, 200),
+                  // text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.image,
+                  handlers: [
+                    Handler.topCenter,
+                    Handler.bottomCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ],
+                  data: Image.memory(pickResult.files.single.bytes!).image,
+                )..isResizable = true,
+              );
+            },
+          ),
+          ActionChip(
             label: const Text('Remove all'),
             onPressed: () {
               dashboard.removeAllElements();
@@ -482,17 +511,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ActionChip(
             label: const Text('SAVE dashboard'),
-            onPressed: () async {
-              final appDocDir = await path.getApplicationDocumentsDirectory();
-              dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
-            },
+            onPressed: () => saveDashboard(dashboard),
           ),
           ActionChip(
             label: const Text('LOAD dashboard'),
-            onPressed: () async {
-              final appDocDir = await path.getApplicationDocumentsDirectory();
-              dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
-            },
+            onPressed: () => loadDashboard(dashboard),
           ),
         ],
       ),

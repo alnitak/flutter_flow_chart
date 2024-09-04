@@ -597,33 +597,38 @@ class Dashboard extends ChangeNotifier {
     File(completeFilePath).writeAsStringSync(prettyJson(), flush: true);
   }
 
-  /// clear the dashboard and load the new one
+  /// clear the dashboard and load the new one from file [completeFilePath]
   void loadDashboard(String completeFilePath) {
     final f = File(completeFilePath);
     if (f.existsSync()) {
-      elements.clear();
       final source = json.decode(f.readAsStringSync()) as Map<String, dynamic>;
-
-      gridBackgroundParams = GridBackgroundParams.fromMap(
-        source['gridBackgroundParams'] as Map<String, dynamic>,
-      );
-      blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
-      minimumZoomFactor = source['minimumZoomFactor'] as double;
-      dashboardSize = Size(
-        source['dashboardSizeWidth'] as double,
-        source['dashboardSizeHeight'] as double,
-      );
-
-      final loadedElements = List<FlowElement>.from(
-        (source['elements'] as List<dynamic>).map<FlowElement>(
-          (x) => FlowElement.fromMap(x as Map<String, dynamic>),
-        ),
-      );
-      elements
-        ..clear()
-        ..addAll(loadedElements);
-
-      recenter();
+      loadDashboardData(source);
     }
+  }
+
+  /// clear the dashboard and load the new one from [source] json
+  void loadDashboardData(Map<String, dynamic> source) {
+    elements.clear();
+
+    gridBackgroundParams = GridBackgroundParams.fromMap(
+      source['gridBackgroundParams'] as Map<String, dynamic>,
+    );
+    blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
+    minimumZoomFactor = source['minimumZoomFactor'] as double;
+    dashboardSize = Size(
+      source['dashboardSizeWidth'] as double,
+      source['dashboardSizeHeight'] as double,
+    );
+
+    final loadedElements = List<FlowElement>.from(
+      (source['elements'] as List<dynamic>).map<FlowElement>(
+        (x) => FlowElement.fromMap(x as Map<String, dynamic>),
+      ),
+    );
+    elements
+      ..clear()
+      ..addAll(loadedElements);
+
+    recenter();
   }
 }

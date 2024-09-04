@@ -142,6 +142,7 @@ class _GridBackgroundPainter extends CustomPainter {
     required this.dx,
     required this.dy,
   });
+
   final GridBackgroundParams params;
   final double dx;
   final double dy;

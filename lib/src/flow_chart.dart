@@ -258,7 +258,7 @@ class _FlowChartState extends State<FlowChart> {
           // Draw elements
           for (int i = 0; i < widget.dashboard.elements.length; i++)
             ElementWidget(
-              key: UniqueKey(),
+              key: ValueKey(widget.dashboard.elements.elementAt(i).id),
               dashboard: widget.dashboard,
               element: widget.dashboard.elements.elementAt(i),
               onElementPressed: widget.onElementPressed == null
@@ -337,21 +337,21 @@ class _FlowChartState extends State<FlowChart> {
                 arrowParams: widget.dashboard.elements[i].next[n].arrowParams,
                 pivots: widget.dashboard.elements[i].next[n].pivots,
               ),
-            // drawing segment handlers
-            for (int i = 0; i < widget.dashboard.elements.length; i++)
-              for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
-                if (widget.dashboard.elements[i].next[n].arrowParams.style ==
-                    ArrowStyle.segmented)
-                  for (int j = 0;
-                      j < widget.dashboard.elements[i].next[n].pivots.length;
-                      j++)
-                    SegmentHandler(
-                      key: UniqueKey(),
-                      pivot: widget.dashboard.elements[i].next[n].pivots[j],
-                      dashboard: widget.dashboard,
-                      onPivotPressed: widget.onPivotPressed,
-                      onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
-                    ),
+          // drawing segment handlers
+          for (int i = 0; i < widget.dashboard.elements.length; i++)
+            for (int n = 0; n < widget.dashboard.elements[i].next.length; n++)
+              if (widget.dashboard.elements[i].next[n].arrowParams.style ==
+                  ArrowStyle.segmented)
+                for (int j = 0;
+                    j < widget.dashboard.elements[i].next[n].pivots.length;
+                    j++)
+                  SegmentHandler(
+                    key: UniqueKey(),
+                    pivot: widget.dashboard.elements[i].next[n].pivots[j],
+                    dashboard: widget.dashboard,
+                    onPivotPressed: widget.onPivotPressed,
+                    onPivotSecondaryPressed: widget.onPivotSecondaryPressed,
+                  ),
           // user drawing when connecting elements
           DrawingArrowWidget(style: widget.dashboard.defaultArrowStyle),
         ],

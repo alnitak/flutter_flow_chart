@@ -26,6 +26,9 @@ enum ElementKind {
 
   ///
   hexagon,
+
+  ///
+  image,
 }
 
 /// Handler supported by elements
@@ -57,7 +60,7 @@ enum Handler {
   }
 }
 
-/// Class to store [ElementWidget]s and notify its changes
+/// Class to store [FlowElement]s and notify its changes
 class FlowElement extends ChangeNotifier {
   ///
   FlowElement({
@@ -80,6 +83,7 @@ class FlowElement extends ChangeNotifier {
     this.borderColor = Colors.blue,
     this.borderThickness = 3,
     this.elevation = 4,
+    this.data,
     List<ConnectionParams>? next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
@@ -125,7 +129,8 @@ class FlowElement extends ChangeNotifier {
       ..position = Offset(
         map['positionDx'] as double,
         map['positionDy'] as double,
-      );
+      )
+      ..serializedData = map['data'] as String?;
     return e;
   }
 
@@ -190,9 +195,15 @@ class FlowElement extends ChangeNotifier {
   /// Whether this element can be connected to others
   bool isConnectable;
 
+  /// Kind-specific data
+  dynamic data;
+
+  /// Kind-specific data to load/save
+  String? serializedData;
+
   @override
   String toString() {
-    return 'kind: $kind  text: $text';
+    return 'FlowElement{kind: $kind, text: $text}';
   }
 
   /// Get the handler center of this handler for the given alignment.
@@ -337,6 +348,7 @@ class FlowElement extends ChangeNotifier {
       'borderColor': borderColor.value,
       'borderThickness': borderThickness,
       'elevation': elevation,
+      'data': serializedData,
       'next': next.map((x) => x.toMap()).toList(),
     };
   }
