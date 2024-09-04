@@ -133,13 +133,33 @@ class Dashboard extends ChangeNotifier {
     handlerFeedbackOffset = offset;
   }
 
+  /// set [draggable] element property
+  void setElementDraggable(
+    FlowElement element,
+    bool draggable, {
+    bool notify = true,
+  }) {
+    element.isDraggable = draggable;
+    if (notify) notifyListeners();
+  }
+
+  /// set [connectable] element property
+  void setElementConnectable(
+    FlowElement element,
+    bool connectable, {
+    bool notify = true,
+  }) {
+    element.isConnectable = connectable;
+    if (notify) notifyListeners();
+  }
+
   /// set [resizable] element property
   void setElementResizable(
     FlowElement element,
     bool resizable, {
     bool notify = true,
   }) {
-    element.isResizing = resizable;
+    element.isResizable = resizable;
     if (notify) notifyListeners();
   }
 

@@ -287,9 +287,24 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           InkWell(
             onTap: () {
-              dashboard.setElementResizable(element, true);
+              dashboard.setElementDraggable(element, !element.isDraggable);
             },
-            child: const Text('Resize'),
+            child:
+                Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
+          ),
+          InkWell(
+            onTap: () {
+              dashboard.setElementConnectable(element, !element.isConnectable);
+            },
+            child: Text(
+                'Toggle Connectable (${element.isConnectable ? '✔' : '✘'})'),
+          ),
+          InkWell(
+            onTap: () {
+              dashboard.setElementResizable(element, !element.isResizable);
+            },
+            child:
+                Text('Toggle Resizable (${element.isResizable ? '✔' : '✘'})'),
           ),
           ElementSettingsMenu(
             element: element,
@@ -361,6 +376,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.rightCenter,
                   ],
                 ),
+              );
+            },
+          ),
+          ActionChip(
+            label:
+                const Text('Add rect (draggable, resizable, not connectable)'),
+            onPressed: () {
+              dashboard.addElement(
+                FlowElement(
+                  position: position,
+                  size: const Size(100, 50),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.rectangle,
+                )
+                  ..isDraggable = true
+                  ..isResizable = true
+                  ..isConnectable = false,
               );
             },
           ),

@@ -83,7 +83,9 @@ class FlowElement extends ChangeNotifier {
     List<ConnectionParams>? next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
-        isResizing = false,
+        isDraggable = true,
+        isResizable = false,
+        isConnectable = true,
         // fixing offset issue under extreme scaling
         position = position -
             Offset(
@@ -179,8 +181,14 @@ class FlowElement extends ChangeNotifier {
   /// List of connections from this element
   List<ConnectionParams> next;
 
-  /// Element text
-  bool isResizing;
+  /// Whether this element can be dragged around
+  bool isDraggable;
+
+  /// Whether this element can be resized
+  bool isResizable;
+
+  /// Whether this element can be connected to others
+  bool isConnectable;
 
   @override
   String toString() {
@@ -195,13 +203,6 @@ class FlowElement extends ChangeNotifier {
       position.dy + (size.height * ((alignment.y + 1) / 2) + handlerSize / 2),
     );
     return ret;
-  }
-
-  /// When setting to true, a handler will disply at the element bottom right
-  /// to let the user to resize it. When finish it will disappear.
-  void setIsResizing(bool resizing) {
-    isResizing = resizing;
-    notifyListeners();
   }
 
   /// Sets a new scale
