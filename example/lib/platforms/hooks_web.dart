@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
@@ -24,4 +25,12 @@ Future<void> loadDashboard(Dashboard dashboard) async {
     jsonDecode(String.fromCharCodes(result.files.first.bytes!))
         as Map<String, dynamic>,
   );
+}
+
+Future<Uint8List?> pickImageBytes() async {
+  final pickResult = await FilePicker.platform.pickFiles(
+    type: FileType.image,
+  );
+  if (pickResult == null) return null;
+  return pickResult.files.single.bytes;
 }

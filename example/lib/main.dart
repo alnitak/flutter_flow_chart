@@ -481,10 +481,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ActionChip(
             label: const Text('Add image'),
             onPressed: () async {
-              final pickResult = await FilePicker.platform.pickFiles(
-                type: FileType.image,
-              );
-              if (pickResult == null) return;
+              final bytes = await pickImageBytes();
+              if (bytes == null) return;
+              
               dashboard.addElement(
                 FlowElement(
                   position: position,
@@ -498,7 +497,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                   ],
-                  data: Image.memory(pickResult.files.single.bytes!).image,
+                  data: Image.memory(bytes).image,
                 )..isResizable = true,
               );
             },
