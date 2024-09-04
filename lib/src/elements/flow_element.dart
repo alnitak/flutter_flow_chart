@@ -84,13 +84,13 @@ class FlowElement extends ChangeNotifier {
     this.borderThickness = 3,
     this.elevation = 4,
     this.data,
+    this.isDraggable = true,
+    this.isResizable = false,
+    this.isConnectable = true,
+    this.isDeletable = false,
     List<ConnectionParams>? next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
-        isDraggable = true,
-        isResizable = false,
-        isConnectable = true,
-        isDeletable = false,
         isEditingText = false,
         // fixing offset issue under extreme scaling
         position = position -
@@ -126,6 +126,10 @@ class FlowElement extends ChangeNotifier {
               ),
             )
           : [],
+      isDraggable: map['isDraggable'] as bool,
+      isResizable: map['isResizable'] as bool,
+      isConnectable: map['isConnectable'] as bool,
+      isDeletable: map['isDeletable'] as bool,
     )
       ..setId(map['id'] as String)
       ..position = Offset(
@@ -204,7 +208,7 @@ class FlowElement extends ChangeNotifier {
   bool isEditingText;
 
   /// Kind-specific data
-  dynamic data;
+  final dynamic data;
 
   /// Kind-specific data to load/save
   String? serializedData;
@@ -333,7 +337,10 @@ class FlowElement extends ChangeNotifier {
         borderColor.hashCode ^
         borderThickness.hashCode ^
         elevation.hashCode ^
-        next.hashCode;
+        next.hashCode ^
+        isResizable.hashCode ^
+        isConnectable.hashCode ^
+        isDeletable.hashCode;
   }
 
   ///
@@ -358,6 +365,10 @@ class FlowElement extends ChangeNotifier {
       'elevation': elevation,
       'data': serializedData,
       'next': next.map((x) => x.toMap()).toList(),
+      'isDraggable': isDraggable,
+      'isResizable': isResizable,
+      'isConnectable': isConnectable,
+      'isDeletable': isDeletable,
     };
   }
 
