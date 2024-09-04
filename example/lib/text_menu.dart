@@ -5,17 +5,16 @@ import 'package:star_menu/star_menu.dart';
 
 /// Popup menu for the 'element params" entry
 class TextMenu extends StatelessWidget {
+
+  TextMenu({
+    required this.element, super.key,
+  })  : sliderSize = ValueNotifier(element.textSize),
+        isBold = ValueNotifier(element.textIsBold),
+        textController = TextEditingController(text: element.text);
   final FlowElement element;
   final ValueNotifier<double> sliderSize;
   final ValueNotifier<bool> isBold;
   final TextEditingController textController;
-
-  TextMenu({
-    super.key,
-    required this.element,
-  })  : sliderSize = ValueNotifier(element.textSize),
-        isBold = ValueNotifier(element.textIsBold),
-        textController = TextEditingController(text: element.text);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class TextMenu extends StatelessWidget {
       child: StarMenu(
         params: StarMenuParameters.panel(context, columns: 1).copyWith(
           openDurationMs: 60,
-          onHoverScale: 1.0,
+          onHoverScale: 1,
           centerOffset: const Offset(100, 100),
         ),
         items: _buildEntries(context),
@@ -41,9 +40,8 @@ class TextMenu extends StatelessWidget {
           controller: textController,
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.center,
-          minLines: null,
           maxLines: null,
-          onChanged: (value) => element.setText(value),
+          onChanged: element.setText,
         ),
       ),
       Row(
@@ -68,7 +66,7 @@ class TextMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
             params: const StarMenuParameters(
               centerOffset: Offset(-1000, -1000),
@@ -86,14 +84,14 @@ class TextMenu extends StatelessWidget {
                     const Text('bold '),
                     Checkbox(
                       value: value,
-                      onChanged: ((value) {
+                      onChanged: (value) {
                         isBold.value = value!;
                         element.setTextIsBold(value);
-                      }),
+                      },
                     ),
                   ],
                 );
-              }),
+              },),
         ],
       ),
 
@@ -127,14 +125,12 @@ class TextMenu extends StatelessWidget {
 }
 
 class IconMenu extends StatelessWidget {
-  final Widget icon;
-  final String text;
 
   const IconMenu({
-    super.key,
-    required this.icon,
-    required this.text,
+    required this.icon, required this.text, super.key,
   });
+  final Widget icon;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -150,10 +146,6 @@ class IconMenu extends StatelessWidget {
 }
 
 class CircleWidget extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color backgroundColor;
-  final Color borderColor;
 
   const CircleWidget({
     super.key,
@@ -162,6 +154,10 @@ class CircleWidget extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.borderColor = Colors.black,
   });
+  final double width;
+  final double height;
+  final Color backgroundColor;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +172,6 @@ class CircleWidget extends StatelessWidget {
         border: Border.all(
           width: 2,
           color: borderColor,
-          style: BorderStyle.solid,
         ),
       ),
     );

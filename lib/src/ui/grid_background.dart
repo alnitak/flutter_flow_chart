@@ -149,7 +149,7 @@ class _GridBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint();
+    final paint = Paint();
 
     // Background
     paint.color = params.backgroundColor;
@@ -163,14 +163,14 @@ class _GridBackgroundPainter extends CustomPainter {
     paint.style = PaintingStyle.stroke;
 
     // Calculate the starting points for x and y
-    double startX = dx % (params.gridSquare * params.secondarySquareStep);
-    double startY = dy % (params.gridSquare * params.secondarySquareStep);
+    final startX = dx % (params.gridSquare * params.secondarySquareStep);
+    final startY = dy % (params.gridSquare * params.secondarySquareStep);
 
     // Calculate the number of lines to draw outside the visible area
-    int extraLines = 2;
+    const extraLines = 2;
 
     // Draw vertical lines
-    for (double x = startX - extraLines * params.gridSquare;
+    for (var x = startX - extraLines * params.gridSquare;
         x < size.width + extraLines * params.gridSquare;
         x += params.gridSquare) {
       paint.strokeWidth = ((x - startX) / params.gridSquare).round() %
@@ -182,7 +182,7 @@ class _GridBackgroundPainter extends CustomPainter {
     }
 
     // Draw horizontal lines
-    for (double y = startY - extraLines * params.gridSquare;
+    for (var y = startY - extraLines * params.gridSquare;
         y < size.height + extraLines * params.gridSquare;
         y += params.gridSquare) {
       paint.strokeWidth = ((y - startY) / params.gridSquare).round() %

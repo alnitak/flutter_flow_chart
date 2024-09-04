@@ -52,10 +52,12 @@ class _ImageWidgetState extends State<ImageWidget> {
               debugPrint('Image info completed: $info');
               // Adjust size
               if (adaptSizeToImage) {
-                widget.element.changeSize(Size(
-                  info.image.width.toDouble(),
-                  info.image.height.toDouble(),
-                ));
+                widget.element.changeSize(
+                  Size(
+                    info.image.width.toDouble(),
+                    info.image.height.toDouble(),
+                  ),
+                );
               }
               // Serialize image to save/load dashboard
               final imageData =

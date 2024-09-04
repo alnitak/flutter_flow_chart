@@ -4,7 +4,6 @@ import 'package:example/element_settings_menu.dart';
 import 'package:example/platforms/hooks_mobile.dart'
     if (dart.library.js) 'package:example/platforms/hooks_web.dart';
 import 'package:example/text_menu.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:star_menu/star_menu.dart';
@@ -267,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         onItemTapped: (index, controller) {
-          if (!(index == 5 || index == 2)) {
+          if (!(index == 6 || index == 2)) {
             controller.closeMenu!();
           }
         },

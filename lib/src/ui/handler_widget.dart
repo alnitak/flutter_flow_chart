@@ -40,7 +40,6 @@ class HandlerWidget extends StatelessWidget {
         border: Border.all(
           width: 2,
           color: borderColor,
-          style: BorderStyle.solid,
         ),
       ),
       child: Padding(
