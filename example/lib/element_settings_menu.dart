@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
@@ -5,15 +7,15 @@ import 'package:star_menu/star_menu.dart';
 
 /// Popup menu for the 'element params" entry
 class ElementSettingsMenu extends StatelessWidget {
+  ElementSettingsMenu({
+    required this.element,
+    super.key,
+  })  : sliderThickness = ValueNotifier(element.borderThickness),
+        sliderElevation = ValueNotifier(element.elevation);
+
   final FlowElement element;
   final ValueNotifier<double> sliderThickness;
   final ValueNotifier<double> sliderElevation;
-
-  ElementSettingsMenu({
-    super.key,
-    required this.element,
-  })  : sliderThickness = ValueNotifier(element.borderThickness),
-        sliderElevation = ValueNotifier(element.elevation);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class ElementSettingsMenu extends StatelessWidget {
       onTap: () {},
       child: StarMenu(
         params: StarMenuParameters.panel(context, columns: 2)
-            .copyWith(openDurationMs: 60, onHoverScale: 1.0),
+            .copyWith(openDurationMs: 60, onHoverScale: 1),
         items: _buildEntries(context),
         child: const Text('Element params'),
       ),
@@ -48,7 +50,7 @@ class ElementSettingsMenu extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
         params: const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
@@ -66,7 +68,6 @@ class ElementSettingsMenu extends StatelessWidget {
                   height: 50,
                   child: Slider.adaptive(
                     value: value,
-                    min: 0,
                     max: 25,
                     onChanged: (v) {
                       sliderThickness.value = v;
@@ -76,7 +77,7 @@ class ElementSettingsMenu extends StatelessWidget {
                 ),
               ],
             );
-          }),
+          },),
       IconMenu(
         text: 'Border color',
         icon: CircleWidget(backgroundColor: element.borderColor),
@@ -95,7 +96,7 @@ class ElementSettingsMenu extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
         params: const StarMenuParameters(centerOffset: Offset(-1000, -1000)),
       ),
@@ -124,20 +125,19 @@ class ElementSettingsMenu extends StatelessWidget {
                 ),
               ],
             );
-          }),
+          },),
     ];
   }
 }
 
 class IconMenu extends StatelessWidget {
-  final Widget icon;
-  final String text;
-
   const IconMenu({
-    super.key,
     required this.icon,
     required this.text,
+    super.key,
   });
+  final Widget icon;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -153,11 +153,6 @@ class IconMenu extends StatelessWidget {
 }
 
 class CircleWidget extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color backgroundColor;
-  final Color borderColor;
-
   const CircleWidget({
     super.key,
     this.width = 48,
@@ -165,6 +160,10 @@ class CircleWidget extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.borderColor = Colors.black,
   });
+  final double width;
+  final double height;
+  final Color backgroundColor;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +178,6 @@ class CircleWidget extends StatelessWidget {
         border: Border.all(
           width: 2,
           color: borderColor,
-          style: BorderStyle.solid,
         ),
       ),
     );

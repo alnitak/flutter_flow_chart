@@ -133,26 +133,56 @@ class Dashboard extends ChangeNotifier {
     handlerFeedbackOffset = offset;
   }
 
+  /// set [draggable] element property
+  void setElementDraggable(
+    FlowElement element,
+    bool draggable, {
+    bool notify = true,
+  }) {
+    element.isDraggable = draggable;
+    if (notify) notifyListeners();
+  }
+
+  /// set [connectable] element property
+  void setElementConnectable(
+    FlowElement element,
+    bool connectable, {
+    bool notify = true,
+  }) {
+    element.isConnectable = connectable;
+    if (notify) notifyListeners();
+  }
+
   /// set [resizable] element property
   void setElementResizable(
     FlowElement element,
     bool resizable, {
     bool notify = true,
   }) {
-    element.isResizing = resizable;
+    element.isResizable = resizable;
     if (notify) notifyListeners();
   }
 
   /// add a [FlowElement] to the dashboard
-  void addElement(FlowElement element, {bool notify = true}) {
+  void addElement(FlowElement element, {bool notify = true, int? position}) {
     if (element.id.isEmpty) {
       element.id = const Uuid().v4();
     }
     element.setScale(1, gridBackgroundParams.scale);
-    elements.add(element);
+    elements.insert(position ?? elements.length, element);
     if (notify) {
       notifyListeners();
     }
+  }
+
+  /// Enable editing mode for an element
+  void setElementEditingText(
+    FlowElement element,
+    bool editing, {
+    bool notify = true,
+  }) {
+    element.isEditingText = editing;
+    if (notify) notifyListeners();
   }
 
   /// Set a new [style] to the arrow staring from [src] pointing to [dest].
@@ -577,33 +607,38 @@ class Dashboard extends ChangeNotifier {
     File(completeFilePath).writeAsStringSync(prettyJson(), flush: true);
   }
 
-  /// clear the dashboard and load the new one
+  /// clear the dashboard and load the new one from file [completeFilePath]
   void loadDashboard(String completeFilePath) {
     final f = File(completeFilePath);
     if (f.existsSync()) {
-      elements.clear();
       final source = json.decode(f.readAsStringSync()) as Map<String, dynamic>;
-
-      gridBackgroundParams = GridBackgroundParams.fromMap(
-        source['gridBackgroundParams'] as Map<String, dynamic>,
-      );
-      blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
-      minimumZoomFactor = source['minimumZoomFactor'] as double;
-      dashboardSize = Size(
-        source['dashboardSizeWidth'] as double,
-        source['dashboardSizeHeight'] as double,
-      );
-
-      final loadedElements = List<FlowElement>.from(
-        (source['elements'] as List<dynamic>).map<FlowElement>(
-          (x) => FlowElement.fromMap(x as Map<String, dynamic>),
-        ),
-      );
-      elements
-        ..clear()
-        ..addAll(loadedElements);
-
-      recenter();
+      loadDashboardData(source);
     }
+  }
+
+  /// clear the dashboard and load the new one from [source] json
+  void loadDashboardData(Map<String, dynamic> source) {
+    elements.clear();
+
+    gridBackgroundParams = GridBackgroundParams.fromMap(
+      source['gridBackgroundParams'] as Map<String, dynamic>,
+    );
+    blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
+    minimumZoomFactor = source['minimumZoomFactor'] as double;
+    dashboardSize = Size(
+      source['dashboardSizeWidth'] as double,
+      source['dashboardSizeHeight'] as double,
+    );
+
+    final loadedElements = List<FlowElement>.from(
+      (source['elements'] as List<dynamic>).map<FlowElement>(
+        (x) => FlowElement.fromMap(x as Map<String, dynamic>),
+      ),
+    );
+    elements
+      ..clear()
+      ..addAll(loadedElements);
+
+    recenter();
   }
 }

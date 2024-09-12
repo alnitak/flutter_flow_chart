@@ -26,6 +26,9 @@ enum ElementKind {
 
   ///
   hexagon,
+
+  ///
+  image,
 }
 
 /// Handler supported by elements
@@ -57,7 +60,7 @@ enum Handler {
   }
 }
 
-/// Class to store [ElementWidget]s and notify its changes
+/// Class to store [FlowElement]s and notify its changes
 class FlowElement extends ChangeNotifier {
   ///
   FlowElement({
@@ -80,10 +83,15 @@ class FlowElement extends ChangeNotifier {
     this.borderColor = Colors.blue,
     this.borderThickness = 3,
     this.elevation = 4,
+    this.data,
+    this.isDraggable = true,
+    this.isResizable = false,
+    this.isConnectable = true,
+    this.isDeletable = false,
     List<ConnectionParams>? next,
   })  : next = next ?? [],
         id = const Uuid().v4(),
-        isResizing = false,
+        isEditingText = false,
         // fixing offset issue under extreme scaling
         position = position -
             Offset(
@@ -118,12 +126,17 @@ class FlowElement extends ChangeNotifier {
               ),
             )
           : [],
+      isDraggable: map['isDraggable'] as bool,
+      isResizable: map['isResizable'] as bool,
+      isConnectable: map['isConnectable'] as bool,
+      isDeletable: map['isDeletable'] as bool,
     )
       ..setId(map['id'] as String)
       ..position = Offset(
         map['positionDx'] as double,
         map['positionDy'] as double,
-      );
+      )
+      ..serializedData = map['data'] as String?;
     return e;
   }
 
@@ -179,12 +192,30 @@ class FlowElement extends ChangeNotifier {
   /// List of connections from this element
   List<ConnectionParams> next;
 
-  /// Element text
-  bool isResizing;
+  /// Whether this element can be dragged around
+  bool isDraggable;
+
+  /// Whether this element can be resized
+  bool isResizable;
+
+  /// Whether this element can be deleted quickly by clicking on the trash icon
+  bool isDeletable;
+
+  /// Whether this element can be connected to others
+  bool isConnectable;
+
+  /// Whether the text of this element is being edited with a form field
+  bool isEditingText;
+
+  /// Kind-specific data
+  final dynamic data;
+
+  /// Kind-specific data to load/save
+  String? serializedData;
 
   @override
   String toString() {
-    return 'kind: $kind  text: $text';
+    return 'FlowElement{kind: $kind, text: $text}';
   }
 
   /// Get the handler center of this handler for the given alignment.
@@ -195,13 +226,6 @@ class FlowElement extends ChangeNotifier {
       position.dy + (size.height * ((alignment.y + 1) / 2) + handlerSize / 2),
     );
     return ret;
-  }
-
-  /// When setting to true, a handler will disply at the element bottom right
-  /// to let the user to resize it. When finish it will disappear.
-  void setIsResizing(bool resizing) {
-    isResizing = resizing;
-    notifyListeners();
   }
 
   /// Sets a new scale
@@ -313,7 +337,10 @@ class FlowElement extends ChangeNotifier {
         borderColor.hashCode ^
         borderThickness.hashCode ^
         elevation.hashCode ^
-        next.hashCode;
+        next.hashCode ^
+        isResizable.hashCode ^
+        isConnectable.hashCode ^
+        isDeletable.hashCode;
   }
 
   ///
@@ -336,7 +363,12 @@ class FlowElement extends ChangeNotifier {
       'borderColor': borderColor.value,
       'borderThickness': borderThickness,
       'elevation': elevation,
+      'data': serializedData,
       'next': next.map((x) => x.toMap()).toList(),
+      'isDraggable': isDraggable,
+      'isResizable': isResizable,
+      'isConnectable': isConnectable,
+      'isDeletable': isDeletable,
     };
   }
 
