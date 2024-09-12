@@ -1,13 +1,13 @@
 #### 3.2.0
 **(thanks to [Maurizio Pinotti](https://github.com/mauriziopinotti))**
 - Make elements more flexible with 3 new FlowElement properties:
-  - isDraggable (default true, no visual feedback): whether they can be dragged around
-  - isResizble (default false, bottom-right handle when enabled): whether they can be resized
-  - isConnectable (default true, 4 handlers when enabled): whether they can be connected to other elements. Unlike the handlers param, isConnectable can be toggle at runtime
+  - `isDraggable` (default true, no visual feedback): whether they can be dragged around
+  - `isResizble` (default false, bottom-right handle when enabled): whether they can be resized
+  - `isConnectable` (default true, 4 handlers when enabled): whether they can be connected to other elements. Unlike the handlers param, `isConnectable` can be toggled at runtime
 - Example updated.
 - Add new FlowElement: ImageWidget
 - New feature: addElement() at custom position
-- Add optional delete icon to bottom-left corner of elements
+- Add an optional delete icon to the bottom-left corner of elements
 - Allow in-place text editing for elements
 
 #### 3.1.1
