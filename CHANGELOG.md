@@ -1,41 +1,53 @@
-## 3.1.1
+#### 3.2.0
+**(thanks to [Maurizio Pinotti](https://github.com/mauriziopinotti))**
+- Make elements more flexible with 3 new FlowElement properties:
+  - isDraggable (default true, no visual feedback): whether they can be dragged around
+  - isResizble (default false, bottom-right handle when enabled): whether they can be resized
+  - isConnectable (default true, 4 handlers when enabled): whether they can be connected to other elements. Unlike the handlers param, isConnectable can be toggle at runtime
+- Example updated.
+- Add new FlowElement: ImageWidget
+- New feature: addElement() at custom position
+- Add optional delete icon to bottom-left corner of elements
+- Allow in-place text editing for elements
+
+#### 3.1.1
 * Added curvature tension between pivot points of segmented arrows
 
-## 3.1.0
-* Implemented styling new arrows (thanks to Isira Herath)
+#### 3.1.0
+* Implemented styling new arrows (thanks to [Isira Herath](https://github.com/SL-Pirate))
 
-## 3.0.0
+#### 3.0.0
 * breaking change: moved onScaleUpdate callback to the FlowChart widget
 
-## 2.2.1
-* Improved scaling gesture responsiveness (thanks to Isira Herath)
-* Fixed scaling of arrows when sooming (thanks to Isira Herath)
-* Implemented onScaleUpdate method on dashboard (thanks to Isira Herath)
+#### 2.2.1
+* Improved scaling gesture responsiveness (thanks to [Isira Herath](https://github.com/SL-Pirate))
+* Fixed scaling of arrows when sooming (thanks to [Isira Herath](https://github.com/SL-Pirate))
+* Implemented onScaleUpdate method on dashboard (thanks to [Isira Herath](https://github.com/SL-Pirate))
 
-## 2.2.0
-* added support for scaling/zooming (thanks to Isira Herath)
+#### 2.2.0
+* added support for scaling/zooming (thanks to [Isira Herath](https://github.com/SL-Pirate))
 
-## 2.1.4
+#### 2.1.4
 * fix 'type 'int' is not a subtype of type double' error (by ofbozkurt)
-* assigned UUID upon adding creating a new instance of FlowElement (by Isira Herath)
+* assigned UUID upon adding creating a new instance of FlowElement (by [Isira Herath](https://github.com/SL-Pirate))
 
-## 2.1.3
-* added fontFamily parameter to the flow_element (thanks to Isira Herath)
+#### 2.1.3
+* added fontFamily parameter to the flow_element (thanks to [Isira Herath](https://github.com/SL-Pirate))
 * added hexagon element (thanks to ofbozkurt)
 
-## 2.1.2
+#### 2.1.2
 * added parameter to notify changes or not in dashboard
 
-## 2.1.1
+#### 2.1.1
 * fixed online example link
 
-## 2.1.0+1
-*  Implemented some getters to get the connection and element (thanks to Isira Herath)
+#### 2.1.0+1
+*  Implemented some getters to get the connection and element (thanks to [Isira Herath](https://github.com/SL-Pirate))
 
-## 2.0.0+1
-* Implemented Infinite Scrolling for Dashboard to Enhance Diagram Browsing Experience (thanks to Isira Herath)
-* Added support for mouse secondary input events on dashboard and elements (thanks to Isira Herath)
+#### 2.0.0+1
+* Implemented Infinite Scrolling for Dashboard to Enhance Diagram Browsing Experience (thanks to [Isira Herath](https://github.com/SL-Pirate))
+* Added support for mouse secondary input events on dashboard and elements (thanks to [Isira Herath](https://github.com/SL-Pirate))
 
-## 1.0.0+1
+#### 1.0.0+1
 
 * Initial release.
