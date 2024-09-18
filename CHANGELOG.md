@@ -1,3 +1,6 @@
+#### 3.2.1
+- fix: 3.2.0 breaks backward compatibility of the JSON format #36
+
 #### 3.2.0
 **(thanks to [Maurizio Pinotti](https://github.com/mauriziopinotti))**
 - Make elements more flexible with 3 new FlowElement properties:

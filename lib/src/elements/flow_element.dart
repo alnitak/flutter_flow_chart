@@ -126,10 +126,10 @@ class FlowElement extends ChangeNotifier {
               ),
             )
           : [],
-      isDraggable: map['isDraggable'] as bool,
-      isResizable: map['isResizable'] as bool,
-      isConnectable: map['isConnectable'] as bool,
-      isDeletable: map['isDeletable'] as bool,
+      isDraggable: map['isDraggable'] as bool? ?? true,
+      isResizable: map['isResizable'] as bool? ?? false,
+      isConnectable: map['isConnectable'] as bool? ?? true,
+      isDeletable: map['isDeletable'] as bool? ?? false,
     )
       ..setId(map['id'] as String)
       ..position = Offset(
