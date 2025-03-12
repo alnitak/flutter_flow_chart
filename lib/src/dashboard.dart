@@ -616,9 +616,64 @@ class Dashboard extends ChangeNotifier {
     }
   }
 
+   Map<String, dynamic> _parseJsonInt2Double(Map<String, dynamic> json) {
+      List<String> fields = [
+        "dashboardSizeWidth",
+        "dashboardSizeHeight",
+        "gridSquare",
+        "scale",
+        "offset.dx",
+        "offset.dy",
+        "size.width",
+        "size.height",
+        "textSize",
+        "handlerSize",
+        "borderThickness",
+        "elevation",
+        "thickness",
+        "headRadius",
+        "tailLength",
+        "tension",
+        "startArrowPositionX",
+        "startArrowPositionY",
+        "endArrowPositionX",
+        "endArrowPositionY",
+        "positionDx",
+        "positionDy",
+      ];
+
+      dynamic _handleList(List list) {
+        return list.map((item) {
+          if (item is Map) {
+            return _parseJsonInt2Double(Map<String, dynamic>.from(item));
+          } else if (item is List) {
+            return _handleList(item);
+          }
+          return item;
+        }).toList();
+      }
+      Map<String, dynamic> result = Map<String, dynamic>.from(json);
+
+      result.forEach((key, value) {
+        if (fields.contains(key) && value is int) {
+          result[key] = value.toDouble();
+        } else if (value is Map) {
+          result[key] = _parseJsonInt2Double(Map<String, dynamic>.from(value));
+        } else if (value is List) {
+          result[key] = _handleList(value);
+        }
+      });
+
+      return result;
+    }
+
   /// clear the dashboard and load the new one from [source] json
   void loadDashboardData(Map<String, dynamic> source) {
     elements.clear();
+    if(!kIsWeb){
+      source = _parseJsonInt2Double(source);
+    }
+
 
     gridBackgroundParams = GridBackgroundParams.fromMap(
       source['gridBackgroundParams'] as Map<String, dynamic>,
