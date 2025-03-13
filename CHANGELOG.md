@@ -1,3 +1,6 @@
+#### 3.2.2
+- fix type error by ensuring proper double values #43 from ValiantDoge
+
 #### 3.2.1
 - fix: 3.2.0 breaks backward compatibility of the JSON format #36
 
