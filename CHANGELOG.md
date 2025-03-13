@@ -1,3 +1,6 @@
+#### 3.2.3
+-  Fixed toARGB32() issue #44 from Abdallah-Ehab
+
 #### 3.2.2
 - fix type error by ensuring proper double values #43 from ValiantDoge
 
