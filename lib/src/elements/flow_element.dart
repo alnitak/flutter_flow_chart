@@ -102,11 +102,12 @@ class FlowElement extends ChangeNotifier {
   ///
   factory FlowElement.fromMap(Map<String, dynamic> map) {
     final e = FlowElement(
-      size: Size(map['size.width'] as double, map['size.height'] as double),
+      size: Size((map['size.width'] as num).toDouble(), 
+                 (map['size.height'] as num).toDouble(),),
       text: map['text'] as String,
       textColor: Color(map['textColor'] as int),
       fontFamily: map['fontFamily'] as String?,
-      textSize: map['textSize'] as double,
+      textSize: (map['textSize'] as num).toDouble(),
       textIsBold: map['textIsBold'] as bool,
       kind: ElementKind.values[map['kind'] as int],
       handlers: List<Handler>.from(
@@ -114,11 +115,11 @@ class FlowElement extends ChangeNotifier {
           (x) => Handler.values[x as int],
         ),
       ),
-      handlerSize: map['handlerSize'] as double,
+      handlerSize: (map['handlerSize'] as num).toDouble(),
       backgroundColor: Color(map['backgroundColor'] as int),
       borderColor: Color(map['borderColor'] as int),
-      borderThickness: map['borderThickness'] as double,
-      elevation: map['elevation'] as double,
+      borderThickness: (map['borderThickness'] as num).toDouble(),
+      elevation: (map['elevation'] as num).toDouble(),
       next: (map['next'] as List).isNotEmpty
           ? List<ConnectionParams>.from(
               (map['next'] as List<dynamic>).map<dynamic>(
@@ -133,8 +134,8 @@ class FlowElement extends ChangeNotifier {
     )
       ..setId(map['id'] as String)
       ..position = Offset(
-        map['positionDx'] as double,
-        map['positionDy'] as double,
+        (map['positionDx'] as num).toDouble(),
+        (map['positionDy'] as num).toDouble(),
       )
       ..serializedData = map['data'] as String?;
     return e;

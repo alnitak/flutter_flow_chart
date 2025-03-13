@@ -59,8 +59,8 @@ class Dashboard extends ChangeNotifier {
         ),
       )
       ..dashboardSize = Size(
-        map['dashboardSizeWidth'] as double? ?? 0,
-        map['dashboardSizeHeight'] as double? ?? 0,
+        (map['dashboardSizeWidth'] as num).toDouble() ?? 0,
+        (map['dashboardSizeHeight'] as num).toDouble() ?? 0,
       );
 
     if (map['gridBackgroundParams'] != null) {
@@ -71,7 +71,7 @@ class Dashboard extends ChangeNotifier {
     d
       ..blockDefaultZoomGestures =
           (map['blockDefaultZoomGestures'] as bool? ?? false)
-      ..minimumZoomFactor = map['minimumZoomFactor'] as double? ?? 0.25;
+      ..minimumZoomFactor = (map['minimumZoomFactor'] as num).toDouble() ?? 0.25;
 
     return d;
   }
@@ -619,15 +619,15 @@ class Dashboard extends ChangeNotifier {
   /// clear the dashboard and load the new one from [source] json
   void loadDashboardData(Map<String, dynamic> source) {
     elements.clear();
-
+    
     gridBackgroundParams = GridBackgroundParams.fromMap(
       source['gridBackgroundParams'] as Map<String, dynamic>,
     );
     blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
-    minimumZoomFactor = source['minimumZoomFactor'] as double;
+    minimumZoomFactor = (source['minimumZoomFactor'] as num).toDouble();
     dashboardSize = Size(
-      source['dashboardSizeWidth'] as double,
-      source['dashboardSizeHeight'] as double,
+      (source['dashboardSizeWidth'] as num).toDouble(),
+      (source['dashboardSizeHeight'] as num).toDouble(),
     );
 
     final loadedElements = List<FlowElement>.from(

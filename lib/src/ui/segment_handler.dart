@@ -95,8 +95,8 @@ class Pivot extends ChangeNotifier {
   ///
   Pivot.fromMap(Map<String, dynamic> map)
       : _pivot = Offset(
-          map['pivot.dx'] as double,
-          map['pivot.dy'] as double,
+          (map['pivot.dx'] as num).toDouble(),
+          (map['pivot.dy'] as num).toDouble(),
         );
   Offset _pivot;
 
