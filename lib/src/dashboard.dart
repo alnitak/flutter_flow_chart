@@ -59,8 +59,8 @@ class Dashboard extends ChangeNotifier {
         ),
       )
       ..dashboardSize = Size(
-        map['dashboardSizeWidth'] as double? ?? 0,
-        map['dashboardSizeHeight'] as double? ?? 0,
+        (map['dashboardSizeWidth'] as num).toDouble() ?? 0,
+        (map['dashboardSizeHeight'] as num).toDouble() ?? 0,
       );
 
     if (map['gridBackgroundParams'] != null) {
@@ -71,7 +71,7 @@ class Dashboard extends ChangeNotifier {
     d
       ..blockDefaultZoomGestures =
           (map['blockDefaultZoomGestures'] as bool? ?? false)
-      ..minimumZoomFactor = map['minimumZoomFactor'] as double? ?? 0.25;
+      ..minimumZoomFactor = (map['minimumZoomFactor'] as num).toDouble() ?? 0.25;
 
     return d;
   }
@@ -616,73 +616,18 @@ class Dashboard extends ChangeNotifier {
     }
   }
 
-   Map<String, dynamic> _parseJsonInt2Double(Map<String, dynamic> json) {
-      List<String> fields = [
-        "dashboardSizeWidth",
-        "dashboardSizeHeight",
-        "gridSquare",
-        "scale",
-        "offset.dx",
-        "offset.dy",
-        "size.width",
-        "size.height",
-        "textSize",
-        "handlerSize",
-        "borderThickness",
-        "elevation",
-        "thickness",
-        "headRadius",
-        "tailLength",
-        "tension",
-        "startArrowPositionX",
-        "startArrowPositionY",
-        "endArrowPositionX",
-        "endArrowPositionY",
-        "positionDx",
-        "positionDy",
-      ];
-
-      dynamic _handleList(List list) {
-        return list.map((item) {
-          if (item is Map) {
-            return _parseJsonInt2Double(Map<String, dynamic>.from(item));
-          } else if (item is List) {
-            return _handleList(item);
-          }
-          return item;
-        }).toList();
-      }
-      Map<String, dynamic> result = Map<String, dynamic>.from(json);
-
-      result.forEach((key, value) {
-        if (fields.contains(key) && value is int) {
-          result[key] = value.toDouble();
-        } else if (value is Map) {
-          result[key] = _parseJsonInt2Double(Map<String, dynamic>.from(value));
-        } else if (value is List) {
-          result[key] = _handleList(value);
-        }
-      });
-
-      return result;
-    }
-
   /// clear the dashboard and load the new one from [source] json
   void loadDashboardData(Map<String, dynamic> source) {
     elements.clear();
-    if(!kIsWeb){
-      source = _parseJsonInt2Double(source);
-    }
-
-
+    
     gridBackgroundParams = GridBackgroundParams.fromMap(
       source['gridBackgroundParams'] as Map<String, dynamic>,
     );
     blockDefaultZoomGestures = source['blockDefaultZoomGestures'] as bool;
-    minimumZoomFactor = source['minimumZoomFactor'] as double;
+    minimumZoomFactor = (source['minimumZoomFactor'] as num).toDouble();
     dashboardSize = Size(
-      source['dashboardSizeWidth'] as double,
-      source['dashboardSizeHeight'] as double,
+      (source['dashboardSizeWidth'] as num).toDouble(),
+      (source['dashboardSizeHeight'] as num).toDouble(),
     );
 
     final loadedElements = List<FlowElement>.from(

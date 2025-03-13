@@ -19,16 +19,16 @@ class GridBackgroundParams extends ChangeNotifier {
   ///
   factory GridBackgroundParams.fromMap(Map<String, dynamic> map) {
     final params = GridBackgroundParams(
-      gridSquare: map['gridSquare'] as double? ?? 20.0,
-      gridThickness: map['gridThickness'] as double? ?? 0.7,
+      gridSquare: (map['gridSquare'] as num).toDouble() ?? 20.0,
+      gridThickness: (map['gridThickness'] as num).toDouble() ?? 0.7,
       secondarySquareStep: map['secondarySquareStep'] as int? ?? 5,
       backgroundColor: Color(map['backgroundColor'] as int? ?? 0xFFFFFFFF),
       gridColor: Color(map['gridColor'] as int? ?? 0xFFFFFFFF),
     )
-      ..scale = map['scale'] as double? ?? 1.0
+      ..scale = (map['scale'] as num).toDouble() ?? 1.0
       .._offset = Offset(
-        map['offset.dx'] as double? ?? 0.0,
-        map['offset.dy'] as double? ?? 0.0,
+        (map['offset.dx'] as num).toDouble() ?? 0.0,
+        (map['offset.dy'] as num).toDouble() ?? 0.0,
       );
 
     return params;
