@@ -27,6 +27,7 @@ Future<void> loadDashboard(Dashboard dashboard) async {
   );
 }
 
+/// Pick image
 Future<Uint8List?> pickImageBytes() async {
   final pickResult = await FilePicker.platform.pickFiles(
     type: FileType.image,

@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
+// ignore_for_file: use_setters_to_change_properties
 
 import 'dart:convert';
 import 'dart:io';
@@ -59,8 +60,8 @@ class Dashboard extends ChangeNotifier {
         ),
       )
       ..dashboardSize = Size(
-        (map['dashboardSizeWidth'] as num).toDouble() ?? 0,
-        (map['dashboardSizeHeight'] as num).toDouble() ?? 0,
+        ((map['dashboardSizeWidth'] ?? 0) as num).toDouble(),
+        ((map['dashboardSizeHeight'] ?? 0) as num).toDouble(),
       );
 
     if (map['gridBackgroundParams'] != null) {
@@ -71,7 +72,8 @@ class Dashboard extends ChangeNotifier {
     d
       ..blockDefaultZoomGestures =
           (map['blockDefaultZoomGestures'] as bool? ?? false)
-      ..minimumZoomFactor = (map['minimumZoomFactor'] as num).toDouble() ?? 0.25;
+      ..minimumZoomFactor =
+          ((map['minimumZoomFactor'] ?? 0.25) as num).toDouble();
 
     return d;
   }
@@ -129,9 +131,8 @@ class Dashboard extends ChangeNotifier {
 
   /// set the feedback offset to help on mobile device to see the
   /// end of arrow and not hiding behind the finger when moving it
-  void setHandlerFeedbackOffset(Offset offset) {
-    handlerFeedbackOffset = offset;
-  }
+  void setHandlerFeedbackOffset(Offset offset) =>
+      handlerFeedbackOffset = offset;
 
   /// set [draggable] element property
   void setElementDraggable(
@@ -509,17 +510,13 @@ class Dashboard extends ChangeNotifier {
 
   /// needed to know the diagram widget position to compute
   /// offsets for drag and drop elements
-  void setDashboardPosition(Offset position) {
-    _dashboardPosition = position;
-  }
+  void setDashboardPosition(Offset position) => _dashboardPosition = position;
 
   /// Get the position.
   Offset get position => _dashboardPosition;
 
   /// needed to know the diagram widget size
-  void setDashboardSize(Size size) {
-    dashboardSize = size;
-  }
+  void setDashboardSize(Size size) => dashboardSize = size;
 
   /// make an arrow connection from [sourceElement] to
   /// the elements with id [destId]
@@ -619,7 +616,7 @@ class Dashboard extends ChangeNotifier {
   /// clear the dashboard and load the new one from [source] json
   void loadDashboardData(Map<String, dynamic> source) {
     elements.clear();
-    
+
     gridBackgroundParams = GridBackgroundParams.fromMap(
       source['gridBackgroundParams'] as Map<String, dynamic>,
     );

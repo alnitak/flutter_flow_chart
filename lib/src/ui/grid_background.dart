@@ -19,16 +19,16 @@ class GridBackgroundParams extends ChangeNotifier {
   ///
   factory GridBackgroundParams.fromMap(Map<String, dynamic> map) {
     final params = GridBackgroundParams(
-      gridSquare: (map['gridSquare'] as num).toDouble() ?? 20.0,
-      gridThickness: (map['gridThickness'] as num).toDouble() ?? 0.7,
+      gridSquare: ((map['gridSquare'] ?? 20.0) as num).toDouble(),
+      gridThickness: ((map['gridThickness'] ?? 0.7) as num).toDouble(),
       secondarySquareStep: map['secondarySquareStep'] as int? ?? 5,
       backgroundColor: Color(map['backgroundColor'] as int? ?? 0xFFFFFFFF),
       gridColor: Color(map['gridColor'] as int? ?? 0xFFFFFFFF),
     )
-      ..scale = (map['scale'] as num).toDouble() ?? 1.0
+      ..scale = ((map['scale'] ?? 1.0) as num).toDouble()
       .._offset = Offset(
-        (map['offset.dx'] as num).toDouble() ?? 0.0,
-        (map['offset.dy'] as num).toDouble() ?? 0.0,
+        ((map['offset.dx'] ?? 0.0) as num).toDouble(),
+        ((map['offset.dy'] ?? 0.0) as num).toDouble(),
       );
 
     return params;
@@ -103,18 +103,21 @@ class GridBackgroundParams extends ChangeNotifier {
       'gridSquare': rawGridSquareSize,
       'gridThickness': gridThickness,
       'secondarySquareStep': secondarySquareStep,
-      'backgroundColor': backgroundColor.value,
-      'gridColor': gridColor.value,
+      'backgroundColor': backgroundColor.toARGB32(),
+      'gridColor': gridColor.toARGB32(),
     };
   }
 }
 
 /// Uses a CustomPainter to draw a grid with the given parameters
 class GridBackground extends StatelessWidget {
+  ///
   GridBackground({
     super.key,
     GridBackgroundParams? params,
   }) : params = params ?? GridBackgroundParams();
+
+  /// Grid parameters
   final GridBackgroundParams params;
 
   @override
@@ -149,18 +152,19 @@ class _GridBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint();
+    final paint = Paint()
 
-    // Background
-    paint.color = params.backgroundColor;
+      // Background
+      ..color = params.backgroundColor;
     canvas.drawRect(
-      Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)),
+      Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
       paint,
     );
 
     // grid
-    paint.color = params.gridColor;
-    paint.style = PaintingStyle.stroke;
+    paint
+      ..color = params.gridColor
+      ..style = PaintingStyle.stroke;
 
     // Calculate the starting points for x and y
     final startX = dx % (params.gridSquare * params.secondarySquareStep);

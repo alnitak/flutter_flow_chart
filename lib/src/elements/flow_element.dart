@@ -1,4 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters, avoid_dynamic_calls
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
+// ignore_for_file: use_setters_to_change_properties
 
 import 'dart:convert';
 
@@ -102,8 +104,10 @@ class FlowElement extends ChangeNotifier {
   ///
   factory FlowElement.fromMap(Map<String, dynamic> map) {
     final e = FlowElement(
-      size: Size((map['size.width'] as num).toDouble(), 
-                 (map['size.height'] as num).toDouble(),),
+      size: Size(
+        (map['size.width'] as num).toDouble(),
+        (map['size.height'] as num).toDouble(),
+      ),
       text: map['text'] as String,
       textColor: Color(map['textColor'] as int),
       fontFamily: map['fontFamily'] as String?,
@@ -242,9 +246,7 @@ class FlowElement extends ChangeNotifier {
   }
 
   /// Used internally to set an unique Uuid to this element
-  void setId(String id) {
-    this.id = id;
-  }
+  void setId(String id) => this.id = id;
 
   /// Set text
   void setText(String text) {
@@ -352,7 +354,7 @@ class FlowElement extends ChangeNotifier {
       'size.width': size.width,
       'size.height': size.height,
       'text': text,
-      'textColor': textColor.value,
+      'textColor': textColor.toARGB32(),
       'fontFamily': fontFamily,
       'textSize': textSize,
       'textIsBold': textIsBold,
@@ -360,8 +362,8 @@ class FlowElement extends ChangeNotifier {
       'kind': kind.index,
       'handlers': handlers.map((x) => x.index).toList(),
       'handlerSize': handlerSize,
-      'backgroundColor': backgroundColor.value,
-      'borderColor': borderColor.value,
+      'backgroundColor': backgroundColor.toARGB32(),
+      'borderColor': borderColor.toARGB32(),
       'borderThickness': borderThickness,
       'elevation': elevation,
       'data': serializedData,

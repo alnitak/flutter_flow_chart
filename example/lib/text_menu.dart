@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
@@ -5,9 +7,9 @@ import 'package:star_menu/star_menu.dart';
 
 /// Popup menu for the 'element params" entry
 class TextMenu extends StatelessWidget {
-
   TextMenu({
-    required this.element, super.key,
+    required this.element,
+    super.key,
   })  : sliderSize = ValueNotifier(element.textSize),
         isBold = ValueNotifier(element.textIsBold),
         textController = TextEditingController(text: element.text);
@@ -76,22 +78,23 @@ class TextMenu extends StatelessWidget {
 
           /// is bold
           ValueListenableBuilder<bool>(
-              valueListenable: isBold,
-              builder: (_, value, __) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('bold '),
-                    Checkbox(
-                      value: value,
-                      onChanged: (value) {
-                        isBold.value = value!;
-                        element.setTextIsBold(value);
-                      },
-                    ),
-                  ],
-                );
-              },),
+            valueListenable: isBold,
+            builder: (_, value, __) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('bold '),
+                  Checkbox(
+                    value: value,
+                    onChanged: (value) {
+                      isBold.value = value!;
+                      element.setTextIsBold(value);
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
 
@@ -125,9 +128,10 @@ class TextMenu extends StatelessWidget {
 }
 
 class IconMenu extends StatelessWidget {
-
   const IconMenu({
-    required this.icon, required this.text, super.key,
+    required this.icon,
+    required this.text,
+    super.key,
   });
   final Widget icon;
   final String text;
@@ -146,7 +150,6 @@ class IconMenu extends StatelessWidget {
 }
 
 class CircleWidget extends StatelessWidget {
-
   const CircleWidget({
     super.key,
     this.width = 48,

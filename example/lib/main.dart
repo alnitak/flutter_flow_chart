@@ -291,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //     dashboard.setElementDraggable(element, !element.isDraggable);
           //   },
           //   child:
-          //       Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
+          //     Text('Toggle Draggable (${element.isDraggable ? '✔' : '✘'})'),
           // ),
           InkWell(
             onTap: () {
@@ -482,7 +482,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () async {
               final bytes = await pickImageBytes();
               if (bytes == null) return;
-              
+
               dashboard.addElement(
                 FlowElement(
                   position: position,
