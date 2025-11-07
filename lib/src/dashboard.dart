@@ -8,25 +8,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
+import 'package:flutter_flow_chart/src/store.dart';
 import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
 import 'package:uuid/uuid.dart';
 
 /// Listener definition for a new connection
-typedef ConnectionListener = void Function(
-  FlowElement srcElement,
-  FlowElement destElement,
+typedef ConnectionListener<T> = void Function(
+  FlowElement<T> srcElement,
+  FlowElement<T> destElement,
 );
 
 /// Class to store all the scene elements.
 /// This also acts as the controller to the flow_chart widget
 /// It notifies changes to [FlowChart]
-class Dashboard extends ChangeNotifier {
+class Dashboard<T> extends ChangeNotifier {
   ///
   Dashboard({
     Offset? handlerFeedbackOffset,
     this.blockDefaultZoomGestures = false,
     this.minimumZoomFactor = 0.25,
     this.defaultArrowStyle = ArrowStyle.curve,
+    DataSerializer<T, dynamic>? dataSerializer,
   })  : elements = [],
         _dashboardPosition = Offset.zero,
         dashboardSize = Size.zero,
@@ -47,15 +49,23 @@ class Dashboard extends ChangeNotifier {
         }
       }
     }
+
+    if (dataSerializer != null) {
+      store.registerSerializer<T>(dataSerializer);
+    }
   }
 
   ///
-  factory Dashboard.fromMap(Map<String, dynamic> map) {
-    final d = Dashboard(
+  factory Dashboard.fromMap(
+    Map<String, dynamic> map, {
+    DataSerializer<T, dynamic>? dataSerializer,
+  }) {
+    final d = Dashboard<T>(
       defaultArrowStyle: ArrowStyle.values[map['arrowStyle'] as int? ?? 0],
+      dataSerializer: dataSerializer,
     )
-      ..elements = List<FlowElement>.from(
-        (map['elements'] as List<dynamic>).map<FlowElement>(
+      ..elements = List<FlowElement<T>>.from(
+        (map['elements'] as List<dynamic>).map<FlowElement<T>>(
           (x) => FlowElement.fromMap(x as Map<String, dynamic>),
         ),
       )
@@ -79,11 +89,17 @@ class Dashboard extends ChangeNotifier {
   }
 
   ///
-  factory Dashboard.fromJson(String source) =>
-      Dashboard.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Dashboard.fromJson(
+    String source, {
+    DataSerializer<T, dynamic>? dataSerializer,
+  }) =>
+      Dashboard.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+        dataSerializer: dataSerializer,
+      );
 
   /// The current elements in the dashboard
-  List<FlowElement> elements;
+  List<FlowElement<T>> elements;
 
   Offset _dashboardPosition;
 
@@ -111,15 +127,15 @@ class Dashboard extends ChangeNotifier {
   /// setting it to 0 will remove the limit
   double minimumZoomFactor;
 
-  final List<ConnectionListener> _connectionListeners = [];
+  final List<ConnectionListener<T>> _connectionListeners = [];
 
   /// add listener called when a new connection is created
-  void addConnectionListener(ConnectionListener listener) {
+  void addConnectionListener(ConnectionListener<T> listener) {
     _connectionListeners.add(listener);
   }
 
   /// remove connection listener
-  void removeConnectionListener(ConnectionListener listener) {
+  void removeConnectionListener(ConnectionListener<T> listener) {
     _connectionListeners.remove(listener);
   }
 
@@ -136,7 +152,7 @@ class Dashboard extends ChangeNotifier {
 
   /// set [draggable] element property
   void setElementDraggable(
-    FlowElement element,
+    FlowElement<T> element,
     bool draggable, {
     bool notify = true,
   }) {
@@ -146,7 +162,7 @@ class Dashboard extends ChangeNotifier {
 
   /// set [connectable] element property
   void setElementConnectable(
-    FlowElement element,
+    FlowElement<T> element,
     bool connectable, {
     bool notify = true,
   }) {
@@ -156,7 +172,7 @@ class Dashboard extends ChangeNotifier {
 
   /// set [resizable] element property
   void setElementResizable(
-    FlowElement element,
+    FlowElement<T> element,
     bool resizable, {
     bool notify = true,
   }) {
@@ -165,7 +181,7 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// add a [FlowElement] to the dashboard
-  void addElement(FlowElement element, {bool notify = true, int? position}) {
+  void addElement(FlowElement<T> element, {bool notify = true, int? position}) {
     if (element.id.isEmpty) {
       element.id = const Uuid().v4();
     }
@@ -178,7 +194,7 @@ class Dashboard extends ChangeNotifier {
 
   /// Enable editing mode for an element
   void setElementEditingText(
-    FlowElement element,
+    FlowElement<T> element,
     bool editing, {
     bool notify = true,
   }) {
@@ -191,8 +207,8 @@ class Dashboard extends ChangeNotifier {
   /// The [tension] parameter is used when [style] is [ArrowStyle.segmented] to
   /// set the curve strength on pivot points. 0 means no curve.
   void setArrowStyle(
-    FlowElement src,
-    FlowElement dest,
+    FlowElement<T> src,
+    FlowElement<T> dest,
     ArrowStyle style, {
     bool notify = true,
     double tension = 1.0,
@@ -215,7 +231,7 @@ class Dashboard extends ChangeNotifier {
   /// The [tension] parameter is used when [style] is [ArrowStyle.segmented] to
   /// set the curve strength on pivot points. 0 means no curve.
   void setArrowStyleByHandler(
-    FlowElement src,
+    FlowElement<T> src,
     Handler handler,
     ArrowStyle style, {
     bool notify = true,
@@ -251,7 +267,7 @@ class Dashboard extends ChangeNotifier {
 
   /// find the element by its [id] for convenience
   /// return null if not found
-  FlowElement? findElementById(String id) {
+  FlowElement<T>? findElementById(String id) {
     try {
       return elements.firstWhere((element) => element.id == id);
     } catch (e) {
@@ -263,8 +279,8 @@ class Dashboard extends ChangeNotifier {
   /// return null if not found.
   /// In case of multiple connections, first connection is returned.
   ConnectionParams? findConnectionByElements(
-    FlowElement srcElement,
-    FlowElement destElement,
+    FlowElement<T> srcElement,
+    FlowElement<T> destElement,
   ) {
     try {
       return srcElement.next
@@ -275,7 +291,7 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// find the source element of the [dest] element.
-  FlowElement? findSrcElementByDestElement(FlowElement dest) {
+  FlowElement<T>? findSrcElementByDestElement(FlowElement<T> dest) {
     for (final element in elements) {
       for (final connection in element.next) {
         if (connection.destElementId == dest.id) {
@@ -295,7 +311,7 @@ class Dashboard extends ChangeNotifier {
 
   /// remove the [handler] connection of [element]
   void removeElementConnection(
-    FlowElement element,
+    FlowElement<T> element,
     Handler handler, {
     bool notify = true,
   }) {
@@ -341,7 +357,7 @@ class Dashboard extends ChangeNotifier {
   /// [point] is the point where the connection is dissected
   /// if [point] is null, point is automatically calculated
   void dissectElementConnection(
-    FlowElement element,
+    FlowElement<T> element,
     Handler handler, {
     Offset? point,
     bool notify = true,
@@ -412,8 +428,8 @@ class Dashboard extends ChangeNotifier {
 
   /// remove the connection from [srcElement] to [destElement]
   void removeConnectionByElements(
-    FlowElement srcElement,
-    FlowElement destElement, {
+    FlowElement<T> srcElement,
+    FlowElement<T> destElement, {
     bool notify = true,
   }) {
     srcElement.next.removeWhere(
@@ -423,7 +439,7 @@ class Dashboard extends ChangeNotifier {
   }
 
   /// remove all the connection from the [element]
-  void removeElementConnections(FlowElement element, {bool notify = true}) {
+  void removeElementConnections(FlowElement<T> element, {bool notify = true}) {
     element.next.clear();
     if (notify) notifyListeners();
   }
@@ -450,7 +466,7 @@ class Dashboard extends ChangeNotifier {
 
   /// remove element
   /// return true if it has been removed
-  bool removeElement(FlowElement element, {bool notify = true}) {
+  bool removeElement(FlowElement<T> element, {bool notify = true}) {
     // remove the element
     var found = false;
     final elementId = element.id;
@@ -522,7 +538,7 @@ class Dashboard extends ChangeNotifier {
   /// the elements with id [destId]
   /// [arrowParams] definition of arrow parameters
   void addNextById(
-    FlowElement sourceElement,
+    FlowElement<T> sourceElement,
     String destId,
     ArrowParams arrowParams, {
     bool notify = true,
@@ -627,8 +643,8 @@ class Dashboard extends ChangeNotifier {
       (source['dashboardSizeHeight'] as num).toDouble(),
     );
 
-    final loadedElements = List<FlowElement>.from(
-      (source['elements'] as List<dynamic>).map<FlowElement>(
+    final loadedElements = List<FlowElement<T>>.from(
+      (source['elements'] as List<dynamic>).map<FlowElement<T>>(
         (x) => FlowElement.fromMap(x as Map<String, dynamic>),
       ),
     );

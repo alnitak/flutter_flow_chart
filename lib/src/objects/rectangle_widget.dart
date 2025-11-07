@@ -11,7 +11,7 @@ class RectangleWidget extends StatelessWidget {
   });
 
   ///
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   Widget build(BuildContext context) {

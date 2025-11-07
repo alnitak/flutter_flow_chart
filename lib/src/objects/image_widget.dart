@@ -20,7 +20,7 @@ class ImageWidget extends StatefulWidget {
             : element.data as ImageProvider;
 
   ///
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   /// The image to render
   final ImageProvider imageProvider;

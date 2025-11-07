@@ -11,7 +11,7 @@ class HexagonWidget extends StatelessWidget {
   });
 
   ///
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _HexagonPainter extends CustomPainter {
   _HexagonPainter({
     required this.element,
   });
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   void paint(Canvas canvas, Size size) {

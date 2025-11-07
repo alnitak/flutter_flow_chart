@@ -172,3 +172,80 @@ dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
 
 dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
 ```
+
+## Adding custom data to FlowElement
+
+The library supports attaching arbitrary data to each element via the generic `elementData` field. To preserve this data across JSON save/load you must provide a serializer when creating the `Dashboard`. The serializer implements the `DataSerializer<T, JSON>` mixin and converts between your data type and a JSON-compatible representation (typically `Map<String, dynamic>`).
+
+Notes
+- The `Dashboard`, `FlowChart` and `FlowElement` must use the same generic type T.
+- If no serializer is provided, `elementData` will be lost during JSON serialization.
+
+### Minimal example
+
+```dart
+// Serializer that converts ExampleData <-> Map<String, dynamic>
+class ExampleDataSerializer with DataSerializer<ExampleData, Map<String, dynamic>> {
+    @override
+    ExampleData? fromJson(Map<String, dynamic>? source) {
+        if (source == null) return null;
+        return ExampleData(
+            name: source['name'] as String,
+            value: source['value'] as int,
+        );
+    }
+
+    @override
+    Map<String, dynamic>? toJson(ExampleData? data) {
+        if (data == null) return null;
+        return <String, dynamic>{
+            'name': data.name,
+            'value': data.value,
+        };
+    }
+}
+
+class ExampleData {
+    ExampleData({ required this.name, required this.value });
+    final String name;
+    final int value;
+}
+
+// Create a dashboard that knows how to (de)serialize ExampleData
+final Dashboard<ExampleData> dashboard = Dashboard<ExampleData>(
+    dataSerializer: ExampleDataSerializer(),
+);
+
+// Use the same generic type for the FlowChart
+FlowChart<ExampleData>(
+    dashboard: dashboard,
+    onDashboardTapped: ((context, position) {}),
+    onDashboardLongtTapped: ((context, position) {}),
+    onElementLongPressed: (context, element) {},
+    onElementPressed: (context, element) {},
+    onHandlerPressed: (context, position, handler, element) {},
+    onHandlerLongPressed: (context, position, handler, element) {},
+    onScaleUpdate: (newScale) {},
+);
+
+// Create an element with custom data
+final FlowElement<ExampleData> element = FlowElement<ExampleData>(
+    position: const Offset(300, 100),
+    size: const Size(100, 150),
+    text: 'rect',
+    kind: ElementKind.rectangle,
+    handlers: [
+        Handler.bottomCenter,
+        Handler.topCenter,
+        Handler.leftCenter,
+        Handler.rightCenter,
+    ],
+    elementData: ExampleData(value: 42, name: 'Example Data'),
+);
+
+// Save/load will preserve `elementData` thanks to the provided serializer
+await dashboard.saveDashboard('${appDocDir.path}/FLOWCHART.json');
+await dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
+```
+
+This preserves your custom data across persistence and ensures type-safety when interacting with elements in the UI.

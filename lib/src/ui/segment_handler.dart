@@ -18,7 +18,7 @@ class SegmentHandler extends StatefulWidget {
   final Pivot pivot;
 
   ///
-  final Dashboard dashboard;
+  final Dashboard<dynamic> dashboard;
 
   ///
   final void Function(BuildContext context, Pivot position)? onPivotPressed;

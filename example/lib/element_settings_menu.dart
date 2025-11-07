@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:example/example_data_serializer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
@@ -13,7 +14,7 @@ class ElementSettingsMenu extends StatelessWidget {
   })  : sliderThickness = ValueNotifier(element.borderThickness),
         sliderElevation = ValueNotifier(element.elevation);
 
-  final FlowElement element;
+  final FlowElement<ExampleData> element;
   final ValueNotifier<double> sliderThickness;
   final ValueNotifier<double> sliderElevation;
 

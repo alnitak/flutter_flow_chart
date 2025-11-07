@@ -10,7 +10,7 @@ class ElementTextWidget extends StatefulWidget {
   });
 
   ///
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   State<ElementTextWidget> createState() => _ElementTextWidgetState();

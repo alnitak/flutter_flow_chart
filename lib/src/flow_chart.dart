@@ -11,7 +11,7 @@ import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
 
 /// Main flow chart Widget.
 /// It displays the background grid, all the elements and connection lines
-class FlowChart extends StatefulWidget {
+class FlowChart<T> extends StatefulWidget {
   ///
   const FlowChart({
     required this.dashboard,
@@ -53,28 +53,28 @@ class FlowChart extends StatefulWidget {
   final void Function(
     BuildContext context,
     Offset position,
-    FlowElement element,
+    FlowElement<T> element,
   )? onElementPressed;
 
   /// callback for mouse right click event on an element
   final void Function(
     BuildContext context,
     Offset position,
-    FlowElement element,
+    FlowElement<T> element,
   )? onElementSecondaryTapped;
 
   /// callback for element long pressed
   final void Function(
     BuildContext context,
     Offset position,
-    FlowElement element,
+    FlowElement<T> element,
   )? onElementLongPressed;
 
   /// callback for right click long press event on an element
   final void Function(
     BuildContext context,
     Offset position,
-    FlowElement element,
+    FlowElement<T> element,
   )? onElementSecondaryLongTapped;
 
   /// callback for onclick event of pivot
@@ -89,7 +89,7 @@ class FlowChart extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerPressed;
 
   /// callback for handler right click event
@@ -97,7 +97,7 @@ class FlowChart extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryTapped;
 
   /// callback for handler right click long press event
@@ -105,7 +105,7 @@ class FlowChart extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryLongTapped;
 
   /// callback for handler long pressed
@@ -113,23 +113,23 @@ class FlowChart extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerLongPressed;
 
   /// callback when adding a new connection
-  final ConnectionListener? onNewConnection;
+  final ConnectionListener<T>? onNewConnection;
 
   /// main dashboard to use
-  final Dashboard dashboard;
+  final Dashboard<T> dashboard;
 
   /// Trigger for the scale change
   final void Function(double scale)? onScaleUpdate;
 
   @override
-  State<FlowChart> createState() => _FlowChartState();
+  State<FlowChart<T>> createState() => _FlowChartState();
 }
 
-class _FlowChartState extends State<FlowChart> {
+class _FlowChartState<T> extends State<FlowChart<T>> {
   @override
   void initState() {
     super.initState();
@@ -293,8 +293,13 @@ class _FlowChartState extends State<FlowChart> {
                           ),
               onHandlerPressed: widget.onHandlerPressed == null
                   ? null
-                  : (context, position, handler, element) => widget
-                      .onHandlerPressed!(context, position, handler, element),
+                  : (context, position, handler, element) =>
+                      widget.onHandlerPressed!(
+                        context,
+                        position,
+                        handler,
+                        element as FlowElement<T>,
+                      ),
               onHandlerSecondaryTapped: widget.onHandlerSecondaryTapped == null
                   ? null
                   : (context, position, handler, element) =>
@@ -302,7 +307,7 @@ class _FlowChartState extends State<FlowChart> {
                         context,
                         position,
                         handler,
-                        element,
+                        element as FlowElement<T>,
                       ),
               onHandlerLongPressed: widget.onHandlerLongPressed == null
                   ? null
@@ -311,7 +316,7 @@ class _FlowChartState extends State<FlowChart> {
                         context,
                         position,
                         handler,
-                        element,
+                        element as FlowElement<T>,
                       ),
               onHandlerSecondaryLongTapped:
                   widget.onHandlerSecondaryLongTapped == null
@@ -321,7 +326,7 @@ class _FlowChartState extends State<FlowChart> {
                             context,
                             position,
                             handler,
-                            element,
+                            element as FlowElement<T>,
                           ),
             ),
           // Draw arrows

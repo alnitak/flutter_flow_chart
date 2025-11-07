@@ -5,7 +5,7 @@ import 'package:flutter_flow_chart/src/ui/draw_arrow.dart';
 import 'package:flutter_flow_chart/src/ui/handler_widget.dart';
 
 /// Draw handlers over the element
-class ElementHandlers extends StatelessWidget {
+class ElementHandlers<T> extends StatelessWidget {
   ///
   const ElementHandlers({
     required this.dashboard,
@@ -20,10 +20,10 @@ class ElementHandlers extends StatelessWidget {
   });
 
   ///
-  final Dashboard dashboard;
+  final Dashboard<T> dashboard;
 
   ///
-  final FlowElement element;
+  final FlowElement<T> element;
 
   ///
   final Widget child;
@@ -36,7 +36,7 @@ class ElementHandlers extends StatelessWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerPressed;
 
   ///
@@ -44,7 +44,7 @@ class ElementHandlers extends StatelessWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerLongPressed;
 
   ///
@@ -52,7 +52,7 @@ class ElementHandlers extends StatelessWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryTapped;
 
   ///
@@ -60,7 +60,7 @@ class ElementHandlers extends StatelessWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryLongTapped;
 
   @override
@@ -89,7 +89,7 @@ class ElementHandlers extends StatelessWidget {
   }
 }
 
-class _ElementHandler extends StatelessWidget {
+class _ElementHandler<T> extends StatelessWidget {
   const _ElementHandler({
     required this.element,
     required this.handler,
@@ -100,37 +100,37 @@ class _ElementHandler extends StatelessWidget {
     required this.onHandlerLongPressed,
     required this.onHandlerSecondaryLongTapped,
   });
-  final FlowElement element;
+  final FlowElement<T> element;
   final Handler handler;
-  final Dashboard dashboard;
+  final Dashboard<T> dashboard;
   final double handlerSize;
 
   final void Function(
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerPressed;
 
   final void Function(
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryTapped;
 
   final void Function(
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerLongPressed;
 
   final void Function(
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryLongTapped;
 
   @override
@@ -161,11 +161,11 @@ class _ElementHandler extends StatelessWidget {
               style: dashboard.defaultArrowStyle,
             ),
           );
-          return element != details.data['srcElement'] as FlowElement;
+          return element != details.data['srcElement'] as FlowElement<T>;
         },
         onAcceptWithDetails: (details) {
           dashboard.addNextById(
-            details.data['srcElement'] as FlowElement,
+            details.data['srcElement'] as FlowElement<T>,
             element.id,
             DrawingArrow.instance.params.copyWith(
               endArrowPosition: alignment,

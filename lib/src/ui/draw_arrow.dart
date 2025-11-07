@@ -194,10 +194,10 @@ class DrawArrow extends StatefulWidget {
   final ArrowParams arrowParams;
 
   ///
-  final FlowElement srcElement;
+  final FlowElement<dynamic> srcElement;
 
   ///
-  final FlowElement destElement;
+  final FlowElement<dynamic> destElement;
 
   ///
   final PivotsNotifier pivots;

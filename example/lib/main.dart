@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:example/element_settings_menu.dart';
+import 'package:example/example_data_serializer.dart';
 import 'package:example/platforms/hooks_mobile.dart'
     if (dart.library.js) 'package:example/platforms/hooks_web.dart';
 import 'package:example/text_menu.dart';
@@ -40,7 +41,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Dashboard dashboard = Dashboard();
+  Dashboard<ExampleData> dashboard =
+      Dashboard(dataSerializer: ExampleDataSerializer());
 
   /// Notifier for the tension slider
   final segmentedTension = ValueNotifier<double>(1);
@@ -68,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.black12,
       body: Container(
         constraints: const BoxConstraints.expand(),
-        child: FlowChart(
+        child: FlowChart<ExampleData>(
           dashboard: dashboard,
           onNewConnection: (p1, p2) {
             debugPrint('new connection');
@@ -137,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _displayHandlerMenu(
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<ExampleData> element,
   ) {
     StarMenuOverlay.displayStarMenu(
       context,
@@ -241,7 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _displayElementMenu(
     BuildContext context,
     Offset position,
-    FlowElement element,
+    FlowElement<ExampleData> element,
   ) {
     StarMenuOverlay.displayStarMenu(
       context,
@@ -356,6 +358,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -377,6 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -393,6 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   handlerSize: 25,
                   // ignore: avoid_redundant_argument_values
                   kind: ElementKind.rectangle,
+                  elementData: ExampleData(name: 'Example', value: 42),
                 )
                   ..isDraggable = true
                   ..isResizable = true
@@ -416,6 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -434,6 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.bottomCenter,
                     Handler.topCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -454,6 +461,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.rightCenter,
                     Handler.topCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -473,6 +481,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.leftCenter,
                     Handler.rightCenter,
                   ],
+                  elementData: ExampleData(name: 'Example', value: 42),
                 ),
               );
             },
@@ -497,6 +506,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Handler.rightCenter,
                   ],
                   data: Image.memory(bytes).image,
+                  elementData: ExampleData(name: 'Example', value: 42),
                 )..isResizable = true,
               );
             },
