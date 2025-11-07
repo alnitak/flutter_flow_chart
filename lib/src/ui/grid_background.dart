@@ -103,8 +103,8 @@ class GridBackgroundParams extends ChangeNotifier {
       'gridSquare': rawGridSquareSize,
       'gridThickness': gridThickness,
       'secondarySquareStep': secondarySquareStep,
-      'backgroundColor': backgroundColor.value,
-      'gridColor': gridColor.value,
+      'backgroundColor': backgroundColor.toARGB32(),
+      'gridColor': gridColor.toARGB32(),
     };
   }
 }

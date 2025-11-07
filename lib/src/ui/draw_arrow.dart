@@ -104,7 +104,7 @@ class ArrowParams extends ChangeNotifier {
       'thickness': thickness,
       'headRadius': headRadius,
       'tailLength': _tailLength,
-      'color': color.value,
+      'color': color.toARGB32(),
       'style': style?.index,
       'tension': tension,
       'startArrowPositionX': startArrowPosition.x,
