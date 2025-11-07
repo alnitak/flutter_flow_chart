@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:flutter_flow_chart/src/elements/connection_params.dart';
+import 'package:flutter_flow_chart/src/store.dart';
 import 'package:uuid/uuid.dart';
 
 /// Kinf od element
@@ -63,7 +64,7 @@ enum Handler {
 }
 
 /// Class to store [FlowElement]s and notify its changes
-class FlowElement extends ChangeNotifier {
+class FlowElement<T> extends ChangeNotifier {
   ///
   FlowElement({
     Offset position = Offset.zero,
@@ -86,6 +87,7 @@ class FlowElement extends ChangeNotifier {
     this.borderThickness = 3,
     this.elevation = 4,
     this.data,
+    this.elementData,
     this.isDraggable = true,
     this.isResizable = false,
     this.isConnectable = true,
@@ -103,7 +105,7 @@ class FlowElement extends ChangeNotifier {
 
   ///
   factory FlowElement.fromMap(Map<String, dynamic> map) {
-    final e = FlowElement(
+    final e = FlowElement<T>(
       size: Size(
         (map['size.width'] as num).toDouble(),
         (map['size.height'] as num).toDouble(),
@@ -141,6 +143,7 @@ class FlowElement extends ChangeNotifier {
         (map['positionDx'] as num).toDouble(),
         (map['positionDy'] as num).toDouble(),
       )
+      ..elementData = store.getSerializer<T>()?.fromJson(map['elementData'])
       ..serializedData = map['data'] as String?;
     return e;
   }
@@ -211,6 +214,9 @@ class FlowElement extends ChangeNotifier {
 
   /// Whether the text of this element is being edited with a form field
   bool isEditingText;
+
+  /// A variable to hold custom data for the flow element
+  T? elementData;
 
   /// Kind-specific data
   final dynamic data;
@@ -317,7 +323,7 @@ class FlowElement extends ChangeNotifier {
   }
 
   @override
-  bool operator ==(covariant FlowElement other) {
+  bool operator ==(covariant FlowElement<T> other) {
     if (identical(this, other)) return true;
 
     return other.id == id;
@@ -367,6 +373,7 @@ class FlowElement extends ChangeNotifier {
       'borderThickness': borderThickness,
       'elevation': elevation,
       'data': serializedData,
+      'elementData': store.getSerializer<T>()?.toJson(elementData),
       'next': next.map((x) => x.toMap()).toList(),
       'isDraggable': isDraggable,
       'isResizable': isResizable,

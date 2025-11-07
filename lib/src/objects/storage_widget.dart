@@ -12,7 +12,7 @@ class StorageWidget extends StatelessWidget {
   });
 
   ///
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _StoragePainter extends CustomPainter {
     required this.element,
   });
 
-  final FlowElement element;
+  final FlowElement<dynamic> element;
 
   @override
   void paint(Canvas canvas, Size size) {

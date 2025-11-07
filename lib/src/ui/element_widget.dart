@@ -12,7 +12,7 @@ import 'package:flutter_flow_chart/src/ui/element_handlers.dart';
 import 'package:flutter_flow_chart/src/ui/handler_widget.dart';
 
 /// Widget that use [element] properties to display it on the dashboard scene
-class ElementWidget extends StatefulWidget {
+class ElementWidget<T> extends StatefulWidget {
   ///
   const ElementWidget({
     required this.dashboard,
@@ -29,10 +29,10 @@ class ElementWidget extends StatefulWidget {
   });
 
   ///
-  final Dashboard dashboard;
+  final Dashboard<T> dashboard;
 
   ///
-  final FlowElement element;
+  final FlowElement<T> element;
 
   ///
   final void Function(BuildContext context, Offset position)? onElementPressed;
@@ -54,7 +54,7 @@ class ElementWidget extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerPressed;
 
   ///
@@ -62,7 +62,7 @@ class ElementWidget extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryTapped;
 
   ///
@@ -70,7 +70,7 @@ class ElementWidget extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerLongPressed;
 
   ///
@@ -78,14 +78,14 @@ class ElementWidget extends StatefulWidget {
     BuildContext context,
     Offset position,
     Handler handler,
-    FlowElement element,
+    FlowElement<T> element,
   )? onHandlerSecondaryLongTapped;
 
   @override
-  State<ElementWidget> createState() => _ElementWidgetState();
+  State<ElementWidget<T>> createState() => _ElementWidgetState();
 }
 
-class _ElementWidgetState extends State<ElementWidget> {
+class _ElementWidgetState<T> extends State<ElementWidget<T>> {
   // local widget touch position when start dragging
   Offset delta = Offset.zero;
   late Size elementStartSize;
@@ -233,7 +233,7 @@ class _ElementWidgetState extends State<ElementWidget> {
       onPointerDown: (event) {
         delta = event.localPosition;
       },
-      child: Draggable<FlowElement>(
+      child: Draggable<FlowElement<T>>(
         data: widget.element,
         childWhenDragging: const SizedBox.shrink(),
         feedback: Material(

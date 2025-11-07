@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:example/example_data_serializer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:web/web.dart' as web;
 
 /// Save dashboard to file
-Future<void> saveDashboard(Dashboard dashboard) async {
+Future<void> saveDashboard(Dashboard<ExampleData> dashboard) async {
   final bytes = utf8.encode(dashboard.prettyJson());
   final anchor = web.document.createElement('a') as web.HTMLAnchorElement
     ..href = 'data:application/octet-stream;base64,${base64Encode(bytes)}'
@@ -18,7 +19,7 @@ Future<void> saveDashboard(Dashboard dashboard) async {
 }
 
 /// Load dashboard from file
-Future<void> loadDashboard(Dashboard dashboard) async {
+Future<void> loadDashboard(Dashboard<ExampleData> dashboard) async {
   final result = await FilePicker.platform.pickFiles();
   if (result == null) return;
   dashboard.loadDashboardData(
