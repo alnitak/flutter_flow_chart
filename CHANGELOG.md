@@ -1,3 +1,9 @@
+#### 4.0.0
+**(thanks to [Isira Herath](https://github.com/SL-Pirate))**
+- Added support for FlowElement to hold custom data.
+- Refactored FlowChart to be generic, allowing definition of the data type its flow elements can hold.
+- Added a `DataSerializer` mixin to enable JSON serialization and deserialization for custom data.
+
 #### 3.2.3
 -  Fixed toARGB32() issue #44 from Abdallah-Ehab
 
