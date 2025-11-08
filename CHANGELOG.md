@@ -1,4 +1,4 @@
-#### 4.1.0
+#### 4.0.1
 - Restored Web compatibility (replaced `dart:io` imports with conditional imports).
 
 #### 4.0.0
