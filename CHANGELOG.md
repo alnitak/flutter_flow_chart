@@ -1,3 +1,6 @@
+#### 4.0.1
+- Restored Web compatibility (replaced `dart:io` imports with conditional imports).
+
 #### 4.0.0
 **(thanks to [Isira Herath](https://github.com/SL-Pirate))**
 - Added support for FlowElement to hold custom data.

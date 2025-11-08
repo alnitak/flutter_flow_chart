@@ -1,13 +1,12 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-// ignore_for_file: use_setters_to_change_properties
+// ignore: lines_longer_than_80_chars
+// ignore_for_file: use_setters_to_change_properties, avoid_positional_boolean_parameters
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
+import 'package:flutter_flow_chart/src/platform/platform.dart';
 import 'package:flutter_flow_chart/src/store.dart';
 import 'package:flutter_flow_chart/src/ui/segment_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -39,14 +38,10 @@ class Dashboard<T> extends ChangeNotifier {
     if (handlerFeedbackOffset != null) {
       this.handlerFeedbackOffset = handlerFeedbackOffset;
     } else {
-      if (kIsWeb) {
-        this.handlerFeedbackOffset = Offset.zero;
+      if (isMobile()) {
+        this.handlerFeedbackOffset = const Offset(0, -50);
       } else {
-        if (Platform.isIOS || Platform.isAndroid) {
-          this.handlerFeedbackOffset = const Offset(0, -50);
-        } else {
-          this.handlerFeedbackOffset = Offset.zero;
-        }
+        this.handlerFeedbackOffset = Offset.zero;
       }
     }
 
@@ -617,14 +612,14 @@ class Dashboard<T> extends ChangeNotifier {
 
   /// save the dashboard into [completeFilePath]
   void saveDashboard(String completeFilePath) {
-    File(completeFilePath).writeAsStringSync(prettyJson(), flush: true);
+    saveDashboardData(completeFilePath, prettyJson());
   }
 
   /// clear the dashboard and load the new one from file [completeFilePath]
   void loadDashboard(String completeFilePath) {
-    final f = File(completeFilePath);
-    if (f.existsSync()) {
-      final source = json.decode(f.readAsStringSync()) as Map<String, dynamic>;
+    final data = readDashboardData(completeFilePath);
+    if (data != null) {
+      final source = json.decode(data) as Map<String, dynamic>;
       loadDashboardData(source);
     }
   }
