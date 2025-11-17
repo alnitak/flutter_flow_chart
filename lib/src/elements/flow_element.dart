@@ -143,7 +143,8 @@ class FlowElement<T> extends ChangeNotifier {
         (map['positionDx'] as num).toDouble(),
         (map['positionDy'] as num).toDouble(),
       )
-      ..elementData = store.getSerializer<T>()?.fromJson(map['elementData'])
+      ..elementData = store.getSerializer<T>()?.fromJson(map['elementData']) ??
+          map['elementData'] as T?
       ..serializedData = map['data'] as String?;
     return e;
   }
@@ -373,7 +374,8 @@ class FlowElement<T> extends ChangeNotifier {
       'borderThickness': borderThickness,
       'elevation': elevation,
       'data': serializedData,
-      'elementData': store.getSerializer<T>()?.toJson(elementData),
+      'elementData':
+          store.getSerializer<T>()?.toJson(elementData) ?? elementData,
       'next': next.map((x) => x.toMap()).toList(),
       'isDraggable': isDraggable,
       'isResizable': isResizable,

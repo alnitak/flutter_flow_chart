@@ -1,3 +1,6 @@
+#### 4.0.2
+- Treated element data as serializable as it is when a matching serializer is not provided.
+
 #### 4.0.1
 - Restored Web compatibility (replaced `dart:io` imports with conditional imports).
 
