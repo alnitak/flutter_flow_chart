@@ -7,6 +7,7 @@ import 'package:flutter_flow_chart/src/objects/oval_widget.dart';
 import 'package:flutter_flow_chart/src/objects/parallelogram_widget.dart';
 import 'package:flutter_flow_chart/src/objects/rectangle_widget.dart';
 import 'package:flutter_flow_chart/src/objects/storage_widget.dart';
+import 'package:flutter_flow_chart/src/ui/dependency_provider.dart';
 
 import 'package:flutter_flow_chart/src/ui/element_handlers.dart';
 import 'package:flutter_flow_chart/src/ui/handler_widget.dart';
@@ -125,6 +126,20 @@ class _ElementWidgetState<T> extends State<ElementWidget<T>> {
         element = RectangleWidget(element: widget.element);
       case ElementKind.image:
         element = ImageWidget(element: widget.element);
+      case ElementKind.custom:
+        element = DependencyProvider.of<ElementWidgetBuilder<T>>(context)
+                ?.call(context, widget.element) ??
+            SizedBox(
+              width: widget.element.size.width,
+              height: widget.element.size.height,
+              child: Center(
+                child: RectangleWidget(
+                  element: FlowElement.fromJson(widget.element.toJson())
+                    ..kind = ElementKind.rectangle
+                    ..text = 'No custom builder provided',
+                ),
+              ),
+            );
     }
 
     if (widget.element.isConnectable && widget.element.handlers.isNotEmpty) {

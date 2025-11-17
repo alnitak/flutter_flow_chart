@@ -249,3 +249,71 @@ await dashboard.loadDashboard('${appDocDir.path}/FLOWCHART.json');
 ```
 
 This preserves your custom data across persistence and ensures type-safety when interacting with elements in the UI.
+
+## Adding custom element to FlowChart
+
+The library supports custom elements via `ElementKind.custom`.
+
+- When you use `ElementKind.custom`, provide a `customElementBuilder` to the `FlowChart` constructor. The builder is called for each element with `kind == ElementKind.custom` and must return a `Widget`.
+
+### Minimal example
+
+```dart
+// flow chart construction
+FlowChart(
+    dashboard: dashboard,
+    // ...callbacks...
+
+    // custom element builder: receives (BuildContext, FlowElement<T>)
+    customElementBuilder: (context, element) =>
+            SomeCustomWidget(text: element.text),
+);
+
+// new element (same as any other element)
+dashboard.addElement(
+    FlowElement(
+        position: position,
+        size: const Size(100, 150),
+        text: '${dashboard.elements.length}',
+        handlerSize: 25,
+        handlers: [
+            Handler.bottomCenter,
+            Handler.leftCenter,
+            Handler.rightCenter,
+        ],
+        elementData: ExampleData(name: 'Example', value: 42),
+        kind: ElementKind.custom,
+    ),
+);
+```
+
+### Multiple custom element types
+
+- The library does not provide multiple custom builders. Use `elementData` as a discriminator: store a type/id in your custom data and inspect it inside `customElementBuilder` to render different widgets.
+
+```dart
+// element with discriminator
+dashboard.addElement(
+    FlowElement(
+        position: position,
+        size: const Size(100, 150),
+        text: '1',
+        handlers: [Handler.bottomCenter],
+        elementData: ExampleData(name: 'Example', value: 42, type: 'STAR'),
+        kind: ElementKind.custom,
+    ),
+);
+
+// builder inspects element.elementData
+FlowChart(
+    dashboard: dashboard,
+    customElementBuilder: (context, element) {
+        final data = element.elementData as ExampleData?;
+        if (data?.type == 'STAR') return StarWidget(data: data);
+        if (data?.type == 'CIRCLE') return CircleWidget(data: data);
+        return DefaultCustomWidget(text: element.text);
+    },
+);
+```
+
+This keeps the API simple while letting you implement any number of custom element views.

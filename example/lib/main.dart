@@ -5,6 +5,7 @@ import 'package:example/example_data_serializer.dart';
 import 'package:example/platforms/hooks_mobile.dart'
     if (dart.library.js) 'package:example/platforms/hooks_web.dart';
 import 'package:example/text_menu.dart';
+import 'package:example/widgets/start.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flow_chart/flutter_flow_chart.dart';
 import 'package:star_menu/star_menu.dart';
@@ -122,6 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
           onPivotSecondaryPressed: (context, pivot) {
             dashboard.removeDissection(pivot);
           },
+          customElementBuilder: (context, element) => StarWidget(
+            size: 220,
+            fillColor: Colors.deepOrange,
+            text: element.text,
+            elevation: 12,
+            shadowColor: Colors.black54,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -508,6 +516,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   data: Image.memory(bytes).image,
                   elementData: ExampleData(name: 'Example', value: 42),
                 )..isResizable = true,
+              );
+            },
+          ),
+          ActionChip(
+            label: const Text('Add custom'),
+            onPressed: () {
+              dashboard.addElement(
+                FlowElement(
+                  position: position,
+                  size: const Size(100, 150),
+                  text: '${dashboard.elements.length}',
+                  handlerSize: 25,
+                  kind: ElementKind.custom,
+                  handlers: [
+                    Handler.bottomCenter,
+                    Handler.leftCenter,
+                    Handler.rightCenter,
+                  ],
+                  elementData: ExampleData(name: 'Example', value: 42),
+                ),
               );
             },
           ),

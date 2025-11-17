@@ -10,6 +10,12 @@ import 'package:flutter_flow_chart/src/elements/connection_params.dart';
 import 'package:flutter_flow_chart/src/store.dart';
 import 'package:uuid/uuid.dart';
 
+///
+typedef ElementWidgetBuilder<T> = Widget Function(
+  BuildContext context,
+  FlowElement<T> element,
+);
+
 /// Kinf od element
 enum ElementKind {
   ///
@@ -32,6 +38,9 @@ enum ElementKind {
 
   ///
   image,
+
+  ///
+  custom,
 }
 
 /// Handler supported by elements

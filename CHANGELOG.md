@@ -1,3 +1,7 @@
+#### 4.1.0
+**(thanks to [Isira Herath](https://github.com/SL-Pirate))**
+- Introduce full custom `FlowElement` support using the `customElementBuilder` API
+
 #### 4.0.2
 - Treated element data as serializable as it is when a matching serializer is not provided.
 
