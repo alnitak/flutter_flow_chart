@@ -377,6 +377,12 @@ class _FlowChartState<T> extends State<FlowChart<T>> {
   }
 }
 
+/// Element widget builder typedef
+typedef ElementWidgetBuilder<T> = Widget Function(
+  BuildContext context,
+  FlowElement<T> element,
+);
+
 /// Widget to draw interactive connection when the user tap on handlers
 class DrawingArrowWidget extends StatefulWidget {
   ///
