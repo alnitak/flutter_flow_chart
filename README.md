@@ -179,7 +179,7 @@ The library supports attaching arbitrary data to each element via the generic `e
 
 Notes
 - The `Dashboard`, `FlowChart` and `FlowElement` must use the same generic type T.
-- If no serializer is provided, `elementData` will be treated as JSON serializable as it is, but will cause error when the data is not serializable.
+- If no serializer is provided, `elementData` will be treated as JSON serializable as it is, but will cause an error when the data is not serializable.
 
 ### Minimal example
 

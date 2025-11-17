@@ -126,9 +126,12 @@ class FlowChart<T> extends StatefulWidget {
   /// Trigger for the scale change
   final void Function(double scale)? onScaleUpdate;
 
-  /// Custom element builder for custom element kind
+  /// Custom element builder for rendering elements with [ElementKind.custom].
+  ///
+  /// When provided, this builder will be called to render any element with
+  /// kind set to [ElementKind.custom]. If not provided and a custom element
+  /// is encountered, a fallback rectangle widget with a message will be shown.
   final ElementWidgetBuilder<T>? customElementBuilder;
-
   @override
   State<FlowChart<T>> createState() => _FlowChartState();
 }
