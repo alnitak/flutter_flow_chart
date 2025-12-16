@@ -326,6 +326,11 @@ class FlowElement<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setElementData(T data) {
+    elementData = data;
+    notifyListeners();
+  }
+
   @override
   bool operator ==(covariant FlowElement<T> other) {
     if (identical(this, other)) return true;
