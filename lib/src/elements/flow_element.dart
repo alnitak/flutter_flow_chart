@@ -326,6 +326,7 @@ class FlowElement<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Change element data
   void setElementData(T data) {
     elementData = data;
     notifyListeners();

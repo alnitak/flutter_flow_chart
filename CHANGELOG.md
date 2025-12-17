@@ -1,3 +1,6 @@
+#### 4.1.1
+- able to update the elementData and rebuild its FlowElement #51 (thanks to [chaosue](https://github.com/chaosue)).
+
 #### 4.1.0
 **(thanks to [Isira Herath](https://github.com/SL-Pirate))**
 - Introduce full custom `FlowElement` support using the `customElementBuilder` API
